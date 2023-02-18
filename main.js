@@ -5,18 +5,21 @@ canvasSize,
 canvas1Pos, 
 canvas2Pos;
 
-let popUpVisible = false;
+let popUpVisible = true;
 
 let scenes = []
-let truckImage; 
+let truckImage, backgroundImage; 
 
 let currentScene = 0;
 
-let playState = true
+let playState = false;
+
+let scale = 1;
 
 function preload()
 {
     truckImage = loadImage('images/truck.png'); 
+    backgroundImage = loadImage('images/enviroment.png'); 
 }
 
 function setup()
