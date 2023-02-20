@@ -2,17 +2,18 @@ class MyImage
 {
     constructor(props)
     {
+        this.canvas = props.canvas;
         this.image = props.image;
-        this.size = props.size || createVector(props.image.width, props.image.height);
+        this.size = props.size || new p5.Vector(props.image.width, props.image.height);
         this.scaleFactor = props.scaleFactor || 1;
 
         this.pos = props.pos || this.size.copy().div(2);
-        this.vel = props.vel || createVector();
-        this.acc = props.acc || createVector();
+        this.vel = props.vel || new p5.Vector(0, 0);
+        this.acc = props.acc || new p5.Vector(0, 0);
 
         this.startingPos = props.pos || this.size.copy().div(2);
-        this.startingVel = props.vel || createVector();
-        this.startingAcc = props.acc || createVector();
+        this.startingVel = props.vel || new p5.Vector(0, 0);
+        this.startingAcc = props.acc || new p5.Vector(0, 0);
 
         this.angle = props.angle || 0;
         this.omega = props.omega || 0;
@@ -21,6 +22,10 @@ class MyImage
         this.startingAngle = props.angle || 0;
         this.startingOmega = props.omega || 0;
         this.startingAlpha = props.alpha || 0;
+
+        this.referenceFrame = new p5.Vector(0, 0);
+
+        this.bounces = 0;
 
         this.reset()
     }
@@ -35,6 +40,8 @@ class MyImage
         this.omega = this.startingOmega;
         this.alpha = this.startingAlpha;
 
+        this.bounces = 0;
+
         this.scale();
     }
 
@@ -46,32 +53,26 @@ class MyImage
         this.acc.mult(scale);
     }
 
-    move(referenceFrame)
+    move()
     {
-        this.vel.add(this.acc).add(referenceFrame.acc);
-        this.pos.add(this.vel).add(referenceFrame.vel);
+        this.vel.add(this.acc).add(this.referenceFrame.acc);
+        this.pos.add(this.vel).add(this.referenceFrame.vel);
 
-        this.omega += (this.alpha + referenceFrame.alpha);
-        this.angle += (this.omega + referenceFrame.omega);
+        this.omega += (this.alpha + this.referenceFrame.alpha);
+        this.angle += (this.omega + this.referenceFrame.omega);
     }
 
     display()
     {
-        push()
-            translate(this.pos.x, this.pos.y);
-            rotate(this.angle);
-            rectMode(CENTER);
-            ellipseMode(CENTER);
-            imageMode(CENTER);
+        this.canvas.push()
+            this.canvas.translate(this.pos.x, this.pos.y);
+            this.canvas.angleMode(this.canvas.DEGREES)
+            this.canvas.rotate(this.angle);
+            this.canvas.rectMode(this.canvas.CENTER);
+            this.canvas.ellipseMode(this.canvas.CENTER);
+            this.canvas.imageMode(this.canvas.CENTER);
 
-            let sourcePos = canvasSize.copy().sub(this.size);
-            sourcePos = createVector()
-
-            let sourceX = 0;
-            let sourceY = 0;
-            let sourceWidth = 0;
-            let sourceHeight = 0
-            image(this.image, 0, 0, this.size.x, this.size.y, sourcePos.x, sourcePos.y);
-        pop()
+            this.canvas.image(this.image, 0, 0, this.size.x, this.size.y);
+        this.canvas.pop()
     }
 }

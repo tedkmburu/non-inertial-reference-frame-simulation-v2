@@ -7,87 +7,310 @@ canvas2Pos;
 
 let popUpVisible = true;
 
-let scenes = []
-let truckImage, backgroundImage; 
+let leftScenes = []
+let rightScenes = []
+let truckImage, backgroundImage, cannon1, cannon2, cannon3, grid; 
 
-let currentScene = 0;
+let currentScene = 2;
 
-let playState = false;
+let playState = true;
 
 let scale = 1;
 
-function preload()
-{
-    truckImage = loadImage('images/truck.png'); 
-    backgroundImage = loadImage('images/enviroment.png'); 
-}
+let buttons = []
 
-function setup()
-{
-    createCanvas(innerWidth, innerHeight)
 
-    if (innerWidth >= innerHeight)
+const leftCanvasObject = canvas => {
+    canvas.preload = function() 
     {
-        landscape = true;
-        canvasSize = createVector(innerWidth / 2, innerHeight)
-        canvas1Pos = createVector(0, 0)
-        canvas2Pos = createVector(innerWidth / 2, 0)
+        truckImage = canvas.loadImage('images/truck.png'); 
+        backgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        cannon1 = canvas.loadImage('images/cannon.png'); 
+        cannon2 = canvas.loadImage('images/cannon2.png'); 
+        cannon3 = canvas.loadImage('images/cannon3.png'); 
+        grid = canvas.loadImage('images/grid.png'); 
     }
-    else
+    canvas.setup = function()  // This function only runs once when the page first loads. 
+    {        
+        if (innerWidth >= innerHeight)
+        {
+            landscape = true;
+            canvasSize = canvas.createVector(innerWidth / 2, innerHeight)
+            canvas1Pos = canvas.createVector(0, 0)
+            canvas2Pos = canvas.createVector(innerWidth / 2, 0)
+        }
+        else
+        {
+            landscape = false;
+            canvasSize = canvas.createVector(innerWidth, innerHeight / 2)
+            canvas1Pos = canvas.createVector(0, 0)
+            canvas2Pos = canvas.createVector(0, innerHeight / 2)
+        }
+
+        let roomCnv = canvas.createCanvas(canvasSize.x, canvasSize.y)
+
+        if (landscape) 
+        {
+            roomCnv.addClass('left');
+        }
+        else
+        {
+            roomCnv.addClass('top');
+        }
+
+        createLeftScenes(canvas)
+    }
+  
+    canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
+    {  
+        canvas.background(0)
+        canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
+        
+        canvas.push()
+            // canvas.fill(0)
+            // canvas.noStroke()
+            // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
+
+            leftScenes[currentScene].display()
+        canvas.pop()    
+    }
+  
+    canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
-        landscape = false;
-        canvasSize = createVector(innerWidth, innerHeight / 2)
-        canvas1Pos = createVector(0, 0)
-        canvas2Pos = createVector(0, innerHeight / 2)
+        canvas.setup()
     }
 
-    createScenes()
+    canvas.mouseClicked = function() {
+
+    }
+
+    // canvas.mouseDragged = function() { mouseDraggedLeft(canvas); }
 }
 
-function draw()
-{
-    background("red")
+const rightCanvasObject = canvas => {
+    canvas.preload = function() 
+    {
+        truckImage = canvas.loadImage('images/truck.png'); 
+        backgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        cannon1 = canvas.loadImage('images/cannon.png'); 
+        cannon2 = canvas.loadImage('images/cannon2.png'); 
+        cannon3 = canvas.loadImage('images/cannon3.png'); 
+        grid = canvas.loadImage('images/grid.png'); 
+    }
+    canvas.setup = function()  // This function only runs once when the page first loads. 
+    {        
+        if (innerWidth >= innerHeight)
+        {
+            landscape = true;
+            canvasSize = canvas.createVector(innerWidth / 2, innerHeight)
+            canvas1Pos = canvas.createVector(0, 0)
+            canvas2Pos = canvas.createVector(innerWidth / 2, 0)
+        }
+        else
+        {
+            landscape = false;
+            canvasSize = canvas.createVector(innerWidth, innerHeight / 2)
+            canvas1Pos = canvas.createVector(0, 0)
+            canvas2Pos = canvas.createVector(0, innerHeight / 2)
+        }
 
-    drawLeftCanvas()
-    drawRightCanvas()
-    drawDivider()
+        let roomCnv = canvas.createCanvas(canvasSize.x, canvasSize.y)
 
-    if (popUpVisible) drawPopUp();
+        if (landscape) 
+        {
+            roomCnv.addClass('right');
+        }
+        else
+        {
+            roomCnv.addClass('bottom');
+        }
+
+        createRightScenes(canvas)
+    }
+  
+    canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
+    {  
+        canvas.background(0)
+        canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
+        
+        canvas.push()
+            // canvas.fill(0)
+            // canvas.noStroke()
+            // canvas.translate(canvas2Pos.x, canvas2Pos.y)
+            // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
+
+            rightScenes[currentScene].display()
+        canvas.pop()
+    }
+  
+    canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
+    {
+        canvas.setup()
+    }
+
+    canvas.mouseClicked = function() {
+
+    }
+
+    // canvas.mouseDragged = function() { mouseDraggedLeft(canvas); }
 }
 
-function drawLeftCanvas()
-{
-    push()
-        fill(0)
-        noStroke()
-        rect(0, 0, canvasSize.x, canvasSize.y)
+const popUpWindow = canvas => {
+    canvas.preload = function() 
+    {
+        truckImage = canvas.loadImage('images/truck.png'); 
+        backgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        cannon1 = canvas.loadImage('images/cannon.png'); 
+        cannon2 = canvas.loadImage('images/cannon2.png'); 
+        cannon3 = canvas.loadImage('images/cannon3.png'); 
+        grid = canvas.loadImage('images/grid.png'); 
+    }
+    canvas.setup = function()  // This function only runs once when the page first loads. 
+    {        
 
-        scenes[currentScene].left.display()
-    pop()
+        let roomCnv = canvas.createCanvas(innerWidth / 2, innerHeight / 2)
+
+        roomCnv.addClass('popUp');
+    }
+  
+    canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
+    {  
+        canvas.background(0)
+        canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
+        
+        canvas.push()
+            // canvas.fill(0)
+            // canvas.noStroke()
+            // canvas.translate(canvas2Pos.x, canvas2Pos.y)
+            // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
+
+            
+        canvas.pop()
+    }
+  
+    canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
+    {
+        canvas.setup()
+    }
+
+    canvas.mouseClicked = function() {
+
+    }
 }
 
-function drawRightCanvas()
-{
-    push()
-        fill(0)
-        noStroke()
-        translate(canvas2Pos.x, canvas2Pos.y)
-        rect(0, 0, canvasSize.x, canvasSize.y)
+const controlMenu = canvas => {
+    canvas.preload = function() 
+    {
+        rewind = canvas.loadImage("images/forward-solid.svg");
+        playPause = canvas.loadImage("images/pause-solid.svg");
+        restart = canvas.loadImage("images/arrow-rotate-right-solid.svg");
+        omega = canvas.loadImage("images/omega.png");
+        mass = canvas.loadImage("images/mass.png");
+        help = canvas.loadImage("images/circle-info-solid.svg");
+    }
+    canvas.setup = function()  // This function only runs once when the page first loads. 
+    {        
 
-        scenes[currentScene].right.display()
-    pop()
+        let roomCnv = canvas.createCanvas(innerWidth, 100)
+
+        roomCnv.addClass('controlMenu');
+        roomCnv.style("top", (innerHeight / 2) - 50)
+
+        createMenu(canvas)
+    }
+  
+    canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
+    {  
+        canvas.background(255)
+        canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
+        
+        canvas.push()
+            displayMenu(canvas)
+        canvas.pop()
+    }
+  
+    canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
+    {
+        canvas.setup()
+    }
+
+    canvas.mouseClicked = function() {
+
+    }
 }
 
-function drawDivider()
-{
-    push()
-        stroke(255)
-        if (landscape) line(innerWidth / 2, 0, innerWidth / 2, innerHeight)
-        else line(0, innerHeight / 2, innerWidth, innerHeight / 2)
-    pop()
-}
+new p5(leftCanvasObject);
+new p5(rightCanvasObject);
+// new p5(popUpWindow);
+new p5(controlMenu);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function preload()
+// {
+//     truckImage = loadImage('images/truck.png'); 
+//     backgroundImage = loadImage('images/enviroment2.png'); 
+//     cannon1 = loadImage('images/cannon.png'); 
+//     cannon2 = loadImage('images/cannon2.png'); 
+//     cannon3 = loadImage('images/cannon3.png'); 
+//     grid = loadImage('images/grid.png'); 
+// }
+
+// function setup()
+// {
+//     createCanvas(innerWidth, innerHeight)
+
+//     if (innerWidth >= innerHeight)
+//     {
+//         landscape = true;
+//         canvasSize = createVector(innerWidth / 2, innerHeight)
+//         canvas1Pos = createVector(0, 0)
+//         canvas2Pos = createVector(innerWidth / 2, 0)
+//     }
+//     else
+//     {
+//         landscape = false;
+//         canvasSize = createVector(innerWidth, innerHeight / 2)
+//         canvas1Pos = createVector(0, 0)
+//         canvas2Pos = createVector(0, innerHeight / 2)
+//     }
+
+//     createScenes()
+// }
+
+// function draw()
+// {
+//     background("red")
+
+//     drawLeftCanvas()
+//     drawRightCanvas()
+//     drawDivider()
+
+//     if (popUpVisible) drawPopUp();
+// }
 
 function drawPopUp()
 {
 
 }
+

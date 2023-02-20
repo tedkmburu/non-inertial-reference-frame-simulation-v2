@@ -2,17 +2,21 @@ class ReferenceFrame
 {
     constructor(props)
     {
-        this.pos = props.pos || createVector();
-        this.vel = props.vel || createVector();
-        this.acc = props.acc || createVector();
+        this.pos = props.pos || new p5.Vector(0, 0);
+        this.vel = props.vel || new p5.Vector(0, 0);
+        this.acc = props.acc || new p5.Vector(0, 0);
 
         this.angle = props.angle || 0;
         this.omega = props.omega || 0;
         this.alpha = props.alpha || 0;
 
-        this.startingPos = props.pos || createVector();
-        this.startingVel = props.vel || createVector();
-        this.startingAcc = props.acc || createVector();
+        this.startingPos = props.pos || new p5.Vector(0, 0);
+        this.startingVel = props.vel || new p5.Vector(0, 0);
+        this.startingAcc = props.acc || new p5.Vector(0, 0);
+
+        this.startingAngle = props.angle || 0;
+        this.startingOmega = props.omega || 0;
+        this.startingAlpha = props.alpha || 0;
 
         this.reset()
     }
