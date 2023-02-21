@@ -5,14 +5,14 @@ function createMenu(canvas)
 
     buttons.push(new Button({
         text: "rewind", 
-        image: rewind,
+        image: rewindImage,
         pos: new p5.Vector(500, 200),
         canvas: canvas,
     }))
 
     buttons.push(new Button({
         text: "asdf", 
-        image: playPause,
+        image: playPauseImage,
         pos: new p5.Vector(1000, 200),
         canvas: canvas,
         onClick: () => {
@@ -22,7 +22,7 @@ function createMenu(canvas)
 
     buttons.push(new Button({
         text: "asdf", 
-        image: restart,
+        image: restartImage,
         pos: new p5.Vector(1500, 200),
         canvas: canvas,
         onClick: () => {
@@ -49,21 +49,21 @@ function createMenu(canvas)
 
     buttons.push(new Button({
         text: "asdf", 
-        image: omega,
+        image: omegaImage,
         pos: new p5.Vector(2000, 200),
         canvas: canvas,
     }))
 
     buttons.push(new Button({
         text: "asdf", 
-        image: mass,
+        image: massImage,
         pos: new p5.Vector(3000, 200),
         canvas: canvas,
     }))
 
     buttons.push(new Button({
         text: "asdf", 
-        image: help,
+        image: helpImage,
         pos: new p5.Vector(4000, 200),
         canvas: canvas,
     }))
@@ -88,6 +88,24 @@ function checkButtonClick(canvas)
                 button.clicked()
             }
     })
+}
+
+function sliderInput()
+{
+    let slider1Value = slider1.value()
+    let slider2Value = slider2.value()
+
+    // console.log(slider1Value, slider2Value);
+    leftScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
+    rightScenes[0].referenceFrame.vel.x = (slider1Value + 1) * -2;
+    rightScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
+
+    // console.log(leftScenes[0].images[1].vel);
+}
+
+function slider2Input()
+{
+
 }
 
 // rewind = canvas.loadImage("images/forward-solid.svg");

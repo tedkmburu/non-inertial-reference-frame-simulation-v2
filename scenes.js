@@ -107,11 +107,11 @@ function createLeftScenes(canvas)
             }),
             shapes: [
                 new Shape({
-                    shape: "rect",
+                    shape: "box",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, 0),
-                    size: new p5.Vector(2200, 2200, 0),
+                    pos: new p5.Vector(0, 0, -9),
+                    size: new p5.Vector(2200, 2200, 1000),
                     omega: new p5.Vector(0, 0, 0.5),
                     canvas: canvas,
                 }),
@@ -119,7 +119,7 @@ function createLeftScenes(canvas)
                     shape: "ellipse",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, 0),
+                    pos: new p5.Vector(0, 0, -8),
                     size: new p5.Vector(150, 150, 0),
                     canvas: canvas,
                 }),
@@ -127,7 +127,7 @@ function createLeftScenes(canvas)
                     shape: "ellipse",
                     fill: "red",
                     stroke: "black",
-                    pos: new p5.Vector(0, -1000, 0),
+                    pos: new p5.Vector(0, -1000, -7),
                     vel: new p5.Vector(5, 5, 0),
                     size: new p5.Vector(150, 150, 0),
                     canvas: canvas,
@@ -137,7 +137,7 @@ function createLeftScenes(canvas)
                 new MyImage({
                     image: leftGrid,
                     scaleFactor: 5,
-                    pos: new p5.Vector(0, 0, 0, 0),
+                    pos: new p5.Vector(0, 0, -10),
                     canvas: canvas,
                 }),
             ]
@@ -371,11 +371,11 @@ function createRightScenes(canvas)
             }),
             shapes: [
                 new Shape({
-                    shape: "rect",
+                    shape: "box",
                     fill: "white",
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -9),
-                    size: new p5.Vector(2200, 2200, 0),
+                    size: new p5.Vector(2200, 2200, 100),
                     canvas: canvas,
                 }),
                 new Shape({

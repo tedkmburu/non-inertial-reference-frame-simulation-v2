@@ -9,10 +9,11 @@ let popUpVisible = true;
 
 let leftScenes = []
 let rightScenes = []
+
 let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
 let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
-
-let currentScene = 0;
+let rewindImage, playPauseImage, restartImage, omegaImage, speedImage, massImage, helpImage;
+let currentScene = 2;
 
 let playState = true;
 
@@ -72,7 +73,7 @@ const leftCanvasObject = canvas => {
             // canvas.fill(0)
             // canvas.noStroke()
             // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
-            canvas.orbitControl();
+            // canvas.orbitControl();
             leftScenes[currentScene].display()
         canvas.pop()    
     }
@@ -140,7 +141,8 @@ const rightCanvasObject = canvas => {
             // canvas.noStroke()
             // canvas.translate(canvas2Pos.x, canvas2Pos.y)
             // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
-            canvas.orbitControl();
+            // canvas.orbitControl();
+            sliderInput()
             rightScenes[currentScene].display()
         canvas.pop()
     }
@@ -181,7 +183,6 @@ const popUpWindow = canvas => {
     {  
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
-        
         canvas.push()
             // canvas.fill(0)
             // canvas.noStroke()
@@ -205,16 +206,17 @@ const popUpWindow = canvas => {
 const controlMenu = canvas => {
     canvas.preload = function() 
     {
-        rewind = canvas.loadImage("images/forward-solid.svg");
-        playPause = canvas.loadImage("images/pause-solid.svg");
-        restart = canvas.loadImage("images/arrow-rotate-right-solid.svg");
-        omega = canvas.loadImage("images/omega.png");
-        mass = canvas.loadImage("images/mass.png");
-        help = canvas.loadImage("images/circle-info-solid.svg");
+        rewindImage = canvas.loadImage("images/forward-solid.svg");
+        playPauseImage = canvas.loadImage("images/pause-solid.svg");
+        restartImage = canvas.loadImage("images/arrow-rotate-right-solid.svg");
+        omegaImage = canvas.loadImage("images/omega.png");
+        speedImage = canvas.loadImage("images/speed.png");
+        massImage = canvas.loadImage("images/kg.png");
+        helpImage = canvas.loadImage("images/circle-info-solid.svg");
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-        scale = canvas.width / 500;
+        scale = canvas.width / 1000;
         let roomCnv = canvas.createCanvas(innerWidth * 0.9, 400 * scale)
 
         roomCnv.addClass('controlMenu');
@@ -222,14 +224,15 @@ const controlMenu = canvas => {
         roomCnv.style("left", ((innerWidth / 2) * 0.1) + "px")
         roomCnv.style("borderRadius", (200 * scale) + "px")
 
-        slider1 = canvas.createSlider(0, 255, 100);
-        slider1.position(2600 * scale, (innerWidth / 2) + 10);
-        slider1.style('width', '80px');
+        slider1 = canvas.createSlider(-1, 1, 0.5, 0.01);
+        slider1.position(2500 * scale, (innerWidth / 2) + 25);
+        slider1.style('width', (500 * scale) + 'px');
         slider1.style('zIndex', '999');
+        slider1.style('opacity', '0.5');
         
-        slider2 = canvas.createSlider(0, 255, 100);
-        slider2.position(3600 * scale, (innerWidth / 2) + 10);
-        slider2.style('width', '80px');
+        slider2 = canvas.createSlider(-1, 1, 0.5, 0.01);
+        slider2.position(3500 * scale, (innerWidth / 2) + 25);
+        slider2.style('width', (500 * scale) + 'px');
         slider2.style('zIndex', '999');
         createMenu(canvas)
     }
@@ -240,6 +243,7 @@ const controlMenu = canvas => {
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
+        
             displayMenu(canvas)
         canvas.pop()
     }
