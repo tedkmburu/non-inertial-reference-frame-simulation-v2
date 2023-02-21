@@ -211,10 +211,12 @@ const controlMenu = canvas => {
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
 
-        let roomCnv = canvas.createCanvas(innerWidth, 100)
+        let roomCnv = canvas.createCanvas(innerWidth * 0.9, 400 * scale)
 
         roomCnv.addClass('controlMenu');
-        roomCnv.style("top", (innerHeight / 2) - 50)
+        roomCnv.style("top", (innerHeight / 2) - (200 * scale) + "px")
+        roomCnv.style("left", ((innerWidth / 2) * 0.1) + "px")
+        roomCnv.style("borderRadius", (200 * scale) + "px")
 
         createMenu(canvas)
     }
@@ -235,7 +237,7 @@ const controlMenu = canvas => {
     }
 
     canvas.mouseClicked = function() {
-
+        checkButtonClick(canvas)
     }
 }
 

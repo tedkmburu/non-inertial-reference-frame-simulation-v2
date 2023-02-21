@@ -16,8 +16,7 @@ class Button
         this.canvas = props.canvas;
         this.pos = props.pos || new p5.Vector(0, 0);
         this.startingPos = props.pos || this.pos.copy();
-        this.size = props.size || new p5.Vector(50, 50);
-        this.scaleFactor = props.scaleFactor || 1;
+        this.size = props.size || new p5.Vector(300, 300);
 
         this.visible = props.visible || true;
         this.hovering = false;
@@ -25,10 +24,11 @@ class Button
 
         this.text = props.text;
         this.image = props.image;
-        this.imageSize = props.size || new p5.Vector(props.image.width, props.image.height);
+        this.imageSize = props.size || this.size.copy();
 
         this.fill = props.fill || "white";
-        this.stroke = props.stroke || "black"
+        this.stroke = props.stroke || "black";
+        this.showBorder = props.showBorder || true;
 
         this.onClick = props.onClick;
         this.reset()
@@ -57,15 +57,13 @@ class Button
             this.canvas.fill(this.fill)
             this.canvas.stroke(this.stroke)
             this.canvas.rectMode(this.canvas.CENTER)
+            this.canvas.imageMode(this.canvas.CENTER)
             this.canvas.ellipseMode(this.canvas.CENTER)
             this.canvas.textAlign(this.canvas.CENTER)
 
-            if (this.image != undefined) this.canvas.image(this.image, 0, 0, this.imageSize.x, this.imageSize.y)
+            if (this.showBorder) this.canvas.rect(0, 0, this.size.x, this.size.y)
 
-            if (this.text != undefined)
-            {
-                this.canvas.rect(0, 0, this.size.x, this.size.y)
-            }
+            if (this.image != undefined) this.canvas.image(this.image, 0, 0, this.imageSize.x, this.imageSize.y)
 
             if (this.text != undefined) 
             {

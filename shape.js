@@ -30,13 +30,17 @@ class Shape
         this.bounces = 0;
         this.showTrail = true;
         this.trail = []
+        this.offset = props.offset || new p5.Vector(0, 0)
+        this.startingOffset = props.offset || new p5.Vector(0, 0)
 
         this.reset()
     }
 
     reset()
     {
-        this.pos = this.startingPos.copy()
+        this.offset = this.startingOffset.copy()
+        
+        this.pos = this.startingPos.copy().add(this.offset)
         this.vel = this.startingVel.copy()
         this.acc = this.startingAcc.copy()
 
@@ -64,7 +68,7 @@ class Shape
         this.omega += (this.alpha + this.referenceFrame.alpha);
         this.angle += (this.omega + this.referenceFrame.omega);
 
-        if (this.canvas.frameCount % 5 == 0) this.trail.push(this.pos.copy())
+        if (this.canvas.frameCount % 5 == 0) this.trail.push(this.pos.copy().add(new p5.Vector(this.offset.x, this.offset.y)))
     }
 
     display()
@@ -76,7 +80,7 @@ class Shape
                 this.trail.forEach(dot => {
                     
                     this.canvas.fill(0)
-                    this.canvas.ellipse(dot.x, dot.y, 10, 10)
+                    this.canvas.ellipse(dot.x, dot.y, 10 * scale, 10 * scale)
                 })    
             }
         this.canvas.pop()
@@ -93,10 +97,10 @@ class Shape
             switch(this.shape)
             {
                 case "ellipse":
-                    this.canvas.ellipse(0, 0, this.size.x, this.size.y)
+                    this.canvas.ellipse(this.offset.x, this.offset.y, this.size.x, this.size.y)
                 break;
                 default:
-                    this.canvas.rect(0, 0, this.size.x, this.size.y)
+                    this.canvas.rect(this.offset.x, this.offset.y, this.size.x, this.size.y)
             }
         this.canvas.pop()
     }

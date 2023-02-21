@@ -24,6 +24,7 @@ class MyImage
         this.startingAlpha = props.alpha || 0;
 
         this.referenceFrame = new p5.Vector(0, 0);
+        this.offset = props.offset || new p5.Vector(0, 0)
 
         this.bounces = 0;
 
@@ -32,7 +33,7 @@ class MyImage
 
     reset()
     {
-        this.pos = this.startingPos.copy();
+        this.pos = this.startingPos.copy().add(this.offset);
         this.vel = this.startingVel.copy();
         this.acc = this.startingAcc.copy();
 

@@ -345,7 +345,7 @@ function createRightScenes(canvas)
                     shape: "rect",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(2500, 1290),
+                    pos: new p5.Vector(2500, 1420),
                     size: new p5.Vector(2200, 2200),
                     canvas: canvas,
                 }),
@@ -353,16 +353,30 @@ function createRightScenes(canvas)
                     shape: "ellipse",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(2500, 1290),
+                    pos: new p5.Vector(2500, 1420),
                     size: new p5.Vector(150, 150),
                     canvas: canvas,
-                })
+                }),
+                new Shape({
+                    shape: "ellipse",
+                    fill: "red",
+                    stroke: "black",
+                    // pos: new p5.Vector(2500, 300),
+                    pos: new p5.Vector(2500, 1420),
+                    offset: new p5.Vector(0, -90),
+                    // vel: new p5.Vector(5, 5),
+                    size: new p5.Vector(150, 150),
+                    omega: 0.5,
+                    canvas: canvas,
+                }),
+
+                
             ], 
             images: [
                 new MyImage({
                     image: grid,
                     scaleFactor: 4,
-                    omega: 0.5,
+                    omega: -0.5,
                     pos: new p5.Vector(2500, 1290),
                     canvas: canvas,
                 }),
