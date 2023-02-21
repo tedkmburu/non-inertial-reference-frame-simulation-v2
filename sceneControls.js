@@ -44,6 +44,9 @@ function sceneControls()
         case 2:
             
         break;
+        case 3:
+            
+        break;
         default:
             console.log("Create Scene Controls");
     }    

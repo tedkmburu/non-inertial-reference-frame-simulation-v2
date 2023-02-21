@@ -9,7 +9,8 @@ let popUpVisible = true;
 
 let leftScenes = []
 let rightScenes = []
-let truckImage, backgroundImage, cannon1, cannon2, cannon3, grid; 
+let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
+let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
 
 let currentScene = 2;
 
@@ -23,31 +24,31 @@ let buttons = []
 const leftCanvasObject = canvas => {
     canvas.preload = function() 
     {
-        truckImage = canvas.loadImage('images/truck.png'); 
-        backgroundImage = canvas.loadImage('images/enviroment2.png'); 
-        cannon1 = canvas.loadImage('images/cannon.png'); 
-        cannon2 = canvas.loadImage('images/cannon2.png'); 
-        cannon3 = canvas.loadImage('images/cannon3.png'); 
-        grid = canvas.loadImage('images/grid.png'); 
+        leftTruckImage = canvas.loadImage('images/truck.png'); 
+        leftBackgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        leftCannon1 = canvas.loadImage('images/cannon.png'); 
+        leftCannon2 = canvas.loadImage('images/cannon2.png'); 
+        leftCannon3 = canvas.loadImage('images/cannon3.png'); 
+        leftGrid = canvas.loadImage('images/grid.png'); 
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
         if (innerWidth >= innerHeight)
         {
             landscape = true;
-            canvasSize = canvas.createVector(innerWidth / 2, innerHeight)
-            canvas1Pos = canvas.createVector(0, 0)
-            canvas2Pos = canvas.createVector(innerWidth / 2, 0)
+            canvasSize = canvas.createVector(innerWidth / 2, innerHeight, 0)
+            canvas1Pos = canvas.createVector(0, 0, 0)
+            canvas2Pos = canvas.createVector(innerWidth / 2, 0, 0)
         }
         else
         {
             landscape = false;
-            canvasSize = canvas.createVector(innerWidth, innerHeight / 2)
-            canvas1Pos = canvas.createVector(0, 0)
-            canvas2Pos = canvas.createVector(0, innerHeight / 2)
+            canvasSize = canvas.createVector(innerWidth, innerHeight / 2, 0)
+            canvas1Pos = canvas.createVector(0, 0, 0)
+            canvas2Pos = canvas.createVector(0, innerHeight / 2, 0)
         }
 
-        let roomCnv = canvas.createCanvas(canvasSize.x, canvasSize.y)
+        let roomCnv = canvas.createCanvas(canvasSize.x, canvasSize.y, canvas.WEBGL)
 
         if (landscape) 
         {
@@ -70,7 +71,7 @@ const leftCanvasObject = canvas => {
             // canvas.fill(0)
             // canvas.noStroke()
             // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
-
+            canvas.orbitControl();
             leftScenes[currentScene].display()
         canvas.pop()    
     }
@@ -90,31 +91,31 @@ const leftCanvasObject = canvas => {
 const rightCanvasObject = canvas => {
     canvas.preload = function() 
     {
-        truckImage = canvas.loadImage('images/truck.png'); 
-        backgroundImage = canvas.loadImage('images/enviroment2.png'); 
-        cannon1 = canvas.loadImage('images/cannon.png'); 
-        cannon2 = canvas.loadImage('images/cannon2.png'); 
-        cannon3 = canvas.loadImage('images/cannon3.png'); 
-        grid = canvas.loadImage('images/grid.png'); 
+        rightTruckImage = canvas.loadImage('images/truck.png'); 
+        rightBackgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        rightCannon1 = canvas.loadImage('images/cannon.png'); 
+        rightCannon2 = canvas.loadImage('images/cannon2.png'); 
+        rightCannon3 = canvas.loadImage('images/cannon3.png'); 
+        rightGrid = canvas.loadImage('images/grid.png'); 
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
         if (innerWidth >= innerHeight)
         {
             landscape = true;
-            canvasSize = canvas.createVector(innerWidth / 2, innerHeight)
-            canvas1Pos = canvas.createVector(0, 0)
-            canvas2Pos = canvas.createVector(innerWidth / 2, 0)
+            canvasSize = canvas.createVector(innerWidth / 2, innerHeight, 0)
+            canvas1Pos = canvas.createVector(0, 0, 0)
+            canvas2Pos = canvas.createVector(innerWidth / 2, 0, 0)
         }
         else
         {
             landscape = false;
-            canvasSize = canvas.createVector(innerWidth, innerHeight / 2)
-            canvas1Pos = canvas.createVector(0, 0)
-            canvas2Pos = canvas.createVector(0, innerHeight / 2)
+            canvasSize = canvas.createVector(innerWidth, innerHeight / 2, 0)
+            canvas1Pos = canvas.createVector(0, 0, 0)
+            canvas2Pos = canvas.createVector(0, innerHeight / 2, 0)
         }
 
-        let roomCnv = canvas.createCanvas(canvasSize.x, canvasSize.y)
+        let roomCnv = canvas.createCanvas(canvasSize.x, canvasSize.y, canvas.WEBGL)
 
         if (landscape) 
         {
@@ -138,7 +139,7 @@ const rightCanvasObject = canvas => {
             // canvas.noStroke()
             // canvas.translate(canvas2Pos.x, canvas2Pos.y)
             // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
-
+            canvas.orbitControl();
             rightScenes[currentScene].display()
         canvas.pop()
     }
@@ -164,6 +165,8 @@ const popUpWindow = canvas => {
         cannon2 = canvas.loadImage('images/cannon2.png'); 
         cannon3 = canvas.loadImage('images/cannon3.png'); 
         grid = canvas.loadImage('images/grid.png'); 
+
+        
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
@@ -210,7 +213,7 @@ const controlMenu = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-
+        scale = canvas.width / 500;
         let roomCnv = canvas.createCanvas(innerWidth * 0.9, 400 * scale)
 
         roomCnv.addClass('controlMenu');
@@ -218,6 +221,7 @@ const controlMenu = canvas => {
         roomCnv.style("left", ((innerWidth / 2) * 0.1) + "px")
         roomCnv.style("borderRadius", (200 * scale) + "px")
 
+        
         createMenu(canvas)
     }
   
@@ -241,8 +245,8 @@ const controlMenu = canvas => {
     }
 }
 
-new p5(leftCanvasObject);
-new p5(rightCanvasObject);
+// new p5(leftCanvasObject);
+// new p5(rightCanvasObject);
 // new p5(popUpWindow);
 new p5(controlMenu);
 

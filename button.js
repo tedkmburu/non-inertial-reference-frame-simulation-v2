@@ -14,7 +14,7 @@ class Button
     constructor(props)
     {
         this.canvas = props.canvas;
-        this.pos = props.pos || new p5.Vector(0, 0);
+        this.pos = props.pos || new p5.Vector(0, 0, 0);
         this.startingPos = props.pos || this.pos.copy();
         this.size = props.size || new p5.Vector(300, 300);
 
@@ -51,9 +51,8 @@ class Button
     display()
     {
         this.canvas.push()
-            this.canvas.translate(this.pos.x, this.pos.y)
+            this.canvas.translate(this.pos.x, this.pos.y, this.pos.z)
             this.canvas.angleMode(this.canvas.DEGREES)
-            this.canvas.rotate(this.angle)
             this.canvas.fill(this.fill)
             this.canvas.stroke(this.stroke)
             this.canvas.rectMode(this.canvas.CENTER)
@@ -78,9 +77,13 @@ class Button
     clicked()
     {
         let button = this;
-        if (button.visible) 
+        if (button.visible && button.onClick != null) 
         {
             button.onClick();
+        }
+        if (button.onClick == null) 
+        {
+            console.log(button.text, " is unassigned");
         }
     }
   

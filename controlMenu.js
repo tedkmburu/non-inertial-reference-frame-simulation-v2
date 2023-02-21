@@ -1,5 +1,8 @@
 function createMenu(canvas) 
 {
+    new p5(leftCanvasObject);
+    new p5(rightCanvasObject);  
+
     buttons.push(new Button({
         text: "rewind", 
         image: rewind,
@@ -58,14 +61,14 @@ function displayMenu(canvas)
 
 function checkButtonClick(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY)
+    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0)
     buttons.forEach(button => {
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
             mousePosition.y > button.pos.y - (button.size.y / 2) &&
             mousePosition.y < button.pos.y + (button.size.y / 2))
             {
-                button.onClick()
+                button.clicked()
             }
     })
 }

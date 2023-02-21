@@ -2,21 +2,21 @@ class ReferenceFrame
 {
     constructor(props)
     {
-        this.pos = props.pos || new p5.Vector(0, 0);
-        this.vel = props.vel || new p5.Vector(0, 0);
-        this.acc = props.acc || new p5.Vector(0, 0);
+        this.pos = props.pos || new p5.Vector(0, 0, 0);
+        this.vel = props.vel || new p5.Vector(0, 0, 0);
+        this.acc = props.acc || new p5.Vector(0, 0, 0);
 
-        this.angle = props.angle || 0;
-        this.omega = props.omega || 0;
-        this.alpha = props.alpha || 0;
+        this.startingPos = props.pos || new p5.Vector(0, 0, 0);
+        this.startingVel = props.vel || new p5.Vector(0, 0, 0);
+        this.startingAcc = props.acc || new p5.Vector(0, 0, 0);
 
-        this.startingPos = props.pos || new p5.Vector(0, 0);
-        this.startingVel = props.vel || new p5.Vector(0, 0);
-        this.startingAcc = props.acc || new p5.Vector(0, 0);
+        this.angle = props.angle || new p5.Vector(0, 0, 0);
+        this.omega = props.omega || new p5.Vector(0, 0, 0);
+        this.alpha = props.alpha || new p5.Vector(0, 0, 0);
 
-        this.startingAngle = props.angle || 0;
-        this.startingOmega = props.omega || 0;
-        this.startingAlpha = props.alpha || 0;
+        this.startingAngle = props.angle || new p5.Vector(0, 0, 0);
+        this.startingOmega = props.omega || new p5.Vector(0, 0, 0);
+        this.startingAlpha = props.alpha || new p5.Vector(0, 0, 0);
 
         this.reset()
     }
@@ -27,9 +27,9 @@ class ReferenceFrame
         this.vel = this.startingVel.copy()
         this.acc = this.startingAcc.copy()
 
-        this.angle = this.startingAngle
-        this.omega = this.startingOmega
-        this.alpha = this.startingAlpha
+        this.angle = this.startingAngle.copy()
+        this.omega = this.startingOmega.copy()
+        this.alpha = this.startingAlpha.copy()
 
         this.scale()
     }
