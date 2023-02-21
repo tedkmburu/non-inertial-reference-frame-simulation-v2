@@ -12,13 +12,14 @@ let rightScenes = []
 let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
 let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
 
-let currentScene = 2;
+let currentScene = 0;
 
 let playState = true;
 
 let scale = 1;
 
 let buttons = []
+let slider1, slider2;
 
 
 const leftCanvasObject = canvas => {
@@ -221,7 +222,15 @@ const controlMenu = canvas => {
         roomCnv.style("left", ((innerWidth / 2) * 0.1) + "px")
         roomCnv.style("borderRadius", (200 * scale) + "px")
 
+        slider1 = canvas.createSlider(0, 255, 100);
+        slider1.position(2600 * scale, (innerWidth / 2) + 10);
+        slider1.style('width', '80px');
+        slider1.style('zIndex', '999');
         
+        slider2 = canvas.createSlider(0, 255, 100);
+        slider2.position(3600 * scale, (innerWidth / 2) + 10);
+        slider2.style('width', '80px');
+        slider2.style('zIndex', '999');
         createMenu(canvas)
     }
   

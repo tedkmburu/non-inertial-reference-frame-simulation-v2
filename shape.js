@@ -8,6 +8,7 @@ class Shape
 
         this.shape = props.shape;
         this.size = props.size || new p5.Vector(10, 10);
+        this.startingSize = props.size || new p5.Vector(10, 10);
 
         this.pos = props.pos || new p5.Vector(0, 0, 0);
         this.vel = props.vel || new p5.Vector(0, 0, 0);
@@ -39,6 +40,8 @@ class Shape
     reset()
     {
         this.offset = this.startingOffset.copy()
+
+        this.size = this.startingSize.copy()
         
         this.pos = this.startingPos.copy().add(this.offset)
         this.vel = this.startingVel.copy()
@@ -49,6 +52,8 @@ class Shape
         this.alpha = this.startingAlpha.copy()
 
         this.bounces = 0;
+        this.trail = []
+
         this.scale()
     }
 

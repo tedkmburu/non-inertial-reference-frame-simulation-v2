@@ -5,6 +5,8 @@ class MyImage
         this.canvas = props.canvas;
         this.image = props.image;
         this.size = props.size || new p5.Vector(props.image.width, props.image.height);
+        this.startingSize = props.startingSize || this.size.copy()
+        
         this.scaleFactor = props.scaleFactor || 1;
 
         this.pos = props.pos || this.size.copy().div(2);
@@ -42,6 +44,8 @@ class MyImage
         this.alpha = this.startingAlpha.copy();
 
         this.bounces = 0;
+
+        this.size = this.startingSize.copy()
 
         this.scale();
     }

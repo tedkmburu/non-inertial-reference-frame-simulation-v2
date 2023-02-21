@@ -27,6 +27,23 @@ function createMenu(canvas)
         canvas: canvas,
         onClick: () => {
             console.log("reset");
+            leftScenes.forEach(scene => {
+                scene.shapes.forEach(shape => {
+                    shape.reset()
+                })
+                scene.images.forEach(image => {
+                    image.reset()
+                })
+            })
+
+            rightScenes.forEach(scene => {
+                scene.shapes.forEach(shape => {
+                    shape.reset()
+                })
+                scene.images.forEach(image => {
+                    image.reset()
+                })
+            })
         }
     }))
 

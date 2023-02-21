@@ -10,8 +10,8 @@ function createLeftScenes(canvas)
                     shape: "ellipse",
                     fill: "green",
                     stroke: "white",
-                    pos: new p5.Vector(0, 0, 0),
-                    size: new p5.Vector(200, 200, 0),
+                    pos: new p5.Vector(0, 0, 1),
+                    size: new p5.Vector(2000, 2000, 0),
                     canvas: canvas,
                 })
             ], 
