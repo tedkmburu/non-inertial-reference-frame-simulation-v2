@@ -1,9 +1,9 @@
-function createLeftScenes(canvas)
+function createLeftScenes(theCanvas)
 {
     // scene 1
     leftScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             shapes: [
                 new Shape({
@@ -11,25 +11,25 @@ function createLeftScenes(canvas)
                     fill: "green",
                     stroke: "white",
                     pos: new p5.Vector(0, 0, 1),
-                    size: new p5.Vector(2000, 2000, 0),
-                    canvas: canvas,
+                    size: new p5.Vector(20, 20, 0),
+                    canvas: theCanvas,
                 })
             ], 
             images: [
                 new MyImage({
                     image: leftBackgroundImage,
-                    pos: new p5.Vector(0, 750, -10),
+                    pos: new p5.Vector(0, 0, -10),
                     scaleFactor: 2,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new MyImage({
                     image: leftTruckImage,
                     pos: new p5.Vector(0, 0, -9),
                     vel: new p5.Vector(10, 0, 0),
                     scaleFactor: 0.7,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 })
-            ]
+            ], 
         }))
 
 
@@ -45,7 +45,7 @@ function createLeftScenes(canvas)
     // scene 2
     leftScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             shapes: [
                 new Shape({
@@ -56,7 +56,7 @@ function createLeftScenes(canvas)
                     size: new p5.Vector(150, 150, 0),
                     vel: new p5.Vector(20, -15, 0),
                     acc: new p5.Vector(0, 0.5, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 })
             ], 
             images: [
@@ -64,26 +64,26 @@ function createLeftScenes(canvas)
                     image: leftBackgroundImage,
                     pos: new p5.Vector(0, 1500, -10),
                     scaleFactor: 2,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new MyImage({
                     image: leftCannon3,
                     pos: new p5.Vector(-1670, 1130, -9),
                     scaleFactor: 0.6,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: leftCannon1,
                     pos: new p5.Vector(-1450, 850, -8),
                     scaleFactor: 0.6,
                     angle: new p5.Vector(0, 0, -30),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: leftCannon2,
                     pos: new p5.Vector(-1700, 1130, -7),
                     scaleFactor: 0.6,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 })
             ]
         })),
@@ -103,7 +103,7 @@ function createLeftScenes(canvas)
     // scene 3
     leftScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             shapes: [
                 new Shape({
@@ -113,7 +113,7 @@ function createLeftScenes(canvas)
                     pos: new p5.Vector(0, 0, 0),
                     size: new p5.Vector(2200, 2200, 0),
                     omega: new p5.Vector(0, 0, 0.5),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
@@ -121,7 +121,7 @@ function createLeftScenes(canvas)
                     stroke: "black",
                     pos: new p5.Vector(0, 0, 0),
                     size: new p5.Vector(150, 150, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
@@ -130,7 +130,7 @@ function createLeftScenes(canvas)
                     pos: new p5.Vector(0, -1000, 0),
                     vel: new p5.Vector(5, 5, 0),
                     size: new p5.Vector(150, 150, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
             ], 
             images: [
@@ -138,7 +138,7 @@ function createLeftScenes(canvas)
                     image: leftGrid,
                     scaleFactor: 5,
                     pos: new p5.Vector(0, 0, 0, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
             ]
         }))
@@ -150,7 +150,7 @@ function createLeftScenes(canvas)
     // // scene 4
     leftScenes.push(new Scene({
         referenceFrame: new ReferenceFrame({
-            canvas: canvas,
+            canvas: theCanvas,
         }),
         shapes: [
             new Shape({
@@ -160,7 +160,7 @@ function createLeftScenes(canvas)
                 pos: new p5.Vector(0, 0, 0),
                 size: new p5.Vector(2200, 2200, 0),
                 omega: new p5.Vector(0, 0, 0.5),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             new Shape({
                 shape: "ellipse",
@@ -168,7 +168,7 @@ function createLeftScenes(canvas)
                 stroke: "black",
                 pos: new p5.Vector(0, 0, 0),
                 size: new p5.Vector(150, 150, 0),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             new Shape({
                 shape: "ellipse",
@@ -177,7 +177,7 @@ function createLeftScenes(canvas)
                 pos: new p5.Vector(0, -1000, 0),
                 vel: new p5.Vector(5, 5, 0),
                 size: new p5.Vector(150, 150, 0),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
         ], 
         images: [
@@ -185,7 +185,7 @@ function createLeftScenes(canvas)
                 image: leftGrid,
                 scaleFactor: 4,
                 pos: new p5.Vector(0, 0, 0),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
         ]
     }))
@@ -261,13 +261,13 @@ function createLeftScenes(canvas)
 
 
 
-function createRightScenes(canvas)
+function createRightScenes(theCanvas)
 {
     // scene 1
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
                 vel: new p5.Vector(-10, 0, 0),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             shapes: [
                 new Shape({
@@ -275,23 +275,23 @@ function createRightScenes(canvas)
                     fill: "blue",
                     stroke: "white",
                     pos: new p5.Vector(0, 0, 0),
-                    size: new p5.Vector(200, 200, 0),
-                    canvas: canvas,
+                    size: new p5.Vector(20, 20, 0),
+                    canvas: theCanvas,
                 })
             ], 
             images: [
                 new MyImage({
                     image: rightBackgroundImage,
-                    pos: new p5.Vector(0, 750, -10),
+                    pos: new p5.Vector(0, 0, -10),
                     scaleFactor: 2 ,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new MyImage({
                     image: rightTruckImage,
-                    pos: new p5.Vector(3000, 0, -9),
+                    pos: new p5.Vector(0, 0, -9),
                     vel: new p5.Vector(10, 0, 0),
                     scaleFactor: 0.7,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 })
             ]
         })),
@@ -309,7 +309,7 @@ function createRightScenes(canvas)
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
                 vel: new p5.Vector(-20, 0, 0),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             shapes: [
                 new Shape({
@@ -320,7 +320,7 @@ function createRightScenes(canvas)
                     size: new p5.Vector(150, 150, 0),
                     vel: new p5.Vector(20, -15, 0),
                     acc: new p5.Vector(0, 0.5, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 })
             ], 
             images: [
@@ -328,26 +328,26 @@ function createRightScenes(canvas)
                     image: rightBackgroundImage,
                     pos: new p5.Vector(0, 1500, -10),
                     scaleFactor: 2,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new MyImage({
                     image: rightCannon3,
                     pos: new p5.Vector(30, 1130, -9),
                     scaleFactor: 0.6,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: rightCannon1,
                     pos: new p5.Vector(250, 850, -8),
                     scaleFactor: 0.6,
                     angle: new p5.Vector(0, 0, -30),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: rightCannon2,
                     pos: new p5.Vector(0, 1130, -7),
                     scaleFactor: 0.6,
-                    canvas: canvas,
+                    canvas: theCanvas,
                 })
             ]
         })),
@@ -376,7 +376,7 @@ function createRightScenes(canvas)
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -9),
                     size: new p5.Vector(2200, 2200, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
@@ -384,7 +384,7 @@ function createRightScenes(canvas)
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -5),
                     size: new p5.Vector(150, 150, 0),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
@@ -395,7 +395,7 @@ function createRightScenes(canvas)
                     // vel: new p5.Vector(5, 5, 0),
                     size: new p5.Vector(150, 150, 0),
                     omega: new p5.Vector(0, 0, 0.5),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
 
                 
@@ -406,7 +406,7 @@ function createRightScenes(canvas)
                     scaleFactor: 5,
                     omega: new p5.Vector(0, 0, -0.5),
                     pos: new p5.Vector(0, 0, -11),
-                    canvas: canvas,
+                    canvas: theCanvas,
                 }),
             ]
         }))
@@ -430,7 +430,7 @@ function createRightScenes(canvas)
                 stroke: "black",
                 pos: new p5.Vector(0, 0, -400),
                 size: new p5.Vector(1000, 1000),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
             new Shape({
                 shape: "sphere",
@@ -442,7 +442,7 @@ function createRightScenes(canvas)
                 // vel: new p5.Vector(5, 5, 0),
                 size: new p5.Vector(150, 150, 0),
                 omega: new p5.Vector(0, 0, 0.5),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
 
             
@@ -453,7 +453,7 @@ function createRightScenes(canvas)
                 scaleFactor: 4,
                 // omega: new p5.Vector(0, 0, -0.5),
                 pos: new p5.Vector(0, 0, 0),
-                canvas: canvas,
+                canvas: theCanvas,
             }),
         ]
     }))
@@ -463,8 +463,9 @@ class Scene
 {
     constructor(props)
     {
-        this.shapes = props.shapes;
-        this.images = props.images;
+        this.shapes = props.shapes || [];
+        this.images = props.images || [];
+        this.buttons = props.buttons || [];
         this.referenceFrame = props.referenceFrame;
         this.backGround = props.backGround || "blue";
         this.canvas = props.canvas;
@@ -474,16 +475,18 @@ class Scene
     {
         this.images.forEach(image => {
             image.referenceFrame = this.referenceFrame;
-            if (playState) image.move()
+            if (playState && !popUpVisible) image.move()
             image.display()
         });
 
         this.shapes.forEach(shape => {
             shape.referenceFrame = this.referenceFrame;
-            if (playState) shape.move()
+            if (playState && !popUpVisible) shape.move()
             shape.display()
-        });    
-        
-        sceneControls()
+        });
+
+        this.buttons.forEach(button => {
+            if (button.visible) button.display()
+        })    
     }
 }

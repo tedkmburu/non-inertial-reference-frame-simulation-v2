@@ -9,43 +9,21 @@ function displayButtons() // displays all the buttons
     })
 }
 
-class Button
+class Button extends Particle
 {
     constructor(props)
     {
-        this.canvas = props.canvas;
-        this.pos = props.pos || new p5.Vector(0, 0, 0);
-        this.startingPos = props.pos || this.pos.copy();
-        this.size = props.size || new p5.Vector(300, 300);
+        super(props.canvas, props.myFill, props.myStroke, props.size, props.startingSize, props.scaleFactor, props.pos, props.vel, props.acc, props.startingPos, props.startingVel, props.startingAcc, props.angle, props.omega, props.angularAcc, props.startingAngle, props.startingVel, props.startingAcc, props.referenceFrame, props.offset, props.bounces, props.text, props.font, props.textSize, props.textAlign)
 
-        this.visible = props.visible || true;
+        this.canvas = props.canvas;
+
         this.hovering = false;
         this.hoverText = props.hoverText;
 
-        this.text = props.text;
         this.image = props.image;
-        this.imageSize = props.size || this.size.copy();
-
-        this.fill = props.fill || "white";
-        this.stroke = props.stroke || "black";
-        this.showBorder = props.showBorder || true;
 
         this.onClick = props.onClick;
         this.reset()
-    }
-
-    reset()
-    {
-        this.pos = this.startingPos.copy()
-
-        this.scale()
-    }
-
-    scale()
-    {
-        this.size.mult(scale).mult(this.scaleFactor)
-        this.imageSize.mult(scale).mult(this.scaleFactor)
-        this.pos.mult(scale)
     }
 
     display()
@@ -53,21 +31,24 @@ class Button
         this.canvas.push()
             this.canvas.translate(this.pos.x, this.pos.y, this.pos.z)
             this.canvas.angleMode(this.canvas.DEGREES)
-            this.canvas.fill(this.fill)
-            this.canvas.stroke(this.stroke)
+            this.canvas.fill(this.myFill)
+            this.canvas.stroke(this.myStroke)
             this.canvas.rectMode(this.canvas.CENTER)
             this.canvas.imageMode(this.canvas.CENTER)
             this.canvas.ellipseMode(this.canvas.CENTER)
             this.canvas.textAlign(this.canvas.CENTER)
+            this.canvas.textAlign(this.textAlign);
+            this.canvas.textSize(this.textSize);
+            this.canvas.textFont(this.font);
 
-            if (this.showBorder) this.canvas.rect(0, 0, this.size.x, this.size.y)
+            if (this.showBorder && this.visible) this.canvas.rect(0, 0, this.size.x, this.size.y)
 
-            if (this.image != undefined) this.canvas.image(this.image, 0, 0, this.imageSize.x, this.imageSize.y)
+            if (this.image != undefined && this.visible) this.canvas.image(this.image, 0, 0, this.size.x, this.size.y)
 
-            if (this.text != undefined) 
+            if (this.text != undefined && this.visible) 
             {
-                this.canvas.fill(this.stroke)
-                this.canvas.stroke(this.stroke)
+                this.canvas.fill(this.myStroke)
+                this.canvas.stroke(this.myStroke)
                 this.canvas.text(this.text, 0, 0, this.size.x, this.size.y)
             }
 

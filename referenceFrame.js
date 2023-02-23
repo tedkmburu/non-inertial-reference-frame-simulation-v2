@@ -12,11 +12,11 @@ class ReferenceFrame
 
         this.angle = props.angle || new p5.Vector(0, 0, 0);
         this.omega = props.omega || new p5.Vector(0, 0, 0);
-        this.alpha = props.alpha || new p5.Vector(0, 0, 0);
+        this.angularAcc = props.angularAcc || new p5.Vector(0, 0, 0);
 
         this.startingAngle = props.angle || new p5.Vector(0, 0, 0);
         this.startingOmega = props.omega || new p5.Vector(0, 0, 0);
-        this.startingAlpha = props.alpha || new p5.Vector(0, 0, 0);
+        this.startingAngularAcc = props.angularAcc || new p5.Vector(0, 0, 0);
 
         this.reset()
     }
@@ -29,16 +29,8 @@ class ReferenceFrame
 
         this.angle = this.startingAngle.copy()
         this.omega = this.startingOmega.copy()
-        this.alpha = this.startingAlpha.copy()
+        this.angularAcc = this.startingAngularAcc.copy()
 
-        this.scale()
-    }
-
-    scale()
-    {
-        this.pos.mult(scale)
-        this.vel.mult(scale)
-        this.acc.mult(scale)
     }
 
     preload()

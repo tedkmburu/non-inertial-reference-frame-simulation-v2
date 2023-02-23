@@ -20,11 +20,11 @@ class Shape
 
         this.angle = props.angle || new p5.Vector(0, 0, 0);
         this.omega = props.omega || new p5.Vector(0, 0, 0);
-        this.alpha = props.alpha || new p5.Vector(0, 0, 0);
+        this.angularAcc = props.angularAcc || new p5.Vector(0, 0, 0);
 
         this.startingAngle = props.angle || new p5.Vector(0, 0, 0);
         this.startingOmega = props.omega || new p5.Vector(0, 0, 0);
-        this.startingAlpha = props.alpha || new p5.Vector(0, 0, 0);
+        this.startingAngularAcc = props.angularAcc || new p5.Vector(0, 0, 0);
 
         this.referenceFrame = new p5.Vector(0, 0, 0)
 
@@ -49,20 +49,12 @@ class Shape
 
         this.angle = this.startingAngle.copy()
         this.omega = this.startingOmega.copy()
-        this.alpha = this.startingAlpha.copy()
+        this.angularAcc = this.startingAngularAcc.copy()
 
         this.bounces = 0;
         this.trail = []
 
-        this.scale()
-    }
-
-    scale()
-    {
-        this.size.mult(scale).mult(this.scaleFactor)
-        this.pos.mult(scale)
-        this.vel.mult(scale)
-        this.acc.mult(scale)
+        this.size.mult(this.scaleFactor)
     }
 
     move()
@@ -70,8 +62,8 @@ class Shape
         this.vel.add(this.acc).add(this.referenceFrame.acc);
         this.pos.add(this.vel).add(this.referenceFrame.vel);
 
-        this.omega += (this.alpha + this.referenceFrame.alpha);
-        this.angle += (this.omega + this.referenceFrame.omega);
+        this.omega.add(this.angularAcc).add(this.referenceFrame.angularAcc);
+        this.angle.add(this.omega).add(this.referenceFrame.omega);
 
         if (this.canvas.frameCount % 5 == 0) this.trail.push(this.pos.copy().add(this.offset))
     }
@@ -85,7 +77,7 @@ class Shape
                 this.trail.forEach(dot => {
                     
                     this.canvas.fill(0)
-                    this.canvas.ellipse(dot.x, dot.y, 10 * scale, 10 * scale)
+                    this.canvas.ellipse(dot.x, dot.y, 10, 10)
                 })    
             }
         this.canvas.pop()

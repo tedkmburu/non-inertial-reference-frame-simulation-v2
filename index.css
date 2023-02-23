@@ -25,9 +25,16 @@ canvas.bottom
     width: 100%;
     height: 50%;
 }
-canvas.popUpWindow, canvas.controlMenu
+canvas.controlMenu
 {
     z-index: 999;
+}
+canvas.popUp
+{
+    z-index: 9999;
+    top: 25%;
+    left: 25%;
+    background-color: red;
 }
 canvas
 {

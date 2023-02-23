@@ -1,16 +1,21 @@
 function createMenu(canvas) 
 {
     new p5(leftCanvasObject);
-    new p5(rightCanvasObject);  
+    new p5(rightCanvasObject); 
+    new p5(popUpWindow); 
 
-    buttons.push(new Button({
+    // scenes[0]
+
+    let baseButtons = []
+
+    baseButtons.push(new Button({
         text: "rewind", 
         image: rewind,
         pos: new p5.Vector(500, 200),
         canvas: canvas,
     }))
 
-    buttons.push(new Button({
+    baseButtons.push(new Button({
         text: "asdf", 
         image: playPause,
         pos: new p5.Vector(1000, 200),
@@ -20,7 +25,7 @@ function createMenu(canvas)
         }
     }))
 
-    buttons.push(new Button({
+    baseButtons.push(new Button({
         text: "asdf", 
         image: restart,
         pos: new p5.Vector(1500, 200),
@@ -47,31 +52,37 @@ function createMenu(canvas)
         }
     }))
 
-    buttons.push(new Button({
+    baseButtons.push(new Button({
         text: "asdf", 
         image: omega,
         pos: new p5.Vector(2000, 200),
         canvas: canvas,
     }))
 
-    buttons.push(new Button({
+    baseButtons.push(new Button({
         text: "asdf", 
         image: mass,
         pos: new p5.Vector(3000, 200),
         canvas: canvas,
     }))
 
-    buttons.push(new Button({
+    baseButtons.push(new Button({
         text: "asdf", 
         image: help,
         pos: new p5.Vector(4000, 200),
         canvas: canvas,
     }))
+
+    controlMenuButtons.push(baseButtons)
+    controlMenuButtons.push(baseButtons)
+    controlMenuButtons.push(baseButtons)
+    controlMenuButtons.push(baseButtons)
 }
 
 function displayMenu(canvas)
 {
-    buttons.forEach(button => {
+    // console.log(controlMenuButtons[currentScene]);
+    controlMenuButtons[currentScene].forEach(button => {
         button.display()
     })
 }
