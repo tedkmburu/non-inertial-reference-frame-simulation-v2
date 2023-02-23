@@ -7,20 +7,22 @@ function createMenu(canvas)
     // scenes[0]
 
     let baseButtons = []
+    let buttonSpacing = innerWidth / 10;
+    let buttonOffset = (-innerWidth / 2 ) + (innerWidth / 20);
 
     baseButtons.push(new Button({
         text: "Rewind", 
         image: rewindImage,
-        pos: new p5.Vector(-300, 0),
-        size: new p5.Vector(50, 50),
+        pos: new p5.Vector(buttonOffset + (buttonSpacing * 1), 0),
+        size: new p5.Vector(40, 40),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
         text: "Play/Pause", 
         image: playPauseImage,
-        pos: new p5.Vector(-200, 0),
-        size: new p5.Vector(50, 50),
+        pos: new p5.Vector(buttonOffset + (buttonSpacing * 2), 0),
+        size: new p5.Vector(40, 40),
         canvas: canvas,
         onClick: () => {
             playState = !playState;
@@ -30,8 +32,8 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Restart", 
         image: restartImage,
-        pos: new p5.Vector(-100, 0),
-        size: new p5.Vector(50, 50),
+        pos: new p5.Vector(buttonOffset + (buttonSpacing * 3), 0),
+        size: new p5.Vector(40, 40),
         canvas: canvas,
         onClick: () => {
             console.log("reset");
@@ -58,24 +60,24 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Omega", 
         image: omegaImage,
-        pos: new p5.Vector(0, 0),
-        size: new p5.Vector(50, 50),
+        pos: new p5.Vector(buttonOffset + (buttonSpacing * 4), 0),
+        size: new p5.Vector(40, 40),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
         text: "Mass", 
         image: massImage,
-        pos: new p5.Vector(200, 0),
-        size: new p5.Vector(50, 50),
+        pos: new p5.Vector(buttonOffset + (buttonSpacing * 6), 0),
+        size: new p5.Vector(40, 40),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
         text: "Help", 
         image: helpImage,
-        pos: new p5.Vector(400, 0),
-        size: new p5.Vector(50, 50),
+        pos: new p5.Vector(buttonOffset + (buttonSpacing * 8), 0),
+        size: new p5.Vector(40, 40),
         canvas: canvas,
     }))
 

@@ -16,7 +16,7 @@ let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, 
 let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
 let rewindImage, playPauseImage, restartImage, omegaImage, massImage, helpImage;
 
-let currentScene = 3;
+let currentScene = 2;
 let currentPopUp = 0;
 
 let playState = true;
@@ -27,6 +27,25 @@ let controlMenuButtons = []
 let slider1, slider2;
 
 let regularFont, boldFont, thinFont;
+
+function createArrow(start, end, angle, color, scale, canvas)
+{
+    if (p5.Vector.sub(end, start).mag() > 1) 
+    {
+        canvas.push();
+            canvas.stroke(color);
+            canvas.strokeWeight(scale * 4);
+            canvas.noFill();
+            canvas.line(start.x, start.y, end.x, end.y);
+
+            canvas.translate(end.x, end.y)
+            canvas.rotate(angle);
+            canvas.fill(color);
+
+            canvas.triangle(0, 0, -10 * scale, -5 * scale, -10 * scale, 5 * scale);
+        canvas.pop();
+    }
+}
 
 
 const leftCanvasObject = canvas => {
@@ -277,12 +296,12 @@ const controlMenu = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
-        controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 100, canvas.WEBGL)
+        controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 70, canvas.WEBGL)
 
         controlsCanvas.addClass('controlMenu');
-        controlsCanvas.style("top", (innerHeight / 2) - 50 + "px")
+        controlsCanvas.style("top", (innerHeight / 2) - 35 + "px")
         controlsCanvas.style("left", ((innerWidth / 2) * 0.1) + "px")
-        controlsCanvas.style("borderRadius", "50px")
+        controlsCanvas.style("borderRadius", "40px")
 
         slider1 = canvas.createSlider(0, 255, 100);
         slider1.position((innerWidth / 2), (innerHeight / 2) + 10);

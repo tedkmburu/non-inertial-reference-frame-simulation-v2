@@ -43,7 +43,8 @@ class Shape extends Particle
             switch(this.shape)
             {
                 case "ellipse":
-                    this.canvas.ellipse(0, 0, this.size.x, this.size.y)
+                    if (this.nonInertial) this.canvas.ellipse(0, 0, this.size.x / 2, this.size.y / 2)
+                    else this.canvas.ellipse(0, 0, this.size.x, this.size.y)
                 break;
                 case "sphere":
                     this.canvas.sphere(this.size.x)
@@ -58,6 +59,13 @@ class Shape extends Particle
                         this.size.x, this.size.y
                         )
             }
+            let start = this.pos.copy();
+            let end = this.pos.copy().add(this.corForce);
+            let angle = this.vel.heading();
+            let color = "red";
+            let scale = 1;
+            // createArrow(this.pos, this.pos.copy().add(this.corForce))
+            createArrow(start, end, angle, color, scale, this.canvas)
         this.canvas.pop()
     }
 }

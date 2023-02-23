@@ -29,9 +29,13 @@ class Particle
 
         this.scaleFactor = props.scaleFactor || 1;
 
-        this.pos = props.pos || new p5.Vector(1, 1, 1);
+        this.pos = props.pos || new p5.Vector(0, 0, 0);
         this.vel = props.vel || new p5.Vector(0, 0, 0);
         this.acc = props.acc || new p5.Vector(0, 0, 0);
+
+        this.relPos = new p5.Vector(0, 0, 0);
+        this.relVel = new p5.Vector(0, 0, 0);
+        this.relAcc = new p5.Vector(0, 0, 0);
 
         this.startingPos = props.pos || this.pos.copy();
         this.startingVel = props.vel || this.vel.copy();
@@ -99,27 +103,38 @@ class Particle
 
     move()
     {
-        // let netAcc = new p5.Vector(0, 0, 0);
-        // if (this.nonInertial)
-        // {
-        //     // calculate the Coriolis and centrifugal forces for a particle
-        //     this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, this.omega), (-2 * this.mass));
-        //     let rho = this.pos.copy();
-        //     this.centForce = p5.Vector.mult(rho, p5.Vector.dot(this.omega, this.omega) * this.mass);
+        let netAcc = new p5.Vector(0, 0, 0);
+        if (this.nonInertial)
+        {
+            // calculate the Coriolis and centrifugal forces for a particle
+            let omega = rightScenes[2].images[0].omega;
+            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
+            let rho = this.pos.div(1);
+            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
 
-        //     // combine the Coriolis and centrifugal forces and divide by mass to get net force
-        //     this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
+            // combine the Coriolis and centrifugal forces and divide by mass to get net force
+            this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
 
-        //     netAcc.add(this.acc)
+            // console.log(this.omega);
+            netAcc.add(this.acc)
 
-        //     this.acc = netAcc.copy()
-        // }
+            this.acc = netAcc.copy()
+            this.vel.add(this.acc)
+            this.pos.add(this.vel)
 
-        this.vel.add(this.acc).add(this.referenceFrame.acc);
-        this.pos.add(this.vel).add(this.referenceFrame.vel);
+            console.log(this.pos);
 
-        this.omega.add(this.angularAcc).add(this.referenceFrame.angularAcc);
-        this.angle.add(this.omega).add(this.referenceFrame.omega);
+
+            // console.log(this.centForce, this.corForce);
+        }
+        else
+        {
+            this.vel.add(this.acc).add(this.referenceFrame.acc);
+            this.pos.add(this.vel).add(this.referenceFrame.vel);
+    
+            this.omega.add(this.angularAcc).add(this.referenceFrame.angularAcc);
+            this.angle.add(this.omega).add(this.referenceFrame.omega);
+        }
 
         if (this.canvas.frameCount % 10 == 0 && this.showTrail) 
         {
