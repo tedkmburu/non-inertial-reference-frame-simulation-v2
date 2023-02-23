@@ -7,6 +7,7 @@ class Shape
         this.stroke = props.stroke || "green";
 
         this.shape = props.shape;
+        this.mass = props.mass || 1;
         this.size = props.size || new p5.Vector(10, 10);
         this.startingSize = props.size || new p5.Vector(10, 10);
 
@@ -101,13 +102,14 @@ class Shape
                 case "sphere":
                     this.canvas.sphere(this.size.x)
                 break;
+                case "box":
+                    this.canvas.box(this.size.x, this.size.y, this.size.z)
+                break;
                 default:
                     // this.canvas.rect(this.offset.x, this.offset.y, this.size.x, this.size.y)
-                    this.canvas.quad(
+                    this.canvas.rect(
                         this.offset.x, this.offset.y,
-                        this.offset.x + this.size.x, this.offset.y,
-                        this.offset.x + this.size.x, this.offset.y + this.size.y,
-                        this.offset.x, this.offset.y + this.size.y
+                        this.size.x, this.size.y
                         )
             }
         this.canvas.pop()
