@@ -14,9 +14,9 @@ let rightScenes = []
 let popUps = []
 let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
 let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
-let rewind, playPause, restart, omega, mass, help;
+let rewindImage, playPauseImage, restartImage, omegaImage, massImage, helpImage;
 
-let currentScene = 0;
+let currentScene = 3;
 let currentPopUp = 0;
 
 let playState = true;
@@ -70,7 +70,7 @@ const leftCanvasObject = canvas => {
             // canvas.fill(0)
             // canvas.noStroke()
             // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
-            canvas.orbitControl();
+            // canvas.orbitControl();
             leftScenes[currentScene].display()
         canvas.pop()    
     }
@@ -87,6 +87,23 @@ const leftCanvasObject = canvas => {
 
     // canvas.mouseDragged = function() { mouseDraggedLeft(canvas); }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const rightCanvasObject = canvas => {
     canvas.preload = function() 
@@ -143,7 +160,7 @@ const rightCanvasObject = canvas => {
             // canvas.noStroke()
             // canvas.translate(canvas2Pos.x, canvas2Pos.y)
             // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
-            canvas.orbitControl();
+            // canvas.orbitControl();
             rightScenes[currentScene].display()
         canvas.pop()
     }
@@ -160,6 +177,31 @@ const rightCanvasObject = canvas => {
 
     // canvas.mouseDragged = function() { mouseDraggedLeft(canvas); }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const popUpWindow = canvas => {
 
@@ -200,15 +242,34 @@ const popUpWindow = canvas => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const controlMenu = canvas => {
     canvas.preload = function() 
     {
-        rewind = canvas.loadImage("images/forward-solid.svg");
-        playPause = canvas.loadImage("images/pause-solid.svg");
-        restart = canvas.loadImage("images/arrow-rotate-right-solid.svg");
-        omega = canvas.loadImage("images/omega.png");
-        mass = canvas.loadImage("images/mass.png");
-        help = canvas.loadImage("images/circle-info-solid.svg");
+        rewindImage = canvas.loadImage("images/forward-solid.svg");
+        playPauseImage = canvas.loadImage("images/pause-solid.svg");
+        restartImage = canvas.loadImage("images/arrow-rotate-right-solid.svg");
+        omegaImage = canvas.loadImage("images/omega.png");
+        massImage = canvas.loadImage("images/kg.png");
+        helpImage = canvas.loadImage("images/circle-info-solid.svg");
         
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
@@ -216,20 +277,20 @@ const controlMenu = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
-        controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 400, canvas.WEBGL)
+        controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 100, canvas.WEBGL)
 
         controlsCanvas.addClass('controlMenu');
-        controlsCanvas.style("top", (innerHeight / 2) - (200) + "px")
+        controlsCanvas.style("top", (innerHeight / 2) - 50 + "px")
         controlsCanvas.style("left", ((innerWidth / 2) * 0.1) + "px")
-        controlsCanvas.style("borderRadius", (200) + "px")
+        controlsCanvas.style("borderRadius", "50px")
 
         slider1 = canvas.createSlider(0, 255, 100);
-        slider1.position(2600, (innerWidth / 2) + 10);
+        slider1.position((innerWidth / 2), (innerHeight / 2) + 10);
         slider1.style('width', '80px');
         slider1.style('zIndex', '999');
         
         slider2 = canvas.createSlider(0, 255, 100);
-        slider2.position(3600, (innerWidth / 2) + 10);
+        slider2.position(100, (innerHeight / 2) + 10);
         slider2.style('width', '80px');
         slider2.style('zIndex', '999');
         createMenu(canvas)
@@ -261,6 +322,26 @@ const controlMenu = canvas => {
 // new p5(rightCanvasObject);
 // new p5(popUpWindow);
 new p5(controlMenu);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function resizedWindow()
 {

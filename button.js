@@ -13,14 +13,10 @@ class Button extends Particle
 {
     constructor(props)
     {
-        super(props.canvas, props.myFill, props.myStroke, props.size, props.startingSize, props.scaleFactor, props.pos, props.vel, props.acc, props.startingPos, props.startingVel, props.startingAcc, props.angle, props.omega, props.angularAcc, props.startingAngle, props.startingVel, props.startingAcc, props.referenceFrame, props.offset, props.bounces, props.text, props.font, props.textSize, props.textAlign)
-
-        this.canvas = props.canvas;
+        super(props)
 
         this.hovering = false;
         this.hoverText = props.hoverText;
-
-        this.image = props.image;
 
         this.onClick = props.onClick;
         this.reset()
@@ -29,17 +25,8 @@ class Button extends Particle
     display()
     {
         this.canvas.push()
-            this.canvas.translate(this.pos.x, this.pos.y, this.pos.z)
-            this.canvas.angleMode(this.canvas.DEGREES)
-            this.canvas.fill(this.myFill)
-            this.canvas.stroke(this.myStroke)
-            this.canvas.rectMode(this.canvas.CENTER)
-            this.canvas.imageMode(this.canvas.CENTER)
-            this.canvas.ellipseMode(this.canvas.CENTER)
-            this.canvas.textAlign(this.canvas.CENTER)
-            this.canvas.textAlign(this.textAlign);
-            this.canvas.textSize(this.textSize);
-            this.canvas.textFont(this.font);
+
+            prepareCanvas(this)
 
             if (this.showBorder && this.visible) this.canvas.rect(0, 0, this.size.x, this.size.y)
 
@@ -47,8 +34,8 @@ class Button extends Particle
 
             if (this.text != undefined && this.visible) 
             {
-                this.canvas.fill(this.myStroke)
-                this.canvas.stroke(this.myStroke)
+                this.canvas.fill(this.stroke)
+                this.canvas.stroke(this.stroke)
                 this.canvas.text(this.text, 0, 0, this.size.x, this.size.y)
             }
 

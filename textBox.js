@@ -61,18 +61,19 @@ class TextBox
     display()
     {
         this.canvas.push()
-            this.canvas.translate(this.pos.x, this.pos.y, this.pos.z);
-            this.canvas.angleMode(this.canvas.DEGREES);
-            this.canvas.rotateX(this.angle.x);
-            this.canvas.rotateY(this.angle.y);
-            this.canvas.rotateZ(this.angle.z);
-            this.canvas.fill(this.fill)
-            this.canvas.stroke(this.stroke);
-            this.canvas.rectMode(this.canvas.CENTER);
-            this.canvas.ellipseMode(this.canvas.CENTER);
-            this.canvas.textAlign(this.textAlign);
-            this.canvas.textSize(this.textSize);
-            this.canvas.textFont(this.font);
+            // this.canvas.translate(this.pos.x, this.pos.y, this.pos.z);
+            // this.canvas.angleMode(this.canvas.DEGREES);
+            // this.canvas.rotateX(this.angle.x);
+            // this.canvas.rotateY(this.angle.y);
+            // this.canvas.rotateZ(this.angle.z);
+            // this.canvas.fill(this.fill)
+            // this.canvas.stroke(this.stroke);
+            // this.canvas.rectMode(this.canvas.CENTER);
+            // this.canvas.ellipseMode(this.canvas.CENTER);
+            // this.canvas.textAlign(this.textAlign);
+            // this.canvas.textSize(this.textSize);
+            // this.canvas.textFont(this.font);
+            prepareCanvas(this)
 
             
             if (this.showBorder) this.canvas.rect(0, 0, this.size.x, this.size.y)

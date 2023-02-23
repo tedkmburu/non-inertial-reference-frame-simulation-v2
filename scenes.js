@@ -10,23 +10,23 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: "green",
                     stroke: "white",
-                    pos: new p5.Vector(0, 0, 1),
-                    size: new p5.Vector(20, 20, 0),
+                    pos: new p5.Vector(0, 55, 1),
+                    size: new p5.Vector(50, 50, 0),
                     canvas: theCanvas,
                 })
             ], 
             images: [
                 new MyImage({
                     image: leftBackgroundImage,
-                    pos: new p5.Vector(0, 0, -10),
-                    scaleFactor: 2,
+                    pos: new p5.Vector(0, 200, -10),
+                    scaleFactor: 0.5,
                     canvas: theCanvas,
                 }),
                 new MyImage({
                     image: leftTruckImage,
-                    pos: new p5.Vector(0, 0, -9),
-                    vel: new p5.Vector(10, 0, 0),
-                    scaleFactor: 0.7,
+                    pos: new p5.Vector(0, 70, -9),
+                    vel: new p5.Vector(5, 0, 0),
+                    scaleFactor: 0.1,
                     canvas: theCanvas,
                 })
             ], 
@@ -52,8 +52,8 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: "green",
                     stroke: "white",
-                    pos: new p5.Vector(-1020, 600, 0),
-                    size: new p5.Vector(150, 150, 0),
+                    pos: new p5.Vector(-140, -60, 0),
+                    size: new p5.Vector(50, 50, 0),
                     vel: new p5.Vector(20, -15, 0),
                     acc: new p5.Vector(0, 0.5, 0),
                     canvas: theCanvas,
@@ -62,27 +62,27 @@ function createLeftScenes(theCanvas)
             images: [
                 new MyImage({
                     image: leftBackgroundImage,
-                    pos: new p5.Vector(0, 1500, -10),
-                    scaleFactor: 2,
+                    pos: new p5.Vector(0, 200, -10),
+                    scaleFactor: 0.5,
                     canvas: theCanvas,
                 }),
                 new MyImage({
                     image: leftCannon3,
-                    pos: new p5.Vector(-1670, 1130, -9),
-                    scaleFactor: 0.6,
+                    pos: new p5.Vector(-270, 105, -9),
+                    scaleFactor: 0.15,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: leftCannon1,
-                    pos: new p5.Vector(-1450, 850, -8),
-                    scaleFactor: 0.6,
-                    angle: new p5.Vector(0, 0, -30),
+                    pos: new p5.Vector(-240, 20, -8),
+                    scaleFactor: 0.15,
+                    angle: new p5.Vector(0, 0, -40),
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: leftCannon2,
-                    pos: new p5.Vector(-1700, 1130, -7),
-                    scaleFactor: 0.6,
+                    pos: new p5.Vector(-300, 105, -7),
+                    scaleFactor: 0.15,
                     canvas: theCanvas,
                 })
             ]
@@ -111,7 +111,7 @@ function createLeftScenes(theCanvas)
                     fill: "white",
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -9),
-                    size: new p5.Vector(2200, 2200, 1000),
+                    size: new p5.Vector(600, 600, 1),
                     omega: new p5.Vector(0, 0, 0.5),
                     canvas: theCanvas,
                 }),
@@ -119,24 +119,36 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, -8),
-                    size: new p5.Vector(150, 150, 0),
+                    pos: new p5.Vector(0, 0, -7),
+                    size: new p5.Vector(50, 50, 0),
                     canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
                     fill: "red",
                     stroke: "black",
-                    pos: new p5.Vector(0, -1000, -7),
-                    vel: new p5.Vector(5, 5, 0),
-                    size: new p5.Vector(150, 150, 0),
+                    pos: new p5.Vector(0, -200, -5),
+                    vel: new p5.Vector(1, 1, 0),
+                    size: new p5.Vector(50, 50, 0),
+                    showTrail: true,
+                    canvas: theCanvas,
+                }),
+                new Shape({
+                    shape: "ellipse",
+                    fill: "blue",
+                    stroke: "black",
+                    pos: new p5.Vector(0, -200, -5),
+                    vel: new p5.Vector(1, 1, 0),
+                    size: new p5.Vector(50, 50, 0),
+                    showTrail: true,
+                    nonInertial: true,
                     canvas: theCanvas,
                 }),
             ], 
             images: [
                 new MyImage({
                     image: leftGrid,
-                    scaleFactor: 5,
+                    scaleFactor: 1,
                     pos: new p5.Vector(0, 0, -10),
                     canvas: theCanvas,
                 }),
@@ -150,41 +162,38 @@ function createLeftScenes(theCanvas)
     // // scene 4
     leftScenes.push(new Scene({
         referenceFrame: new ReferenceFrame({
-            canvas: theCanvas,
+            // vel: new p5.Vector(-20, 0)
         }),
         shapes: [
             new Shape({
-                shape: "rect",
+                shape: "sphere",
                 fill: "white",
                 stroke: "black",
-                pos: new p5.Vector(0, 0, 0),
-                size: new p5.Vector(2200, 2200, 0),
-                omega: new p5.Vector(0, 0, 0.5),
+                pos: new p5.Vector(0, 0, -400),
+                size: new p5.Vector(400, 400, 0),
+                omega:  new p5.Vector(0, 1, 0),
                 canvas: theCanvas,
             }),
             new Shape({
-                shape: "ellipse",
-                fill: "white",
-                stroke: "black",
-                pos: new p5.Vector(0, 0, 0),
-                size: new p5.Vector(150, 150, 0),
-                canvas: theCanvas,
-            }),
-            new Shape({
-                shape: "ellipse",
+                shape: "sphere",
                 fill: "red",
                 stroke: "black",
-                pos: new p5.Vector(0, -1000, 0),
-                vel: new p5.Vector(5, 5, 0),
-                size: new p5.Vector(150, 150, 0),
+                // pos: new p5.Vector(2500, 300, 0),
+                pos: new p5.Vector(0, 500, -400),
+                offset: new p5.Vector(0, -500, 0),
+                // vel: new p5.Vector(5, 5, 0),
+                size: new p5.Vector(50, 50, 0),
+                omega: new p5.Vector(-1, 1, 0),
+                showTrail: true,
                 canvas: theCanvas,
             }),
         ], 
         images: [
             new MyImage({
                 image: leftGrid,
-                scaleFactor: 4,
-                pos: new p5.Vector(0, 0, 0),
+                scaleFactor: 2,
+                // omega: new p5.Vector(0, 0, -0.5),
+                pos: new p5.Vector(0, 0, -1000),
                 canvas: theCanvas,
             }),
         ]
@@ -266,7 +275,7 @@ function createRightScenes(theCanvas)
     // scene 1
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                vel: new p5.Vector(-10, 0, 0),
+                vel: new p5.Vector(-5, 0, 0),
                 canvas: theCanvas,
             }),
             shapes: [
@@ -274,23 +283,23 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: "blue",
                     stroke: "white",
-                    pos: new p5.Vector(0, 0, 0),
-                    size: new p5.Vector(20, 20, 0),
+                    pos: new p5.Vector(300, 55, 0),
+                    size: new p5.Vector(50, 50, 0),
                     canvas: theCanvas,
                 })
             ], 
             images: [
                 new MyImage({
                     image: rightBackgroundImage,
-                    pos: new p5.Vector(0, 0, -10),
-                    scaleFactor: 2 ,
+                    pos: new p5.Vector(0, 200, -10),
+                    scaleFactor: 0.5,
                     canvas: theCanvas,
                 }),
                 new MyImage({
                     image: rightTruckImage,
-                    pos: new p5.Vector(0, 0, -9),
-                    vel: new p5.Vector(10, 0, 0),
-                    scaleFactor: 0.7,
+                    pos: new p5.Vector(300, 70, -9),
+                    vel: new p5.Vector(5, 0, 0),
+                    scaleFactor: 0.1,
                     canvas: theCanvas,
                 })
             ]
@@ -316,8 +325,8 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: "blue",
                     stroke: "white",
-                    pos: new p5.Vector(680, 610, 0),
-                    size: new p5.Vector(150, 150, 0),
+                    pos: new p5.Vector(160, -60, 0),
+                    size: new p5.Vector(50, 50, 0),
                     vel: new p5.Vector(20, -15, 0),
                     acc: new p5.Vector(0, 0.5, 0),
                     canvas: theCanvas,
@@ -326,27 +335,27 @@ function createRightScenes(theCanvas)
             images: [
                 new MyImage({
                     image: rightBackgroundImage,
-                    pos: new p5.Vector(0, 1500, -10),
-                    scaleFactor: 2,
+                    pos: new p5.Vector(0, 200, -10),
+                    scaleFactor: 0.5,
                     canvas: theCanvas,
                 }),
                 new MyImage({
                     image: rightCannon3,
-                    pos: new p5.Vector(30, 1130, -9),
-                    scaleFactor: 0.6,
+                    pos: new p5.Vector(30, 105, -9),
+                    scaleFactor: 0.15,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: rightCannon1,
-                    pos: new p5.Vector(250, 850, -8),
-                    scaleFactor: 0.6,
-                    angle: new p5.Vector(0, 0, -30),
+                    pos: new p5.Vector(60, 20, -8),
+                    scaleFactor: 0.15,
+                    angle: new p5.Vector(0, 0, -40),
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: rightCannon2,
-                    pos: new p5.Vector(0, 1130, -7),
-                    scaleFactor: 0.6,
+                    pos: new p5.Vector(0, 105, -7),
+                    scaleFactor: 0.15,
                     canvas: theCanvas,
                 })
             ]
@@ -362,12 +371,13 @@ function createRightScenes(theCanvas)
 
 
 
-
+        
 
     // scene 3
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
                 // vel: new p5.Vector(-20, 0, 0)
+                omega: new p5.Vector(0, 0, -0.5)
             }),
             shapes: [
                 new Shape({
@@ -375,26 +385,28 @@ function createRightScenes(theCanvas)
                     fill: "white",
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -9),
-                    size: new p5.Vector(2200, 2200, 100),
+                    size: new p5.Vector(600, 600, 1),
+                    omega: new p5.Vector(0, 0, 0.5),
                     canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, -5),
-                    size: new p5.Vector(150, 150, 0),
+                    pos: new p5.Vector(0, 0, -7),
+                    size: new p5.Vector(50, 50, 0),
                     canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
                     fill: "red",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, -2),
+                    pos: new p5.Vector(0, 200, -5),
                     offset: new p5.Vector(0, -200, 0),
-                    // vel: new p5.Vector(5, 5, 0),
-                    size: new p5.Vector(150, 150, 0),
+                    vel: new p5.Vector(1, 1, 0),
+                    size: new p5.Vector(50, 50, 0),
                     omega: new p5.Vector(0, 0, 0.5),
+                    showTrail: true,
                     canvas: theCanvas,
                 }),
 
@@ -403,9 +415,9 @@ function createRightScenes(theCanvas)
             images: [
                 new MyImage({
                     image: rightGrid,
-                    scaleFactor: 5,
-                    omega: new p5.Vector(0, 0, -0.5),
-                    pos: new p5.Vector(0, 0, -11),
+                    scaleFactor: 1,
+                    omega: new p5.Vector(0, 0, -0),
+                    pos: new p5.Vector(0, 0, -10),
                     canvas: theCanvas,
                 }),
             ]
@@ -429,7 +441,8 @@ function createRightScenes(theCanvas)
                 fill: "white",
                 stroke: "black",
                 pos: new p5.Vector(0, 0, -400),
-                size: new p5.Vector(1000, 1000),
+                size: new p5.Vector(400, 400, 0),
+                omega:  new p5.Vector(0, 0, 0),
                 canvas: theCanvas,
             }),
             new Shape({
@@ -437,22 +450,21 @@ function createRightScenes(theCanvas)
                 fill: "red",
                 stroke: "black",
                 // pos: new p5.Vector(2500, 300, 0),
-                pos: new p5.Vector(0, 0, 0),
-                offset: new p5.Vector(0, -200, 0),
+                pos: new p5.Vector(0, 500, -400),
+                offset: new p5.Vector(0, -500, 0),
                 // vel: new p5.Vector(5, 5, 0),
-                size: new p5.Vector(150, 150, 0),
-                omega: new p5.Vector(0, 0, 0.5),
+                size: new p5.Vector(50, 50, 0),
+                omega: new p5.Vector(-1, 1, 0.5),
+                showTrail: true,
                 canvas: theCanvas,
             }),
-
-            
         ], 
         images: [
             new MyImage({
                 image: rightGrid,
-                scaleFactor: 4,
+                scaleFactor: 2,
                 // omega: new p5.Vector(0, 0, -0.5),
-                pos: new p5.Vector(0, 0, 0),
+                pos: new p5.Vector(0, 0, -1000),
                 canvas: theCanvas,
             }),
         ]

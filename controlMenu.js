@@ -9,16 +9,18 @@ function createMenu(canvas)
     let baseButtons = []
 
     baseButtons.push(new Button({
-        text: "rewind", 
+        text: "Rewind", 
         image: rewindImage,
-        pos: new p5.Vector(500, 200),
+        pos: new p5.Vector(-300, 0),
+        size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
-        text: "asdf", 
+        text: "Play/Pause", 
         image: playPauseImage,
-        pos: new p5.Vector(1000, 200),
+        pos: new p5.Vector(-200, 0),
+        size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
             playState = !playState;
@@ -26,9 +28,10 @@ function createMenu(canvas)
     }))
 
     baseButtons.push(new Button({
-        text: "asdf", 
+        text: "Restart", 
         image: restartImage,
-        pos: new p5.Vector(1500, 200),
+        pos: new p5.Vector(-100, 0),
+        size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
             console.log("reset");
@@ -53,23 +56,26 @@ function createMenu(canvas)
     }))
 
     baseButtons.push(new Button({
-        text: "asdf", 
+        text: "Omega", 
         image: omegaImage,
-        pos: new p5.Vector(2000, 200),
+        pos: new p5.Vector(0, 0),
+        size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
-        text: "asdf", 
+        text: "Mass", 
         image: massImage,
-        pos: new p5.Vector(3000, 200),
+        pos: new p5.Vector(200, 0),
+        size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
-        text: "asdf", 
+        text: "Help", 
         image: helpImage,
-        pos: new p5.Vector(4000, 200),
+        pos: new p5.Vector(400, 0),
+        size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
 
@@ -77,11 +83,11 @@ function createMenu(canvas)
     controlMenuButtons.push(baseButtons)
     controlMenuButtons.push(baseButtons)
     controlMenuButtons.push(baseButtons)
+
 }
 
 function displayMenu(canvas)
 {
-    // console.log(controlMenuButtons[currentScene]);
     controlMenuButtons[currentScene].forEach(button => {
         button.display()
     })
@@ -90,13 +96,15 @@ function displayMenu(canvas)
 function checkButtonClick(canvas)
 {
     let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0)
-    buttons.forEach(button => {
+    controlMenuButtons[currentScene].forEach(button => {
+        // console.log(mousePosition, button.pos);
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
             mousePosition.y > button.pos.y - (button.size.y / 2) &&
             mousePosition.y < button.pos.y + (button.size.y / 2))
             {
                 button.clicked()
+                console.log("click");
             }
     })
 }

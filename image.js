@@ -91,10 +91,9 @@ class MyImage extends Particle
 {
     constructor(props)
     {
-        super(props.canvas, props.myFill, props.myStroke, props.size, props.startingSize, props.scaleFactor, props.pos, props.vel, props.acc, props.startingPos, props.startingVel, props.startingAcc, props.angle, props.omega, props.angularAcc, props.startingAngle, props.startingVel, props.startingAcc, props.referenceFrame, props.offset, props.bounces)
+        super(props)
 
-        this.canvas = props.canvas;
-        this.image = props.image;
+        // this.canvas = props.canvas;
 
         this.reset()
     }
@@ -102,14 +101,7 @@ class MyImage extends Particle
     display()
     {
         this.canvas.push()
-            this.canvas.translate(this.pos.x, this.pos.y, this.pos.z);
-            this.canvas.angleMode(this.canvas.DEGREES)
-            this.canvas.rotateX(this.angle.x)
-            this.canvas.rotateY(this.angle.y)
-            this.canvas.rotateZ(this.angle.z)
-            this.canvas.rectMode(this.canvas.CENTER);
-            this.canvas.ellipseMode(this.canvas.CENTER);
-            this.canvas.imageMode(this.canvas.CENTER);
+            prepareCanvas(this)
 
             this.canvas.image(this.image, 0, 0, this.size.x, this.size.y);
         this.canvas.pop()
