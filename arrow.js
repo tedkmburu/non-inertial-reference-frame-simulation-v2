@@ -9,7 +9,7 @@ function createArrow(start, end, angle, color, scale, canvas)
             canvas.line(start.x, start.y, end.x, end.y);
 
             canvas.translate(end.x, end.y);
-            canvas.angleMode(canvas.RADIANS)
+            canvas.angleMode(canvas.RADIANS);
             canvas.rotate(angle);
             canvas.fill(color);
 

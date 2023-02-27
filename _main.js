@@ -19,14 +19,15 @@ let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCann
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage;
 let closeImage;
 
-let currentScene = 2;
+let currentScene = 3;
 let currentPopUp = 0;
 
 let playState = true;
 let playBackwards = false;
-let popUpVisible = true;
+let popUpVisible = false;
 
 let buttons = []
+let buttonPositions = []
 let controlMenuButtons = []
 let slider1, slider2;
 let sliderDefaults = []
@@ -317,14 +318,18 @@ const controlMenu = canvas => {
         controlsCanvas.style("left", ((innerWidth / 2) * 0.1) + "px")
         controlsCanvas.style("borderRadius", "50px")
 
-        slider1 = canvas.createSlider(0, 255, 100);
-        slider1.position((innerWidth / 2), (innerHeight / 2) + 10);
-        slider1.style('width', '80px');
+        buttonPositions = getControlButtonPositions()
+        let canvasLength = (landscape) ? innerWidth : innerHeight
+        let sliderOffset = (canvasLength / 2) + 30
+
+        slider1 = canvas.createSlider(-1, 1, 0, 0.05);
+        slider1.position(buttonPositions[5] + sliderOffset, (innerHeight / 2) - 12);
+        slider1.style('width', getSliderWidth() + 'px');
         slider1.style('zIndex', '999');
         
         slider2 = canvas.createSlider(-1, 1, 0, 0.05);
         slider2.position(buttonPositions[7] + sliderOffset, (innerHeight / 2) - 12);
-        slider2.style('width', sliderWidth);
+        slider2.style('width', getSliderWidth() + "px");
         slider2.style('zIndex', '99999');
         createMenu(canvas)
         canvasLoaded[3] = true;

@@ -7,11 +7,9 @@ function createMenu(canvas)
     
     
     // scenes[0]
-    let buttonPositions = getControlButtonPositions()
+    buttonPositions = getControlButtonPositions()
 
     let baseButtons = []
-    let buttonSpacing = innerWidth / 10;
-    let buttonOffset = (-innerWidth / 2 ) + (innerWidth / 20);
 
     baseButtons.push(new Button({
         text: "Rewind", 
@@ -204,8 +202,8 @@ function getSliderWidth()
 
 function sliderInput()
 {
-    let slider1Value = slider1.value()
-    let slider2Value = slider2.value() + 1.05
+    let slider1Value = slider1.value();
+    let slider2Value = slider2.value() + 2.05;
 
     if (canvasLoaded.every(canvasLoad => canvasLoad))
     {
