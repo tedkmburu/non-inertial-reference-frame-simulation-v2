@@ -10,6 +10,8 @@ function createMenu(canvas)
     let buttonPositions = getControlButtonPositions()
 
     let baseButtons = []
+    let buttonSpacing = innerWidth / 10;
+    let buttonOffset = (-innerWidth / 2 ) + (innerWidth / 20);
 
     baseButtons.push(new Button({
         text: "Rewind", 

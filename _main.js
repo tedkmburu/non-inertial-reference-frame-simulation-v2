@@ -33,6 +33,25 @@ let sliderDefaults = []
 
 let regularFont, boldFont, thinFont;
 
+function createArrow(start, end, angle, color, scale, canvas)
+{
+    if (p5.Vector.sub(end, start).mag() > 1) 
+    {
+        canvas.push();
+            canvas.stroke(color);
+            canvas.strokeWeight(scale * 4);
+            canvas.noFill();
+            canvas.line(start.x, start.y, end.x, end.y);
+
+            canvas.translate(end.x, end.y)
+            canvas.rotate(angle);
+            canvas.fill(color);
+
+            canvas.triangle(0, 0, -10 * scale, -5 * scale, -10 * scale, 5 * scale);
+        canvas.pop();
+    }
+}
+
 
 const leftCanvasObject = canvas => {
     canvas.preload = function() 
@@ -292,22 +311,16 @@ const controlMenu = canvas => {
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
         controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 100, canvas.WEBGL)
-        controlsCanvas.addClass('controlMenu');
 
+        controlsCanvas.addClass('controlMenu');
         controlsCanvas.style("top", (innerHeight / 2) - 50 + "px")
         controlsCanvas.style("left", ((innerWidth / 2) * 0.1) + "px")
         controlsCanvas.style("borderRadius", "50px")
 
-        let buttonPositions = getControlButtonPositions()
-        
-        let sliderOffset = landscape ? innerWidth / 2 : innerHeight / 2;
-        sliderOffset += (getSliderWidth() / 4)
-        let sliderWidth = getSliderWidth() + "px"
-        
-        slider1 = canvas.createSlider(-1, 1, 0, 0.05);
-        slider1.position(buttonPositions[5] + sliderOffset, (innerHeight / 2) - 12);
-        slider1.style('width', sliderWidth);
-        slider1.style('zIndex', '99999');
+        slider1 = canvas.createSlider(0, 255, 100);
+        slider1.position((innerWidth / 2), (innerHeight / 2) + 10);
+        slider1.style('width', '80px');
+        slider1.style('zIndex', '999');
         
         slider2 = canvas.createSlider(-1, 1, 0, 0.05);
         slider2.position(buttonPositions[7] + sliderOffset, (innerHeight / 2) - 12);

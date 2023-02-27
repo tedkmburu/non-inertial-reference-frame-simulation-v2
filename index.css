@@ -3,6 +3,7 @@ canvas.left
     top: 0;
     left: 0;
     width: 50%;
+    border-right: 1px solid black;
 }
 canvas.right
 {
@@ -29,6 +30,7 @@ canvas.bottom
 }
 canvas.controlMenu
 {
+    border: 1px solid black;
     z-index: 999;
     border: 1px solid black;
 }

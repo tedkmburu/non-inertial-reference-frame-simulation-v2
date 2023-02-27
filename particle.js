@@ -32,9 +32,13 @@ class Particle
 
         this.scaleFactor = props.scaleFactor || 1;
 
-        this.pos = props.pos || new p5.Vector(1, 1, 1);
+        this.pos = props.pos || new p5.Vector(0, 0, 0);
         this.vel = props.vel || new p5.Vector(0, 0, 0);
         this.acc = props.acc || new p5.Vector(0, 0, 0);
+
+        this.relPos = new p5.Vector(0, 0, 0);
+        this.relVel = new p5.Vector(0, 0, 0);
+        this.relAcc = new p5.Vector(0, 0, 0);
 
         this.startingPos = props.pos || this.pos.copy();
         this.startingVel = props.vel || this.vel.copy();
