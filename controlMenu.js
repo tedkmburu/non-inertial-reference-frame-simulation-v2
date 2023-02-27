@@ -110,8 +110,11 @@ function createMenu(canvas)
 
     sliderDefaults[0] = [0, 0]
     sliderDefaults[1] = [0, 0]
-    sliderDefaults[2] = [0, 0]
+    sliderDefaults[2] = [0.5, 0]
     sliderDefaults[3] = [0, 0]
+
+    slider1.value(sliderDefaults[currentScene][0])
+    slider2.value(sliderDefaults[currentScene][1])
 
     // sliderInput()
 }
@@ -136,6 +139,16 @@ function checkButtonClick(canvas)
     let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
+        if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
+            mousePosition.x < button.pos.x + (button.size.x / 2) &&
+            mousePosition.y > button.pos.y - (button.size.y / 2) &&
+            mousePosition.y < button.pos.y + (button.size.y / 2))
+            {
+                button.clicked()
+            }
+    })
+
+    popUps[currentPopUp].buttons.forEach(button => {
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
             mousePosition.y > button.pos.y - (button.size.y / 2) &&
@@ -190,17 +203,30 @@ function getSliderWidth()
 function sliderInput()
 {
     let slider1Value = slider1.value()
-    let slider2Value = slider2.value()
+    let slider2Value = slider2.value() + 1.05
 
-    console.log(leftScenes);
+    if (canvasLoaded.every(canvasLoad => canvasLoad))
+    {
+        leftScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
+        rightScenes[0].referenceFrame.vel.x = (slider1Value + 1) * -2;
+        rightScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
+
+        leftScenes[2].shapes[0].omega = new p5.Vector(0, 0, slider1Value)
+        rightScenes[2].images[0].omega = new p5.Vector(0, 0, -slider1Value)
+
+        leftScenes[0].shapes[0].mass = slider2Value;
+        leftScenes[1].shapes[0].mass = slider2Value;
+        leftScenes[2].shapes[2].mass = slider2Value;
+        leftScenes[2].shapes[3].mass = slider2Value;
+
+        rightScenes[0].shapes[0].mass = slider2Value;
+        rightScenes[1].shapes[0].mass = slider2Value;
+        rightScenes[2].shapes[2].mass = slider2Value;
+        rightScenes[2].shapes[3].mass = slider2Value;
+    }
 
     // console.log(slider1Value, slider2Value);
-    leftScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
-    rightScenes[0].referenceFrame.vel.x = (slider1Value + 1) * -2;
-    rightScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
-
-    leftScenes[2].shapes[0].omega = new p5.Vector(0, 0, slider1Value)
-    rightScenes[2].images[0].omega = new p5.Vector(0, 0, slider1Value)
+    
 
     // console.log("asdf");
     // console.log(leftScenes[0].images[1].vel);

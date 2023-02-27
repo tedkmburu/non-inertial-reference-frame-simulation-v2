@@ -11,17 +11,20 @@ let leftCanvas, rightCanvas, controlsCanvas, popUpCanvas
 
 let leftScenes = []
 let rightScenes = []
+let canvasLoaded = [false, false, false, false]
+
 let popUps = []
 let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
 let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage;
+let closeImage;
 
 let currentScene = 2;
 let currentPopUp = 0;
 
 let playState = true;
 let playBackwards = false;
-let popUpVisible = false;
+let popUpVisible = true;
 
 let buttons = []
 let controlMenuButtons = []
@@ -61,6 +64,8 @@ const leftCanvasObject = canvas => {
         }
 
         createLeftScenes(canvas)
+
+        canvasLoaded[0] = true;
     }
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
@@ -150,6 +155,7 @@ const rightCanvasObject = canvas => {
         }
 
         createRightScenes(canvas)
+        canvasLoaded[1] = true;
     }
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
@@ -209,6 +215,8 @@ const popUpWindow = canvas => {
 
     canvas.preload = function()
     {
+        closeImage = canvas.loadImage("images/close.png");
+
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
         thinFont = canvas.loadFont("fonts/Roboto-Light.ttf")
@@ -216,10 +224,11 @@ const popUpWindow = canvas => {
 
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-        popUpCanvas = canvas.createCanvas(innerWidth / 2, innerHeight / 2, canvas.WEBGL)
+        popUpCanvas = canvas.createCanvas(innerWidth * 0.8, innerHeight * 0.8, canvas.WEBGL)
         popUpCanvas.addClass('popUp');
 
-        createPopUps(popUpCanvas)
+        createPopUps(canvas)
+        canvasLoaded[2] = true;
     }
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
@@ -229,6 +238,7 @@ const popUpWindow = canvas => {
         
         canvas.push()
             popUpCanvas.style("visibility", (popUpVisible) ? "visible" : "hidden")
+            popUps[currentPopUp].display()
             // popUps[currentPopUp].display()
         canvas.pop()
     }
@@ -304,6 +314,7 @@ const controlMenu = canvas => {
         slider2.style('width', sliderWidth);
         slider2.style('zIndex', '99999');
         createMenu(canvas)
+        canvasLoaded[3] = true;
     }
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.

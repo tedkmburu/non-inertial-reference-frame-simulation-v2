@@ -5,15 +5,21 @@ function createPopUps(canvas)
         textBoxes: [
             new TextBox({
                 text: "asdf",
+                fill: "black",
                 canvas: canvas,
             })
         ],
         buttons: [
-            // new Button({
-            //     text: "x", 
-            //     pos: new p5.Vector(400, 0),
-            //     canvas: canvas,
-            // }), 
+            new Button({
+                text: "Close", 
+                image: closeImage,
+                pos: new p5.Vector(400, 0),
+                size: new p5.Vector(25, 25),
+                canvas: canvas,
+                onClick: () => {
+                    popUpVisible = false;
+                }
+            }), 
             // new Button({
             //     text: "Next", 
             //     pos: new p5.Vector(-400, 0),
@@ -32,7 +38,7 @@ class PopUp
         this.images = props.images || []
         this.shapes = props.shapes || []
         
-        this.fill = props.fill || "white";
+        this.fill = props.fill || "rgba(255, 255, 255, 0.95)";
         this.stroke = props.stroke || "black";
         this.canvas = props.canvas;
     }

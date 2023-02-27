@@ -1,19 +1,20 @@
-function prepareCanvas(canvas)
+function prepareCanvas(props)
 {
-    canvas.canvas.translate(canvas.pos.x, canvas.pos.y, canvas.pos.z)
-    canvas.canvas.angleMode(canvas.canvas.DEGREES)
-    canvas.canvas.rotateX(canvas.angle.x)
-    canvas.canvas.rotateY(canvas.angle.y)
-    canvas.canvas.rotateZ(canvas.angle.z)
-    canvas.canvas.translate(canvas.offset.x, canvas.offset.y, canvas.offset.z)
-    canvas.canvas.fill(canvas.fill)
-    canvas.canvas.stroke(canvas.stroke)
-    canvas.canvas.rectMode(canvas.canvas.CENTER)
-    canvas.canvas.ellipseMode(canvas.canvas.CENTER)
-    canvas.canvas.imageMode(canvas.canvas.CENTER)
-    canvas.canvas.textAlign(canvas.textAlign);
-    canvas.canvas.textSize(canvas.textSize);
-    canvas.canvas.textFont(canvas.font);
+    // console.log(props);
+    props.canvas.translate(props.pos.x, props.pos.y, props.pos.z)
+    props.canvas.angleMode(props.canvas.DEGREES)
+    props.canvas.rotateX(props.angle.x)
+    props.canvas.rotateY(props.angle.y)
+    props.canvas.rotateZ(props.angle.z)
+    props.canvas.translate(props.offset.x, props.offset.y, props.offset.z)
+    props.canvas.fill(props.fill)
+    props.canvas.stroke(props.stroke)
+    props.canvas.rectMode(props.canvas.CENTER)
+    props.canvas.ellipseMode(props.canvas.CENTER)
+    props.canvas.imageMode(props.canvas.CENTER)
+    props.canvas.textAlign(props.textAlign);
+    props.canvas.textSize(props.textSize);
+    props.canvas.textFont(props.font);
 }
 
 class Particle
@@ -102,7 +103,7 @@ class Particle
     move()
     {
         
-        if (this.nonInertial)
+        if (this.nonInertial && this.canvas.frameCount > 2)
         {
             this.acc = new p5.Vector(0, 0, 0)
             // calculate the Coriolis and centrifugal forces for a particle
@@ -138,8 +139,6 @@ class Particle
         {
             this.trail.push(this.pos.copy().add(this.offset))
         }
-
-        if (this.showForces) this.displayForces()
     }
 
     displayForces()

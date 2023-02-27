@@ -12,6 +12,10 @@ class Shape extends Particle
     display()
     {
         this.canvas.push()
+            if (this.showForces) this.displayForces()   
+        this.canvas.pop()
+
+        this.canvas.push()
             this.canvas.ellipseMode(this.canvas.CENTER)
             if (this.showTrail) 
             {
@@ -42,7 +46,7 @@ class Shape extends Particle
             switch(this.shape)
             {
                 case "ellipse":
-                    this.canvas.ellipse(0, 0, this.size.x, this.size.y)
+                    this.canvas.ellipse(0, 0, this.size.x * this.mass, this.size.y * this.mass)
                 break;
                 case "sphere":
                     this.canvas.sphere(this.size.x)
