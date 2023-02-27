@@ -32,11 +32,12 @@ class Button extends Particle
 
             if (this.image != undefined && this.visible) this.canvas.image(this.image, 0, 0, this.size.x, this.size.y)
 
-            if (this.text != undefined && this.visible) 
+            if (this.text != undefined && this.visible && this.image == undefined) 
             {
                 this.canvas.fill(this.stroke)
                 this.canvas.stroke(this.stroke)
-                this.canvas.text(this.text, 0, 0, this.size.x, this.size.y)
+                let imageOffset = new p5.Vector(0, 10, 0)
+                this.canvas.text(this.text, 0, 0, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
             }
 
         this.canvas.pop()  
@@ -53,6 +54,20 @@ class Button extends Particle
         {
             console.log(button.text, " is unassigned");
         }
+    }
+
+    hover()
+    {
+        this.canvas.push()
+        prepareCanvas(this)
+        if (this.text != undefined && this.visible) 
+        {
+            this.canvas.fill(this.stroke)
+            this.canvas.stroke(this.stroke)
+            let imageOffset = new p5.Vector(0, 10, 0)
+            this.canvas.text(this.text, 0, 0, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+        }
+        this.canvas.pop()
     }
   
 }

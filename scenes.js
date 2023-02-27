@@ -131,17 +131,19 @@ function createLeftScenes(theCanvas)
                     vel: new p5.Vector(1, 1, 0),
                     size: new p5.Vector(50, 50, 0),
                     showTrail: true,
+                    showForces: true,
                     canvas: theCanvas,
                 }),
                 new Shape({
                     shape: "ellipse",
-                    fill: "blue",
+                    fill: "red",
                     stroke: "black",
                     pos: new p5.Vector(0, -200, -5),
                     vel: new p5.Vector(1, 1, 0),
                     size: new p5.Vector(50, 50, 0),
                     showTrail: true,
                     nonInertial: true,
+                    showForces: true,
                     canvas: theCanvas,
                 }),
             ], 
@@ -377,7 +379,8 @@ function createRightScenes(theCanvas)
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
                 // vel: new p5.Vector(-20, 0, 0)
-                omega: new p5.Vector(0, 0, -0.5)
+                // omega: new p5.Vector(0, 0, -0.5)
+                omega: new p5.Vector(0, 0, 0)
             }),
             shapes: [
                 new Shape({
@@ -386,7 +389,8 @@ function createRightScenes(theCanvas)
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -9),
                     size: new p5.Vector(600, 600, 1),
-                    omega: new p5.Vector(0, 0, 0.5),
+                    // omega: new p5.Vector(0, 0, 0.5),
+                    omega: new p5.Vector(0, 0, 0),
                     canvas: theCanvas,
                 }),
                 new Shape({
@@ -401,22 +405,35 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: "red",
                     stroke: "black",
-                    pos: new p5.Vector(0, 200, -5),
-                    offset: new p5.Vector(0, -200, 0),
+                    pos: new p5.Vector(0, -200, -5),
+                    // offset: new p5.Vector(0, -200, 0),
                     vel: new p5.Vector(1, 1, 0),
                     size: new p5.Vector(50, 50, 0),
-                    omega: new p5.Vector(0, 0, 0.5),
+                    // omega: new p5.Vector(0, 0, 0.5),
+                    showForces: true,
+                    nonInertial: true,
                     showTrail: true,
                     canvas: theCanvas,
                 }),
-
+                new Shape({
+                    shape: "ellipse",
+                    fill: "blue",
+                    stroke: "black",
+                    pos: new p5.Vector(0, -200, -5),
+                    vel: new p5.Vector(1, 1, 0),
+                    size: new p5.Vector(50, 50, 0),
+                    showTrail: true,
+                    nonInertial: true,
+                    showForces: true,
+                    canvas: theCanvas,
+                }),
                 
             ], 
             images: [
                 new MyImage({
                     image: rightGrid,
                     scaleFactor: 1,
-                    omega: new p5.Vector(0, 0, -0),
+                    omega: new p5.Vector(0, 0, -0.5),
                     pos: new p5.Vector(0, 0, -10),
                     canvas: theCanvas,
                 }),

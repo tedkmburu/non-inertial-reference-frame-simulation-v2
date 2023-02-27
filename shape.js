@@ -5,7 +5,6 @@ class Shape extends Particle
         super(props)
 
         this.shape = props.shape;
-        this.mass = props.mass || 1;
         
         this.reset()
     }

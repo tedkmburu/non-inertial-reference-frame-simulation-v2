@@ -14,17 +14,19 @@ let rightScenes = []
 let popUps = []
 let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
 let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
-let rewindImage, playPauseImage, restartImage, omegaImage, massImage, helpImage;
+let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage;
 
-let currentScene = 3;
+let currentScene = 2;
 let currentPopUp = 0;
 
 let playState = true;
+let playBackwards = false;
 let popUpVisible = false;
 
 let buttons = []
 let controlMenuButtons = []
 let slider1, slider2;
+let sliderDefaults = []
 
 let regularFont, boldFont, thinFont;
 
@@ -78,7 +80,7 @@ const leftCanvasObject = canvas => {
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
         resizedWindow();
-        canvas.setup()
+        // canvas.setup()
     }
 
     canvas.mouseClicked = function() {
@@ -168,7 +170,7 @@ const rightCanvasObject = canvas => {
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
         resizedWindow();
-        canvas.setup()
+        // canvas.setup()
     }
 
     canvas.mouseClicked = function() {
@@ -234,7 +236,7 @@ const popUpWindow = canvas => {
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
         resizedWindow();
-        canvas.setup()
+        // canvas.setup()
     }
 
     canvas.mouseClicked = function() {
@@ -264,12 +266,14 @@ const popUpWindow = canvas => {
 const controlMenu = canvas => {
     canvas.preload = function() 
     {
-        rewindImage = canvas.loadImage("images/forward-solid.svg");
-        playPauseImage = canvas.loadImage("images/pause-solid.svg");
-        restartImage = canvas.loadImage("images/arrow-rotate-right-solid.svg");
+        rewindImage = canvas.loadImage("images/backward.png");
+        forwindImage = canvas.loadImage("images/forwind.png");
+        pauseImage = canvas.loadImage("images/pause.png");
+        playImage = canvas.loadImage("images/play.png");
+        restartImage = canvas.loadImage("images/restart.png");
         omegaImage = canvas.loadImage("images/omega.png");
-        massImage = canvas.loadImage("images/kg.png");
-        helpImage = canvas.loadImage("images/circle-info-solid.svg");
+        massImage = canvas.loadImage("images/mass.png");
+        helpImage = canvas.loadImage("images/info.png");
         
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
@@ -278,21 +282,27 @@ const controlMenu = canvas => {
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
         controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 100, canvas.WEBGL)
-
         controlsCanvas.addClass('controlMenu');
+
         controlsCanvas.style("top", (innerHeight / 2) - 50 + "px")
         controlsCanvas.style("left", ((innerWidth / 2) * 0.1) + "px")
         controlsCanvas.style("borderRadius", "50px")
 
-        slider1 = canvas.createSlider(0, 255, 100);
-        slider1.position((innerWidth / 2), (innerHeight / 2) + 10);
-        slider1.style('width', '80px');
-        slider1.style('zIndex', '999');
+        let buttonPositions = getControlButtonPositions()
         
-        slider2 = canvas.createSlider(0, 255, 100);
-        slider2.position(100, (innerHeight / 2) + 10);
-        slider2.style('width', '80px');
-        slider2.style('zIndex', '999');
+        let sliderOffset = landscape ? innerWidth / 2 : innerHeight / 2;
+        sliderOffset += (getSliderWidth() / 4)
+        let sliderWidth = getSliderWidth() + "px"
+        
+        slider1 = canvas.createSlider(-1, 1, 0, 0.05);
+        slider1.position(buttonPositions[5] + sliderOffset, (innerHeight / 2) - 12);
+        slider1.style('width', sliderWidth);
+        slider1.style('zIndex', '99999');
+        
+        slider2 = canvas.createSlider(-1, 1, 0, 0.05);
+        slider2.position(buttonPositions[7] + sliderOffset, (innerHeight / 2) - 12);
+        slider2.style('width', sliderWidth);
+        slider2.style('zIndex', '99999');
         createMenu(canvas)
     }
   
@@ -304,23 +314,22 @@ const controlMenu = canvas => {
         canvas.push()
             // sceneControls()
             displayMenu(canvas)
+            sliderInput()
         canvas.pop()
     }
   
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
         resizedWindow();
-        canvas.setup()
+        // canvas.setup()
     }
 
-    canvas.mouseClicked = function() {
+    canvas.mouseClicked = function() 
+    {
         checkButtonClick(canvas)
     }
 }
 
-// new p5(leftCanvasObject);
-// new p5(rightCanvasObject);
-// new p5(popUpWindow);
 new p5(controlMenu);
 
 
@@ -360,11 +369,11 @@ function resizedWindow()
         canvas2Pos = new p5.Vector(0, innerHeight / 2, 0)
     }
 
-    slider1.position(2600, ((innerHeight / 2) + 0));
-    slider1.style('width', '80px');
+    // slider1.position(600, ((innerHeight / 2) + 0));
+    // slider1.style('width', '80px');
     
-    slider2.position(3600, ((innerHeight / 2) + 0));
-    slider2.style('width', '80px');
+    // slider2.position(800, ((innerHeight / 2) + 0));
+    // slider2.style('width', '80px');
 }
 
 

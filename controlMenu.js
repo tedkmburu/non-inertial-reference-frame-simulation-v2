@@ -4,22 +4,47 @@ function createMenu(canvas)
     new p5(rightCanvasObject); 
     new p5(popUpWindow); 
 
+    
+    
     // scenes[0]
+    let buttonPositions = getControlButtonPositions()
 
     let baseButtons = []
 
     baseButtons.push(new Button({
         text: "Rewind", 
         image: rewindImage,
-        pos: new p5.Vector(-300, 0),
+        pos: new p5.Vector(buttonPositions[3], 0),
         size: new p5.Vector(50, 50),
         canvas: canvas,
+        onClick: () => {
+            playBackwards = !playBackwards;
+            leftScenes.forEach(scene => {
+                scene.shapes.forEach(shape => {
+                    shape.trail = []
+                })
+
+                scene.images.forEach(myImage => {
+                    myImage.trail = []
+                })
+            })
+
+            rightScenes.forEach(scene => {
+                scene.shapes.forEach(shape => {
+                    shape.trail = []
+                })
+
+                scene.images.forEach(myImage => {
+                    myImage.trail = []
+                })
+            })
+        }
     }))
 
     baseButtons.push(new Button({
         text: "Play/Pause", 
-        image: playPauseImage,
-        pos: new p5.Vector(-200, 0),
+        image: pauseImage,
+        pos: new p5.Vector(buttonPositions[4], 0),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -30,11 +55,10 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Restart", 
         image: restartImage,
-        pos: new p5.Vector(-100, 0),
+        pos: new p5.Vector(buttonPositions[5], 0),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
-            console.log("reset");
             leftScenes.forEach(scene => {
                 scene.shapes.forEach(shape => {
                     shape.reset()
@@ -58,7 +82,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Omega", 
         image: omegaImage,
-        pos: new p5.Vector(0, 0),
+        pos: new p5.Vector(buttonPositions[6], 0),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -66,7 +90,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Mass", 
         image: massImage,
-        pos: new p5.Vector(200, 0),
+        pos: new p5.Vector(buttonPositions[8], 0),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -74,7 +98,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Help", 
         image: helpImage,
-        pos: new p5.Vector(400, 0),
+        pos: new p5.Vector(buttonPositions[10], 0),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -84,6 +108,12 @@ function createMenu(canvas)
     controlMenuButtons.push(baseButtons)
     controlMenuButtons.push(baseButtons)
 
+    sliderDefaults[0] = [0, 0]
+    sliderDefaults[1] = [0, 0]
+    sliderDefaults[2] = [0, 0]
+    sliderDefaults[3] = [0, 0]
+
+    // sliderInput()
 }
 
 function displayMenu(canvas)
@@ -91,11 +121,19 @@ function displayMenu(canvas)
     controlMenuButtons[currentScene].forEach(button => {
         button.display()
     })
+    
+    if (playState) controlMenuButtons[currentScene][1].image = pauseImage
+    else controlMenuButtons[currentScene][1].image = playImage
+
+    if (playBackwards) controlMenuButtons[currentScene][0].image = forwindImage
+    else controlMenuButtons[currentScene][0].image = rewindImage
+
+    checkMenuButtonHover(canvas)
 }
 
 function checkButtonClick(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0)
+    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
@@ -104,9 +142,49 @@ function checkButtonClick(canvas)
             mousePosition.y < button.pos.y + (button.size.y / 2))
             {
                 button.clicked()
-                console.log("click");
             }
     })
+}
+
+function checkMenuButtonHover(canvas)
+{
+    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
+    controlMenuButtons[currentScene].forEach(button => {
+        // console.log(mousePosition, button.pos);
+        if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
+            mousePosition.x < button.pos.x + (button.size.x / 2) &&
+            mousePosition.y > button.pos.y - (button.size.y / 2) &&
+            mousePosition.y < button.pos.y + (button.size.y / 2))
+            {
+                button.hover()
+            }
+    })
+}
+
+function getControlButtonPositions()
+{
+    let numberOfButtons = 13;
+    let buttonPositions = [];
+    let screenSize = (landscape)? innerWidth : innerHeight;
+    let intervalSize = screenSize / numberOfButtons;
+
+    for (let i = 0; i < numberOfButtons; i++) 
+    {
+        let pos = (i * intervalSize) - (screenSize / 2)
+        buttonPositions.push(pos)
+    }
+
+    return buttonPositions;
+}
+
+function getSliderWidth()
+{
+    let numberOfButtons = 13;
+    let screenSize = (landscape)? innerWidth : innerHeight;
+    let intervalSize = screenSize / numberOfButtons;
+    intervalSize *= 1.2
+
+    return intervalSize
 }
 
 function sliderInput()
@@ -114,18 +192,20 @@ function sliderInput()
     let slider1Value = slider1.value()
     let slider2Value = slider2.value()
 
+    console.log(leftScenes);
+
     // console.log(slider1Value, slider2Value);
     leftScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
     rightScenes[0].referenceFrame.vel.x = (slider1Value + 1) * -2;
     rightScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
 
+    leftScenes[2].shapes[0].omega = new p5.Vector(0, 0, slider1Value)
+    rightScenes[2].images[0].omega = new p5.Vector(0, 0, slider1Value)
+
+    // console.log("asdf");
     // console.log(leftScenes[0].images[1].vel);
 }
 
-function slider2Input()
-{
-
-}
 
 // rewind = canvas.loadImage("images/forward-solid.svg");
 //         playPause = canvas.loadImage("images/pause-solid.svg");

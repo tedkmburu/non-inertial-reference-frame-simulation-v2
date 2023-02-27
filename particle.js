@@ -23,6 +23,8 @@ class Particle
         this.canvas = props.canvas;
         this.fill = props.fill || "rgba(0,0,0,0)";
         this.stroke = props.stroke || "black";
+        
+        this.mass = props.mass || 1;
 
         this.image = props.image;
         this.size = props.size || new p5.Vector(50, 50);
@@ -99,31 +101,80 @@ class Particle
 
     move()
     {
-        // let netAcc = new p5.Vector(0, 0, 0);
-        // if (this.nonInertial)
-        // {
-        //     // calculate the Coriolis and centrifugal forces for a particle
-        //     this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, this.omega), (-2 * this.mass));
-        //     let rho = this.pos.copy();
-        //     this.centForce = p5.Vector.mult(rho, p5.Vector.dot(this.omega, this.omega) * this.mass);
+        
+        if (this.nonInertial)
+        {
+            this.acc = new p5.Vector(0, 0, 0)
+            // calculate the Coriolis and centrifugal forces for a particle
+            let omega = rightScenes[2].images[0].omega.copy().mult(-1)
+            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
+            let rho = this.pos.copy();
+            rho.z = 0
+            // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
+            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
 
-        //     // combine the Coriolis and centrifugal forces and divide by mass to get net force
-        //     this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
+            // combine the Coriolis and centrifugal forces and divide by mass to get net force
+            this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
+        }
 
-        //     netAcc.add(this.acc)
+        if (!playBackwards) 
+        {
+            this.vel.add(this.acc).add(this.referenceFrame.acc);
+            this.pos.add(this.vel).add(this.referenceFrame.vel);
 
-        //     this.acc = netAcc.copy()
-        // }
+            this.omega.add(this.angularAcc).add(this.referenceFrame.angularAcc);
+            this.angle.add(this.omega).add(this.referenceFrame.omega);
+        }
+        else 
+        {
+            this.vel.sub(this.acc).sub(this.referenceFrame.acc);
+            this.pos.sub(this.vel).sub(this.referenceFrame.vel);
 
-        this.vel.add(this.acc).add(this.referenceFrame.acc);
-        this.pos.add(this.vel).add(this.referenceFrame.vel);
-
-        this.omega.add(this.angularAcc).add(this.referenceFrame.angularAcc);
-        this.angle.add(this.omega).add(this.referenceFrame.omega);
+            this.omega.sub(this.angularAcc).sub(this.referenceFrame.angularAcc);
+            this.angle.sub(this.omega).sub(this.referenceFrame.omega);
+        }
 
         if (this.canvas.frameCount % 10 == 0 && this.showTrail) 
         {
             this.trail.push(this.pos.copy().add(this.offset))
         }
+
+        if (this.showForces) this.displayForces()
+    }
+
+    displayForces()
+    {   
+        // vel
+        new Arrow({
+            pos: this.pos.copy().add(this.offset), 
+            vel: this.vel.copy().mult(100), 
+            angle: this.vel.angle, 
+            fill: "red", 
+            canvas: this.canvas,
+            image: null,
+        }).display()
+
+        // cor
+        new Arrow({
+            pos: this.pos.copy().add(this.offset), 
+            vel: this.corForce.copy().mult(100), 
+            angle: this.corForce.angle, 
+            fill: "blue", 
+            canvas: this.canvas,
+            image: null,
+        }).display()
+
+        // cent
+        new Arrow({
+            pos: this.pos.copy().add(this.offset), 
+            vel: this.centForce.copy().mult(100), 
+            angle: this.centForce.angle, 
+            fill: "green", 
+            canvas: this.canvas,
+            image: null,
+        }).display()
+
+        // console.log(this.corForce.mag(), this.centForce.mag());
+            
     }
 }
