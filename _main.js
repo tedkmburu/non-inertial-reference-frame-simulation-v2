@@ -1,11 +1,10 @@
-'use strict';
+// 'use strict';
 
 const theFrameRate = 60; 
 
 let landscape,
 canvasSize, 
-canvas1Pos, 
-canvas2Pos;
+canvasPos;
 
 let leftCanvas, rightCanvas, controlsCanvas, popUpCanvas
 
@@ -14,12 +13,17 @@ let rightScenes = []
 let canvasLoaded = [false, false, false, false]
 
 let popUps = []
-let leftTruckImage, leftBackgroundImage, leftCannon1, leftCannon2, leftCannon3, leftGrid; 
-let rightTruckImage, rightBackgroundImage, rightCannon1, rightCannon2, rightCannon3, rightGrid; 
-let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage;
+
+let leftTruckImage, leftBackgroundImage, 
+leftCannon1, leftCannon2, leftCannon3, 
+leftGrid, leftVelImage, leftCorImage, leftCentImage; 
+let rightTruckImage, rightBackgroundImage, 
+rightCannon1, rightCannon2, rightCannon3, 
+rightGrid, rightVelImage, rightCorImage, rightCentImage;
+let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage;
 let closeImage;
 
-let currentScene = 3;
+let currentScene = 2;
 let currentPopUp = 0;
 
 let playState = true;
@@ -30,28 +34,10 @@ let buttons = []
 let buttonPositions = []
 let controlMenuButtons = []
 let slider1, slider2;
+let sliderAngle = 0;
 let sliderDefaults = []
 
 let regularFont, boldFont, thinFont;
-
-function createArrow(start, end, angle, color, scale, canvas)
-{
-    if (p5.Vector.sub(end, start).mag() > 1) 
-    {
-        canvas.push();
-            canvas.stroke(color);
-            canvas.strokeWeight(scale * 4);
-            canvas.noFill();
-            canvas.line(start.x, start.y, end.x, end.y);
-
-            canvas.translate(end.x, end.y)
-            canvas.rotate(angle);
-            canvas.fill(color);
-
-            canvas.triangle(0, 0, -10 * scale, -5 * scale, -10 * scale, 5 * scale);
-        canvas.pop();
-    }
-}
 
 
 const leftCanvasObject = canvas => {
@@ -63,6 +49,9 @@ const leftCanvasObject = canvas => {
         leftCannon2 = canvas.loadImage('images/cannon2.png'); 
         leftCannon3 = canvas.loadImage('images/cannon3.png'); 
         leftGrid = canvas.loadImage('images/grid.png');
+        leftVelImage = canvas.loadImage('images/vSmall.png');
+        leftCorImage = canvas.loadImage('images/cor.png');
+        leftCentImage = canvas.loadImage('images/cent.png');
         
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
@@ -72,7 +61,7 @@ const leftCanvasObject = canvas => {
     {        
         resizedWindow()
 
-        leftCanvas = canvas.createCanvas(canvasSize.x, canvasSize.y, canvas.WEBGL)
+        leftCanvas = canvas.createCanvas(canvasSize[0].x, canvasSize[0].y, canvas.WEBGL)
 
         if (landscape) 
         {
@@ -94,9 +83,6 @@ const leftCanvasObject = canvas => {
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
-            // canvas.fill(0)
-            // canvas.noStroke()
-            // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
             // canvas.orbitControl();
             leftScenes[currentScene].display()
         canvas.pop()    
@@ -141,6 +127,9 @@ const rightCanvasObject = canvas => {
         rightCannon2 = canvas.loadImage('images/cannon2.png'); 
         rightCannon3 = canvas.loadImage('images/cannon3.png'); 
         rightGrid = canvas.loadImage('images/grid.png'); 
+        rightVelImage = canvas.loadImage('images/vSmall.png');
+        rightCorImage = canvas.loadImage('images/cor.png');
+        rightCentImage = canvas.loadImage('images/cent.png');
 
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
@@ -148,22 +137,7 @@ const rightCanvasObject = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-        if (innerWidth >= innerHeight)
-        {
-            landscape = true;
-            canvasSize = canvas.createVector(innerWidth / 2, innerHeight, 0)
-            canvas1Pos = canvas.createVector(0, 0, 0)
-            canvas2Pos = canvas.createVector(innerWidth / 2, 0, 0)
-        }
-        else
-        {
-            landscape = false;
-            canvasSize = canvas.createVector(innerWidth, innerHeight / 2, 0)
-            canvas1Pos = canvas.createVector(0, 0, 0)
-            canvas2Pos = canvas.createVector(0, innerHeight / 2, 0)
-        }
-
-        rightCanvas = canvas.createCanvas(canvasSize.x, canvasSize.y, canvas.WEBGL)
+        rightCanvas = canvas.createCanvas(canvasSize[1].x, canvasSize[1].y, canvas.WEBGL)
 
         if (landscape) 
         {
@@ -184,10 +158,6 @@ const rightCanvasObject = canvas => {
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
-            // canvas.fill(0)
-            // canvas.noStroke()
-            // canvas.translate(canvas2Pos.x, canvas2Pos.y)
-            // canvas.rect(0, 0, canvasSize.x, canvasSize.y)
             // canvas.orbitControl();
             rightScenes[currentScene].display()
         canvas.pop()
@@ -304,33 +274,46 @@ const controlMenu = canvas => {
         omegaImage = canvas.loadImage("images/omega.png");
         massImage = canvas.loadImage("images/mass.png");
         helpImage = canvas.loadImage("images/info.png");
+        speedImage = canvas.loadImage("images/speed.png");
+        velImage = canvas.loadImage("images/v.png");
         
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
         thinFont = canvas.loadFont("fonts/Roboto-Light.ttf")
+
+        getCanvasSize()
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
-        controlsCanvas = canvas.createCanvas(innerWidth * 0.9, 100, canvas.WEBGL)
+        controlsCanvas = canvas.createCanvas(canvasSize[2].x, canvasSize[2].y, canvas.WEBGL)
 
         controlsCanvas.addClass('controlMenu');
-        controlsCanvas.style("top", (innerHeight / 2) - 50 + "px")
-        controlsCanvas.style("left", ((innerWidth / 2) * 0.1) + "px")
+        controlsCanvas.style("top", canvasPos[2].y + "px")
+        controlsCanvas.style("left", canvasPos[2].x + "px")
         controlsCanvas.style("borderRadius", "50px")
 
         buttonPositions = getControlButtonPositions()
         let canvasLength = (landscape) ? innerWidth : innerHeight
-        let sliderOffset = (canvasLength / 2) + 30
+        // let sliderOffset = (canvasLength / 2) + 30
+        let sliderOffset = 0
+
+        let slider1Pos = new p5.Vector(buttonPositions[5].x + (innerWidth / 1.575), (innerHeight / 2) - 12)
+        let slider2Pos = new p5.Vector(buttonPositions[7].x + (innerWidth / 1.575), (innerHeight / 2) - 12)
+
+        console.log(slider1Pos, slider2Pos);
 
         slider1 = canvas.createSlider(-1, 1, 0, 0.05);
-        slider1.position(buttonPositions[5] + sliderOffset, (innerHeight / 2) - 12);
+        slider1.position(slider1Pos.x, slider1Pos.y);
         slider1.style('width', getSliderWidth() + 'px');
         slider1.style('zIndex', '999');
+        slider1.style('transform', 'rotate(' + sliderAngle + 'deg)')
         
+
         slider2 = canvas.createSlider(-1, 1, 0, 0.05);
-        slider2.position(buttonPositions[7] + sliderOffset, (innerHeight / 2) - 12);
+        slider2.position(slider2Pos.x, slider2Pos.y);
         slider2.style('width', getSliderWidth() + "px");
         slider2.style('zIndex', '99999');
+        slider2.style('transform', 'rotate(' + sliderAngle + 'deg)')
         createMenu(canvas)
         canvasLoaded[3] = true;
     }
@@ -383,26 +366,47 @@ new p5(controlMenu);
 
 function resizedWindow()
 {
-    if (innerWidth >= innerHeight)
-    {
-        landscape = true;
-        canvasSize = new p5.Vector(innerWidth / 2, innerHeight, 0)
-        canvas1Pos = new p5.Vector(0, 0, 0)
-        canvas2Pos = new p5.Vector(innerWidth / 2, 0, 0)
-    }
-    else
-    {
-        landscape = false;
-        canvasSize = new p5.Vector(innerWidth, innerHeight / 2, 0)
-        canvas1Pos = new p5.Vector(0, 0, 0)
-        canvas2Pos = new p5.Vector(0, innerHeight / 2, 0)
-    }
+    getCanvasSize()
 
     // slider1.position(600, ((innerHeight / 2) + 0));
     // slider1.style('width', '80px');
     
     // slider2.position(800, ((innerHeight / 2) + 0));
     // slider2.style('width', '80px');
+    console.log("resize");
+}
+
+function getCanvasSize()
+{
+    canvasPos = []
+    canvasSize = []
+
+    if (innerWidth >= innerHeight)
+    {
+        landscape = true;
+        canvasSize.push(new p5.Vector(innerWidth / 2, innerHeight))
+        canvasSize.push(new p5.Vector(innerWidth / 2, innerHeight))
+        canvasSize.push(new p5.Vector(100, innerHeight * 0.9))
+
+        canvasPos.push(new p5.Vector(0, 0))
+        canvasPos.push(new p5.Vector(innerWidth / 2, 0))
+        canvasPos.push(new p5.Vector((innerWidth / 2)  - 50, innerHeight * 0.05))
+
+        sliderAngle = -90;
+    }
+    else
+    {
+        landscape = false;
+        canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
+        canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
+        canvasSize.push(new p5.Vector(innerWidth * 0.9, 100))
+
+        canvasPos.push(new p5.Vector(0, 0))
+        canvasPos.push(new p5.Vector(0, innerHeight / 2))
+        canvasPos.push(new p5.Vector(innerWidth * 0.05, (innerHeight / 2) - 50))
+
+        sliderAngle = 0;
+    }
 }
 
 
@@ -425,48 +429,9 @@ function resizedWindow()
 
 
 
-// function preload()
-// {
-//     truckImage = loadImage('images/truck.png'); 
-//     backgroundImage = loadImage('images/enviroment2.png'); 
-//     cannon1 = loadImage('images/cannon.png'); 
-//     cannon2 = loadImage('images/cannon2.png'); 
-//     cannon3 = loadImage('images/cannon3.png'); 
-//     grid = loadImage('images/grid.png'); 
-// }
 
-// function setup()
-// {
-//     createCanvas(innerWidth, innerHeight)
 
-//     if (innerWidth >= innerHeight)
-//     {
-//         landscape = true;
-//         canvasSize = createVector(innerWidth / 2, innerHeight)
-//         canvas1Pos = createVector(0, 0)
-//         canvas2Pos = createVector(innerWidth / 2, 0)
-//     }
-//     else
-//     {
-//         landscape = false;
-//         canvasSize = createVector(innerWidth, innerHeight / 2)
-//         canvas1Pos = createVector(0, 0)
-//         canvas2Pos = createVector(0, innerHeight / 2)
-//     }
 
-//     createScenes()
-// }
-
-// function draw()
-// {
-//     background("red")
-
-//     drawLeftCanvas()
-//     drawRightCanvas()
-//     drawDivider()
-
-//     if (popUpVisible) drawPopUp();
-// }
 
 function drawPopUp()
 {

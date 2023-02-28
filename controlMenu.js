@@ -14,7 +14,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Rewind", 
         image: rewindImage,
-        pos: new p5.Vector(buttonPositions[3], 0),
+        pos: new p5.Vector(buttonPositions[3].x, buttonPositions[3].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -44,7 +44,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Play/Pause", 
         image: pauseImage,
-        pos: new p5.Vector(buttonPositions[4], 0),
+        pos: new p5.Vector(buttonPositions[4].x, buttonPositions[4].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -55,7 +55,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Restart", 
         image: restartImage,
-        pos: new p5.Vector(buttonPositions[5], 0),
+        pos: new p5.Vector(buttonPositions[5].x, buttonPositions[5].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -82,7 +82,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Omega", 
         image: omegaImage,
-        pos: new p5.Vector(buttonPositions[6], 0),
+        pos: new p5.Vector(buttonPositions[6].x, buttonPositions[6].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -90,7 +90,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Mass", 
         image: massImage,
-        pos: new p5.Vector(buttonPositions[8], 0),
+        pos: new p5.Vector(buttonPositions[8].x, buttonPositions[8].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -98,7 +98,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Help", 
         image: helpImage,
-        pos: new p5.Vector(buttonPositions[10], 0),
+        pos: new p5.Vector(buttonPositions[10].x, buttonPositions[10].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -130,6 +130,10 @@ function displayMenu(canvas)
 
     if (playBackwards) controlMenuButtons[currentScene][0].image = forwindImage
     else controlMenuButtons[currentScene][0].image = rewindImage
+
+    if (currentScene == 0) controlMenuButtons[currentScene][3].image = speedImage
+    if (currentScene == 1) controlMenuButtons[currentScene][3].image = velImage
+    if (currentScene == 0) controlMenuButtons[currentScene][3].image = speedImage
 
     checkMenuButtonHover(canvas)
 }
@@ -183,8 +187,17 @@ function getControlButtonPositions()
 
     for (let i = 0; i < numberOfButtons; i++) 
     {
+
         let pos = (i * intervalSize) - (screenSize / 2)
-        buttonPositions.push(pos)
+        if (landscape)
+        {
+            buttonPositions.push(new p5.Vector(0, pos))
+        }
+        else
+        {
+            buttonPositions.push(new p5.Vector(pos, 0))
+        }
+        
     }
 
     return buttonPositions;

@@ -1,6 +1,6 @@
-function createArrow(start, end, angle, color, scale, canvas)
+function createArrow(start, end, angle, color, scale, canvas, vectorImage)
 {
-    if (p5.Vector.sub(end, start).mag() > 1) 
+    if (p5.Vector.sub(end, start).mag() > 1)
     {
         canvas.push();
             canvas.stroke(color);
@@ -14,6 +14,8 @@ function createArrow(start, end, angle, color, scale, canvas)
             canvas.fill(color);
 
             canvas.triangle(0, 0, -10 * scale, -5 * scale, -10 * scale, 5 * scale);
+
+            canvas.image(vectorImage, 0, 0, 50, 50)
         canvas.pop();
     }
 }
@@ -33,6 +35,7 @@ class Arrow extends Particle
             this.vel.heading(), 
             this.fill,
             1.5, 
-            this.canvas)
+            this.canvas,
+            this.image)
     }
 }

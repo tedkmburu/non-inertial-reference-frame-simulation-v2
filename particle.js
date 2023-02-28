@@ -67,7 +67,10 @@ class Particle
         this.showBorder = props.showBorder || false;
         this.visible = props.visible || true;
         this.trail = []
-        this.showForces = props.showForces || false;
+
+        this.showVelVector = props.showVelVector || false;
+        this.showCentVector = props.showCentVector || false;
+        this.showCorVector = props.showCorVector || false;
 
         this.text = props.text || "no text";
         this.font = props.font || regularFont;
@@ -148,34 +151,38 @@ class Particle
     displayForces()
     {   
         // vel
-        new Arrow({
+        let velVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
             vel: this.vel.copy().mult(100), 
             angle: this.vel.angle, 
             fill: "red", 
             canvas: this.canvas,
-            image: null,
-        }).display()
+            image: velImage,
+        })
 
         // cor
-        new Arrow({
+        let corVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
             vel: this.corForce.copy().mult(100), 
             angle: this.corForce.angle, 
             fill: "blue", 
             canvas: this.canvas,
-            image: null,
-        }).display()
+            image: corImage,
+        })
 
         // cent
-        new Arrow({
+        let centVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
             vel: this.centForce.copy().mult(100), 
             angle: this.centForce.angle, 
             fill: "green", 
             canvas: this.canvas,
-            image: null,
-        }).display()
+            image: centImage,
+        })
+
+        if (this.showVelVector)  velVector.display()
+        if (this.showCorVector)  corVector.display()
+        if (this.showCentVector) centVector.display()
 
         // console.log(this.corForce.mag(), this.centForce.mag());
             

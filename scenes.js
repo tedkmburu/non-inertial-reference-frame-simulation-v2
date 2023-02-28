@@ -56,6 +56,7 @@ function createLeftScenes(theCanvas)
                     size: new p5.Vector(25, 25, 0),
                     vel: new p5.Vector(20, -15, 0),
                     acc: new p5.Vector(0, 0.5, 0),
+                    showTrail: true,
                     canvas: theCanvas,
                 })
             ], 
@@ -143,7 +144,9 @@ function createLeftScenes(theCanvas)
                     size: new p5.Vector(25, 25, 0),
                     showTrail: true,
                     nonInertial: true,
-                    showForces: true,
+                    showVel: true,
+                    showCor: true,
+                    showCent: true,
                     canvas: theCanvas,
                 }),
             ], 
@@ -331,6 +334,7 @@ function createRightScenes(theCanvas)
                     size: new p5.Vector(25, 25, 0),
                     vel: new p5.Vector(20, -15, 0),
                     acc: new p5.Vector(0, 0.5, 0),
+                    showTrail: true,
                     canvas: theCanvas,
                 })
             ], 
@@ -424,7 +428,9 @@ function createRightScenes(theCanvas)
                     size: new p5.Vector(50, 50, 0),
                     showTrail: true,
                     nonInertial: true,
-                    showForces: true,
+                    showVel: true,
+                    showCor: true,
+                    showCent: true,
                     canvas: theCanvas,
                 }),
                 
