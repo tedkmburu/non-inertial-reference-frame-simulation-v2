@@ -12,7 +12,7 @@ class Shape extends Particle
     display()
     {
         this.canvas.push()
-            if (this.showForces) this.displayForces()   
+            if (this.showForces) this.displayForces()  
         this.canvas.pop()
 
         this.canvas.push()

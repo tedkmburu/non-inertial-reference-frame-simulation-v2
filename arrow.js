@@ -29,13 +29,12 @@ class Arrow extends Particle
 
     display()
     {
-        // createArrow(
-        //     this.pos, 
-        //     this.pos.copy().add(this.vel), 
-        //     this.vel.heading(), 
-        //     this.fill,
-        //     1.5, 
-        //     this.canvas,
-        //     this.image)
+        createArrow(
+            this.pos, 
+            this.pos.copy().add(this.vel), 
+            this.vel.heading(), 
+            this.fill,
+            1.5, 
+            this.canvas)
     }
 }
