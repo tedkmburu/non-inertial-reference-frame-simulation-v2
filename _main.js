@@ -4,7 +4,10 @@ const theFrameRate = 60;
 
 let landscape,
 canvasSize, 
-canvasPos;
+canvasPos,
+halfCanvas,
+quarterCanvas,
+backGroundImagePosition;
 
 let leftCanvas, rightCanvas, controlsCanvas, popUpCanvas
 
@@ -16,10 +19,12 @@ let popUps = []
 
 let leftTruckImage, leftBackgroundImage, 
 leftCannon1, leftCannon2, leftCannon3, 
-leftGrid, leftVelImage, leftCorImage, leftCentImage; 
+leftGrid, leftVelImage, leftCorImage, leftCentImage, leftBallImage; 
+
 let rightTruckImage, rightBackgroundImage, 
 rightCannon1, rightCannon2, rightCannon3, 
-rightGrid, rightVelImage, rightCorImage, rightCentImage;
+rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
+
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage;
 let closeImage;
 
@@ -44,7 +49,7 @@ const leftCanvasObject = canvas => {
     canvas.preload = function() 
     {
         leftTruckImage = canvas.loadImage('images/truck.png'); 
-        leftBackgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        leftBackgroundImage = canvas.loadImage('images/enviroment2.jpg'); 
         leftCannon1 = canvas.loadImage('images/cannon.png'); 
         leftCannon2 = canvas.loadImage('images/cannon2.png'); 
         leftCannon3 = canvas.loadImage('images/cannon3.png'); 
@@ -52,6 +57,7 @@ const leftCanvasObject = canvas => {
         leftVelImage = canvas.loadImage('images/vSmall.png');
         leftCorImage = canvas.loadImage('images/cor.png');
         leftCentImage = canvas.loadImage('images/cent.png');
+        leftBallImage = canvas.loadImage('images/ball.png');
         
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
@@ -122,7 +128,7 @@ const rightCanvasObject = canvas => {
     canvas.preload = function() 
     {
         rightTruckImage = canvas.loadImage('images/truck.png'); 
-        rightBackgroundImage = canvas.loadImage('images/enviroment2.png'); 
+        rightBackgroundImage = canvas.loadImage('images/enviroment2.jpg'); 
         rightCannon1 = canvas.loadImage('images/cannon.png'); 
         rightCannon2 = canvas.loadImage('images/cannon2.png'); 
         rightCannon3 = canvas.loadImage('images/cannon3.png'); 
@@ -130,6 +136,7 @@ const rightCanvasObject = canvas => {
         rightVelImage = canvas.loadImage('images/vSmall.png');
         rightCorImage = canvas.loadImage('images/cor.png');
         rightCentImage = canvas.loadImage('images/cent.png');
+        rightBallImage = canvas.loadImage('images/ball.png');
 
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
@@ -324,7 +331,7 @@ const controlMenu = canvas => {
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
-            // sceneControls()
+            if (canvasLoaded.every(canvasLoad => canvasLoad)) sceneControls()
             displayMenu(canvas)
             sliderInput()
         canvas.pop()
@@ -407,6 +414,10 @@ function getCanvasSize()
 
         sliderAngle = 0;
     }
+
+    halfCanvas = canvasSize[0].copy().div(2)
+    quarterCanvas = canvasSize[0].copy().div(4)
+    backGroundImagePosition = new p5.Vector(quarterCanvas.x, quarterCanvas.y * 1.07, 0)
 }
 
 

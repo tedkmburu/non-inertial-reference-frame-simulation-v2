@@ -227,12 +227,12 @@ function sliderInput()
         leftScenes[2].shapes[0].omega = new p5.Vector(0, 0, slider1Value)
         rightScenes[2].images[0].omega = new p5.Vector(0, 0, -slider1Value)
 
-        leftScenes[0].shapes[0].mass = slider2Value;
+        leftScenes[0].images[2].mass = slider2Value;
         leftScenes[1].shapes[0].mass = slider2Value;
         leftScenes[2].shapes[2].mass = slider2Value;
         leftScenes[2].shapes[3].mass = slider2Value;
 
-        rightScenes[0].shapes[0].mass = slider2Value;
+        rightScenes[0].images[2].mass = slider2Value;
         rightScenes[1].shapes[0].mass = slider2Value;
         rightScenes[2].shapes[2].mass = slider2Value;
         rightScenes[2].shapes[3].mass = slider2Value;

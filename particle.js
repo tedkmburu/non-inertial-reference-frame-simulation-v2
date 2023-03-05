@@ -61,6 +61,7 @@ class Particle
 
         this.offset = props.offset || new p5.Vector(0, 0, 0)
         this.startingOffset = props.offset || new p5.Vector(0, 0, 0)
+        this.displacement = props.displacement || 0; 
 
         this.bounces = 0;
         this.showTrail = props.showTrail || false;
@@ -142,10 +143,12 @@ class Particle
             this.angle.sub(this.omega).sub(this.referenceFrame.omega);
         }
 
-        if (this.canvas.frameCount % 10 == 0 && this.showTrail) 
+        if (this.canvas.frameCount % 5 == 0 && this.showTrail) 
         {
             this.trail.push(this.pos.copy().add(this.offset))
         }
+
+        this.displacement = this.pos.copy().sub(this.startingPos).mag()
     }
 
     displayForces()
