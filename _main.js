@@ -33,7 +33,7 @@ let currentPopUp = 0;
 
 let playState = true;
 let playBackwards = false;
-let popUpVisible = false;
+let popUpVisible = true;
 
 let buttons = []
 let buttonPositions = []

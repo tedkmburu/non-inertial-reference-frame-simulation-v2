@@ -145,7 +145,8 @@ class Particle
             this.angle.sub(this.omega).sub(this.referenceFrame.omega);
         }
 
-        if (this.canvas.frameCount % 5 == 0 && this.showTrail) 
+        let trailRate = (currentScene > 2) ? 10 : 5; 
+        if (this.canvas.frameCount % trailRate == 0 && this.showTrail) 
         {
             this.trail.push(this.pos.copy().add(this.offset))
 

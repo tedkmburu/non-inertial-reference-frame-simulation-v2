@@ -27,6 +27,7 @@ class Shape extends Particle
                         if (!this.nonInertial)
                         {
                             this.canvas.fill("red")
+                            this.canvas.stroke("red")
                             this.canvas.rotate(leftScenes[2].shapes[0].angle.z / 57)
                             this.trail2.forEach(dot => {
                             this.canvas.ellipse(dot.x, dot.y, 5, 5)

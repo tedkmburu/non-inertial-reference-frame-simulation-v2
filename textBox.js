@@ -14,7 +14,6 @@ class TextBox extends Particle
 
             if (this.showBorder) this.canvas.rect(0, 0, this.size.x, this.size.y)
             this.canvas.text(this.text, 0, 0, this.size.x, this.size.y)
-                
             
         this.canvas.pop()
     }

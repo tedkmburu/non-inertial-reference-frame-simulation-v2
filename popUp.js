@@ -4,8 +4,10 @@ function createPopUps(canvas)
         canvas: canvas,
         textBoxes: [
             new TextBox({
-                text: "asdf",
+                text: "The same physical situation can look different depending on the reference frame it is viewed from",
                 fill: "black",
+                size: new p5.Vector(innerWidth * 0.5, innerHeight * 0.5, 0),
+                textSize: 30,
                 canvas: canvas,
             })
         ],
@@ -13,10 +15,29 @@ function createPopUps(canvas)
             new Button({
                 text: "Close", 
                 image: closeImage,
-                pos: new p5.Vector(400, 0),
-                size: new p5.Vector(25, 25),
+                pos: new p5.Vector(250, -250),
+                size: new p5.Vector(125, 25),
+                fill: "rgba(255, 0, 0, 1)",
+                showBorder: true,
+                showText: true,
+                textSize: 24,
                 canvas: canvas,
                 onClick: () => {
+                    popUpVisible = false;
+                }
+            }), 
+            new Button({
+                text: "Next", 
+                image: closeImage,
+                pos: new p5.Vector(0, 0),
+                size: new p5.Vector(125, 25),
+                fill: "#5BBCC0",
+                showBorder: true,
+                showText: true,
+                textSize: 24,
+                canvas: canvas,
+                onClick: () => {
+                    currentScene++;
                     popUpVisible = false;
                 }
             }), 
@@ -38,7 +59,7 @@ class PopUp
         this.images = props.images || []
         this.shapes = props.shapes || []
         
-        this.fill = props.fill || "rgba(255, 255, 255, 0.95)";
+        this.fill = props.fill || "rgba(255, 255, 255, 0.97)";
         this.stroke = props.stroke || "black";
         this.canvas = props.canvas;
     }

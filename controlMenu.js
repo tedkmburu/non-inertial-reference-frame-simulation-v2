@@ -120,17 +120,13 @@ function createMenu(canvas)
     // sliderInput()
 }
 
-let aasdf = 0;
-
 function displayMenu(canvas)
 {
-    aasdf++
     controlMenuButtons[currentScene].forEach(button => {
         button.display()
-        if (playState) button.move()
+        if (playState && !popUpVisible) button.move()
     })
 
-    
     if (playState) controlMenuButtons[currentScene][1].image = pauseImage
     else controlMenuButtons[currentScene][1].image = playImage
 
@@ -162,7 +158,8 @@ function checkButtonClick(canvas)
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
             mousePosition.y > button.pos.y - (button.size.y / 2) &&
-            mousePosition.y < button.pos.y + (button.size.y / 2))
+            mousePosition.y < button.pos.y + (button.size.y / 2) && 
+            !popUpVisible)
             {
                 button.clicked()
             }
@@ -174,7 +171,8 @@ function checkButtonClick(canvas)
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
             mousePosition.y > button.pos.y - (button.size.y / 2) &&
-            mousePosition.y < button.pos.y + (button.size.y / 2))
+            mousePosition.y < button.pos.y + (button.size.y / 2) && 
+            popUpVisible)
             {
                 button.clicked()
             }
@@ -199,9 +197,11 @@ function checkMenuButtonHover(canvas)
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
             mousePosition.y > button.pos.y - (button.size.y / 2) &&
-            mousePosition.y < button.pos.y + (button.size.y / 2))
+            mousePosition.y < button.pos.y + (button.size.y / 2) &&
+            !popUpVisible)
             {
                 button.hover()
+                // this.canvas.cursor("pointer")
             }
     })
 }
@@ -261,6 +261,8 @@ function sliderInput()
         rightScenes[0].images[2].mass = slider2Value;
         rightScenes[1].shapes[0].mass = slider2Value;
         rightScenes[2].shapes[2].mass = slider2Value;
+
+        controlMenuButtons[2][3].omega.z = slider1Value;
     }
 
     // console.log(slider1Value, slider2Value);

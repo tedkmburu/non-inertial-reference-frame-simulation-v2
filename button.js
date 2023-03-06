@@ -17,6 +17,7 @@ class Button extends Particle
 
         this.hovering = false;
         this.hoverText = props.hoverText;
+        this.showText = props.showText || false;  
 
         this.onClick = props.onClick;
         this.reset()
@@ -28,16 +29,27 @@ class Button extends Particle
 
             prepareCanvas(this)
 
-            if (this.showBorder && this.visible) this.canvas.rect(0, 0, this.size.x, this.size.y)
+            if (this.showBorder && this.visible && !this.showText) this.canvas.rect(0, 0, this.size.x, this.size.y)
 
-            if (this.image != undefined && this.visible) this.canvas.image(this.image, 0, 0, this.size.x, this.size.y)
+            if (this.image != undefined && this.visible && !this.showText) this.canvas.image(this.image, 0, 0, this.size.x, this.size.y)
 
-            if (this.text != undefined && this.visible && this.image == undefined) 
+            if (this.text != undefined && this.visible && this.image == undefined && !this.showText) 
             {
                 this.canvas.fill(this.stroke)
                 this.canvas.stroke(this.stroke)
                 let imageOffset = new p5.Vector(0, 10, 0)
                 this.canvas.text(this.text, 0, 0, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+            }
+
+            if (this.text != undefined && this.showText && this.visible && this.showBorder)
+            {
+                this.canvas.rect(35, 0, this.size.x, this.size.y + 20)
+                this.canvas.fill(this.stroke)
+                this.canvas.stroke(this.stroke)
+
+                let imageOffset = new p5.Vector(55, 40, 0)
+                this.canvas.image(this.image, 0, 0, this.size.y, this.size.y)
+                this.canvas.text(this.text, imageOffset.x, imageOffset.y, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
             }
 
         this.canvas.pop()  
