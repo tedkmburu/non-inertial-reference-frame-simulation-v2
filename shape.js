@@ -12,10 +12,6 @@ class Shape extends Particle
     display()
     {
         this.canvas.push()
-            if (this.showForces) this.displayForces()  
-        this.canvas.pop()
-
-        this.canvas.push()
             this.canvas.ellipseMode(this.canvas.CENTER)
             if (this.showTrail) 
             {
@@ -27,6 +23,16 @@ class Shape extends Particle
                         this.trail.forEach(dot => {
                             this.canvas.ellipse(dot.x, dot.y, 5, 5)
                         }) 
+
+                        if (!this.nonInertial)
+                        {
+                            this.canvas.fill("red")
+                            this.canvas.rotate(leftScenes[2].shapes[0].angle.z / 57)
+                            this.trail2.forEach(dot => {
+                            this.canvas.ellipse(dot.x, dot.y, 5, 5)
+                            }) 
+                        }
+                        
                     break;
                     default:
                         // prepareCanvas(this)

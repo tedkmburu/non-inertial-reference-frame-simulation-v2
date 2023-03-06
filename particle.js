@@ -68,6 +68,7 @@ class Particle
         this.showBorder = props.showBorder || false;
         this.visible = props.visible || true;
         this.trail = []
+        this.trail2 = []
 
         this.showVelVector = props.showVelVector || false;
         this.showCentVector = props.showCentVector || false;
@@ -104,22 +105,23 @@ class Particle
 
         this.bounces = 0;
         this.trail = []
+        this.trail2 = []
 
         this.size.mult(this.scaleFactor)
     }
 
     move()
     {
-        
         if (this.nonInertial && this.canvas.frameCount > 2)
         {
             this.acc = new p5.Vector(0, 0, 0)
             // calculate the Coriolis and centrifugal forces for a particle
-            let omega = rightScenes[2].images[0].omega.copy().mult(-1)
+            let omega = rightScenes[2].images[0].omega.copy().mult(0.005)
             this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
             let rho = this.pos.copy();
             rho.z = 0
             // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
+            omega = rightScenes[2].images[0].omega.copy().mult(0.005)
             this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
 
             // combine the Coriolis and centrifugal forces and divide by mass to get net force
@@ -146,13 +148,27 @@ class Particle
         if (this.canvas.frameCount % 5 == 0 && this.showTrail) 
         {
             this.trail.push(this.pos.copy().add(this.offset))
+
+            let newPosition = this.pos.copy()
+            
+            let angleInRadians = this.canvas.radians(leftScenes[2].shapes[0].angle.copy().mult(-1).z)
+            let rectPosition = newPosition.rotate(angleInRadians)
+            // console.log(-leftScenes[2].images[0].angle);
+            // this.rectangle.previousPositions.push(rectPosition)
+
+            this.trail2.push(newPosition)
         }
 
         this.displacement = this.pos.copy().sub(this.startingPos).mag()
     }
 
-    displayForces()
+    displayForces(leftOrRight)
     {   
+
+        let velImage = (leftOrRight == "left") ? leftVelImage : rightVelImage;
+        let corImage = (leftOrRight == "left") ? leftCorImage : rightCorImage;
+        let centImage = (leftOrRight == "left") ? leftCentImage : rightCentImage;
+
         // vel
         let velVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
@@ -160,26 +176,29 @@ class Particle
             angle: this.vel.angle, 
             fill: "red", 
             canvas: this.canvas,
+            scaleFactor: 1.5,
             image: velImage,
         })
 
         // cor
         let corVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
-            vel: this.corForce.copy().mult(100), 
+            vel: this.corForce.copy().mult(5000), 
             angle: this.corForce.angle, 
             fill: "blue", 
             canvas: this.canvas,
+            scaleFactor: 1.5,
             image: corImage,
         })
 
         // cent
         let centVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
-            vel: this.centForce.copy().mult(100), 
+            vel: this.centForce.copy().mult(100000), 
             angle: this.centForce.angle, 
             fill: "green", 
             canvas: this.canvas,
+            scaleFactor: 1.5,
             image: centImage,
         })
 

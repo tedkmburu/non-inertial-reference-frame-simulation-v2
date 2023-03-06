@@ -4,7 +4,7 @@ function createArrow(start, end, angle, color, scale, canvas, vectorImage)
     {
         canvas.push();
             canvas.stroke(color);
-            canvas.strokeWeight(scale * 4);
+            canvas.strokeWeight(3 * scale);
             canvas.noFill();
             canvas.line(start.x, start.y, end.x, end.y);
 
@@ -12,9 +12,11 @@ function createArrow(start, end, angle, color, scale, canvas, vectorImage)
             canvas.angleMode(canvas.RADIANS);
             canvas.rotate(angle);
             canvas.fill(color);
+            canvas.noStroke()
 
             canvas.triangle(0, 0, -10 * scale, -5 * scale, -10 * scale, 5 * scale);
 
+            canvas.rotate(-angle);
             canvas.image(vectorImage, 0, 0, 50, 50)
         canvas.pop();
     }
@@ -34,7 +36,8 @@ class Arrow extends Particle
             this.pos.copy().add(this.vel), 
             this.vel.heading(), 
             this.fill,
-            1.5, 
-            this.canvas)
+            this.scaleFactor, 
+            this.canvas,
+            this.image)
     }
 }

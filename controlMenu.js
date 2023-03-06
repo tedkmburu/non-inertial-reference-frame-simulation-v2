@@ -14,7 +14,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Rewind", 
         image: rewindImage,
-        pos: new p5.Vector(buttonPositions[3].x, buttonPositions[3].y),
+        pos: new p5.Vector(buttonPositions[0].x, buttonPositions[0].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -44,7 +44,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Play/Pause", 
         image: pauseImage,
-        pos: new p5.Vector(buttonPositions[4].x, buttonPositions[4].y),
+        pos: new p5.Vector(buttonPositions[1].x, buttonPositions[1].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -55,7 +55,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Restart", 
         image: restartImage,
-        pos: new p5.Vector(buttonPositions[5].x, buttonPositions[5].y),
+        pos: new p5.Vector(buttonPositions[2].x, buttonPositions[2].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
         onClick: () => {
@@ -82,15 +82,16 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Omega", 
         image: omegaImage,
-        pos: new p5.Vector(buttonPositions[6].x, buttonPositions[6].y),
+        pos: new p5.Vector(buttonPositions[3].x, buttonPositions[3].y),
         size: new p5.Vector(50, 50),
+        omega: new p5.Vector(0, 0, 0.5),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
         text: "Mass", 
         image: massImage,
-        pos: new p5.Vector(buttonPositions[8].x, buttonPositions[8].y),
+        pos: new p5.Vector(buttonPositions[5].x, buttonPositions[5].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -98,7 +99,7 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Help", 
         image: helpImage,
-        pos: new p5.Vector(buttonPositions[10].x, buttonPositions[10].y),
+        pos: new p5.Vector(buttonPositions[7].x, buttonPositions[7].y),
         size: new p5.Vector(50, 50),
         canvas: canvas,
     }))
@@ -119,11 +120,16 @@ function createMenu(canvas)
     // sliderInput()
 }
 
+let aasdf = 0;
+
 function displayMenu(canvas)
 {
+    aasdf++
     controlMenuButtons[currentScene].forEach(button => {
         button.display()
+        if (playState) button.move()
     })
+
     
     if (playState) controlMenuButtons[currentScene][1].image = pauseImage
     else controlMenuButtons[currentScene][1].image = playImage
@@ -140,7 +146,17 @@ function displayMenu(canvas)
 
 function checkButtonClick(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
+    let mousePosition;
+
+    if (landscape)
+    {
+        mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector(60, (innerHeight / 2) - 30, 0))
+    }
+    else
+    {
+        mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
+    }
+
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
@@ -150,6 +166,8 @@ function checkButtonClick(canvas)
             {
                 button.clicked()
             }
+
+            
     })
 
     popUps[currentPopUp].buttons.forEach(button => {
@@ -165,7 +183,17 @@ function checkButtonClick(canvas)
 
 function checkMenuButtonHover(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
+    let mousePosition;
+
+    if (landscape)
+    {
+        mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector(60, (innerHeight / 2) - 30, 0))
+    }
+    else
+    {
+        mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY, 0).sub(new p5.Vector((innerWidth * 0.9) / 2, 50, 0))
+    }
+
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
@@ -180,15 +208,15 @@ function checkMenuButtonHover(canvas)
 
 function getControlButtonPositions()
 {
-    let numberOfButtons = 13;
+    let numberOfButtons = 10;
     let buttonPositions = [];
-    let screenSize = (landscape)? innerWidth : innerHeight;
+    let screenSize = (landscape)? innerHeight : innerWidth;
     let intervalSize = screenSize / numberOfButtons;
 
     for (let i = 0; i < numberOfButtons; i++) 
     {
 
-        let pos = (i * intervalSize) - (screenSize / 2)
+        let pos = (i * intervalSize) - (screenSize / 2) + (screenSize * 0.15)
         if (landscape)
         {
             buttonPositions.push(new p5.Vector(0, pos))
@@ -197,7 +225,6 @@ function getControlButtonPositions()
         {
             buttonPositions.push(new p5.Vector(pos, 0))
         }
-        
     }
 
     return buttonPositions;
@@ -230,12 +257,10 @@ function sliderInput()
         leftScenes[0].images[2].mass = slider2Value;
         leftScenes[1].shapes[0].mass = slider2Value;
         leftScenes[2].shapes[2].mass = slider2Value;
-        leftScenes[2].shapes[3].mass = slider2Value;
 
         rightScenes[0].images[2].mass = slider2Value;
         rightScenes[1].shapes[0].mass = slider2Value;
         rightScenes[2].shapes[2].mass = slider2Value;
-        rightScenes[2].shapes[3].mass = slider2Value;
     }
 
     // console.log(slider1Value, slider2Value);

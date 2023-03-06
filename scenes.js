@@ -16,7 +16,7 @@ function createLeftScenes(theCanvas)
                 new MyImage({
                     image: leftTruckImage,
                     pos: new p5.Vector(0, 70, 1),
-                    vel: new p5.Vector(5, 0, 0),
+                    vel: initialContitions[0].vel,
                     scaleFactor: 0.1,
                     canvas: theCanvas,
                 }),
@@ -24,7 +24,7 @@ function createLeftScenes(theCanvas)
                     image: leftBallImage,
                     pos: new p5.Vector(0, 55, 1),
                     size: new p5.Vector(25, 25, 2),
-                    omega: new p5.Vector(0, 0, -2),
+                    omega: initialContitions[0].omega,
                     scaleFactor: 1.9,
                     canvas: theCanvas,
                 })
@@ -53,8 +53,8 @@ function createLeftScenes(theCanvas)
                     stroke: "gray",
                     pos: new p5.Vector(-140, -60, 2),
                     size: new p5.Vector(25, 25, 0),
-                    vel: new p5.Vector(15, -10, 0),
-                    acc: new p5.Vector(0, 0.5, 0),
+                    vel: initialContitions[1].vel,
+                    acc: initialContitions[1].acc,
                     showTrail: true,
                     canvas: theCanvas,
                 })
@@ -111,8 +111,8 @@ function createLeftScenes(theCanvas)
                     fill: "white",
                     stroke: "black",
                     pos: new p5.Vector(0, 0, -9),
-                    size: new p5.Vector(600, 600, 1),
-                    omega: new p5.Vector(0, 0, 0.5),
+                    size: initialContitions[2].tableSize,
+                    omega: initialContitions[2].omega,
                     canvas: theCanvas,
                 }),
                 new Shape({
@@ -127,27 +127,13 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: "red",
                     stroke: "black",
-                    pos: new p5.Vector(0, -150, -5),
-                    vel: new p5.Vector(1, 1, 0),
-                    size: new p5.Vector(25, 25, 0),
+                    pos: initialContitions[2].pos,
+                    vel: initialContitions[2].vel,
+                    size: initialContitions[2].ballSize,
                     showTrail: true,
-                    showForces: true,
+                    showVelVector: true,
                     canvas: theCanvas,
-                }),
-                new Shape({
-                    shape: "ellipse",
-                    fill: "red",
-                    stroke: "black",
-                    pos: new p5.Vector(0, -150, -5),
-                    vel: new p5.Vector(1, 1, 0),
-                    size: new p5.Vector(25, 25, 0),
-                    showTrail: true,
-                    nonInertial: true,
-                    showVel: true,
-                    showCor: true,
-                    showCent: true,
-                    canvas: theCanvas,
-                }),
+                })
             ], 
             images: [
                 new MyImage({
@@ -202,6 +188,10 @@ function createLeftScenes(theCanvas)
             }),
         ]
     }))
+
+    leftScenes.forEach(scene => {
+        scene.leftOrRight = "left"
+    })
 }
 
 
@@ -279,7 +269,7 @@ function createRightScenes(theCanvas)
     // scene 1
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                vel: new p5.Vector(-5, 0, 0),
+                vel: initialContitions[0].vel.copy().mult(-1),
                 canvas: theCanvas,
             }),
             shapes: [], 
@@ -293,7 +283,7 @@ function createRightScenes(theCanvas)
                 new MyImage({
                     image: rightTruckImage,
                     pos: new p5.Vector(300, 70, 1),
-                    vel: new p5.Vector(5, 0, 0),
+                    vel: initialContitions[0].vel,
                     scaleFactor: 0.1,
                     canvas: theCanvas,
                 }),
@@ -301,7 +291,7 @@ function createRightScenes(theCanvas)
                     image: rightBallImage,
                     pos: new p5.Vector(300, 55, 2),
                     size: new p5.Vector(25, 25, 0),
-                    omega: new p5.Vector(0, 0, -2),
+                    omega: initialContitions[0].omega,
                     scaleFactor: 1.9,
                     canvas: theCanvas,
                 })
@@ -320,7 +310,8 @@ function createRightScenes(theCanvas)
     // scene 2
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                vel: new p5.Vector(-15, 0, 0),
+                vel: initialContitions[1].vel.copy().mult(-1),
+                acc: initialContitions[1].acc.copy().mult(-1),
                 canvas: theCanvas,
             }),
             shapes: [
@@ -330,8 +321,8 @@ function createRightScenes(theCanvas)
                     stroke: "gray",
                     pos: new p5.Vector(160, -60, 3),
                     size: new p5.Vector(25, 25, 0),
-                    vel: new p5.Vector(15, -10, 0),
-                    acc: new p5.Vector(0, 0.5, 0),
+                    vel: initialContitions[1].vel,
+                    acc: initialContitions[1].acc,
                     showTrail: true,
                     canvas: theCanvas,
                 })
@@ -389,8 +380,8 @@ function createRightScenes(theCanvas)
                     shape: "box",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, -9),
-                    size: new p5.Vector(600, 600, 1),
+                    pos: new p5.Vector(0, 0, -1),
+                    size: initialContitions[2].tableSize,
                     // omega: new p5.Vector(0, 0, 0.5),
                     omega: new p5.Vector(0, 0, 0),
                     canvas: theCanvas,
@@ -399,7 +390,7 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: "white",
                     stroke: "black",
-                    pos: new p5.Vector(0, 0, -7),
+                    pos: new p5.Vector(0, 0, 2),
                     size: new p5.Vector(25, 25, 0),
                     canvas: theCanvas,
                 }),
@@ -407,38 +398,26 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: "red",
                     stroke: "black",
-                    pos: new p5.Vector(0, -200, -5),
+                    pos: initialContitions[2].pos,
                     // offset: new p5.Vector(0, -200, 0),
-                    vel: new p5.Vector(1, 1, 0),
-                    size: new p5.Vector(50, 50, 0),
+                    vel: initialContitions[2].vel,
+                    size: initialContitions[2].ballSize,
                     // omega: new p5.Vector(0, 0, 0.5),
-                    showForces: true,
+                    showVelVector: true,
+                    showCorVector: true,
+                    showCentVector: true,
                     nonInertial: true,
                     showTrail: true,
                     canvas: theCanvas,
-                }),
-                new Shape({
-                    shape: "ellipse",
-                    fill: "blue",
-                    stroke: "black",
-                    pos: new p5.Vector(0, -200, -5),
-                    vel: new p5.Vector(1, 1, 0),
-                    size: new p5.Vector(50, 50, 0),
-                    showTrail: true,
-                    nonInertial: true,
-                    showVel: true,
-                    showCor: true,
-                    showCent: true,
-                    canvas: theCanvas,
-                }),
+                })
                 
             ], 
             images: [
                 new MyImage({
                     image: rightGrid,
                     scaleFactor: 1,
-                    omega: new p5.Vector(0, 0, -0.5),
-                    pos: new p5.Vector(0, 0, -10),
+                    omega: initialContitions[2].omega.copy().mult(-1),
+                    pos: new p5.Vector(0, 0, -1),
                     canvas: theCanvas,
                 }),
             ]
@@ -490,6 +469,10 @@ function createRightScenes(theCanvas)
             }),
         ]
     }))
+
+    rightScenes.forEach(scene => {
+        scene.leftOrRight = "right"
+    })
 }
 
 class Scene
@@ -502,6 +485,7 @@ class Scene
         this.referenceFrame = props.referenceFrame;
         this.backGround = props.backGround || "blue";
         this.canvas = props.canvas;
+        this.leftOrRight;
     }
 
     display()
@@ -515,6 +499,7 @@ class Scene
         this.shapes.forEach(shape => {
             shape.referenceFrame = this.referenceFrame;
             if (playState && !popUpVisible) shape.move()
+            shape.displayForces(this.leftOrRight) 
             shape.display()
         });
 

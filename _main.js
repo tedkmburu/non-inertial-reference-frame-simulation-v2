@@ -44,6 +44,8 @@ let sliderDefaults = []
 
 let regularFont, boldFont, thinFont;
 
+let initialContitions = [];
+
 
 const leftCanvasObject = canvas => {
     canvas.preload = function() 
@@ -278,7 +280,7 @@ const controlMenu = canvas => {
         pauseImage = canvas.loadImage("images/pause.png");
         playImage = canvas.loadImage("images/play.png");
         restartImage = canvas.loadImage("images/restart.png");
-        omegaImage = canvas.loadImage("images/omega.png");
+        omegaImage = canvas.loadImage("images/rotate.png");
         massImage = canvas.loadImage("images/mass.png");
         helpImage = canvas.loadImage("images/info.png");
         speedImage = canvas.loadImage("images/speed.png");
@@ -289,6 +291,7 @@ const controlMenu = canvas => {
         thinFont = canvas.loadFont("fonts/Roboto-Light.ttf")
 
         getCanvasSize()
+        createInitialConditions()
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
@@ -300,14 +303,24 @@ const controlMenu = canvas => {
         controlsCanvas.style("borderRadius", "50px")
 
         buttonPositions = getControlButtonPositions()
+        let sliderWidth = getSliderWidth()
+
         let canvasLength = (landscape) ? innerWidth : innerHeight
         // let sliderOffset = (canvasLength / 2) + 30
         let sliderOffset = 0
 
-        let slider1Pos = new p5.Vector(buttonPositions[5].x + (innerWidth / 1.575), (innerHeight / 2) - 12)
-        let slider2Pos = new p5.Vector(buttonPositions[7].x + (innerWidth / 1.575), (innerHeight / 2) - 12)
+        let slider1Pos, slider2Pos;
 
-        console.log(slider1Pos, slider2Pos);
+        if (landscape)
+        {
+            slider1Pos = new p5.Vector((innerWidth / 2) - 40, buttonPositions[3].y + (canvasLength / 2) - 10)
+            slider2Pos = new p5.Vector((innerWidth / 2) - 40, buttonPositions[5].y + (canvasLength / 2) - 10)
+        }
+        else
+        {
+            slider1Pos = new p5.Vector(buttonPositions[3].x + (canvasLength / 2) + 10, (innerHeight / 2) - 12)
+            slider2Pos = new p5.Vector(buttonPositions[3].x + (canvasLength / 2) + 10, (innerHeight / 2) - 12)
+        }
 
         slider1 = canvas.createSlider(-1, 1, 0, 0.05);
         slider1.position(slider1Pos.x, slider1Pos.y);
