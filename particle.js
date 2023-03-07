@@ -181,7 +181,7 @@ class Particle
             fill: "red", 
             canvas: this.canvas,
             scaleFactor: 1.5,
-            image: velImage,
+            image: velImage
         })
 
         // cor
@@ -192,7 +192,7 @@ class Particle
             fill: "blue", 
             canvas: this.canvas,
             scaleFactor: 1.5,
-            image: corImage,
+            image: corImage
         })
 
         // cent
@@ -203,14 +203,11 @@ class Particle
             fill: "green", 
             canvas: this.canvas,
             scaleFactor: 1.5,
-            image: centImage,
+            image: centImage
         })
 
         if (this.showVelVector)  velVector.display()
         if (this.showCorVector)  corVector.display()
         if (this.showCentVector) centVector.display()
-
-        // console.log(this.corForce.mag(), this.centForce.mag());
-            
     }
 }

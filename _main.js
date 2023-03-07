@@ -29,10 +29,10 @@ rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage, velImage;
 let closeImage;
 
-let currentScene = 2;
+let currentScene = 3;
 let currentPopUp = 0;
 
-let playState = true;
+let playState = false;
 let playBackwards = false;
 let popUpVisible = false;
 
