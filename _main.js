@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 const theFrameRate = 60; 
 
@@ -14,6 +14,7 @@ let leftCanvas, rightCanvas, controlsCanvas, popUpCanvas
 let leftScenes = []
 let rightScenes = []
 let canvasLoaded = [false, false, false, false]
+let everyCanvasLoaded = false; 
 
 let popUps = []
 
@@ -25,7 +26,7 @@ let rightTruckImage, rightBackgroundImage,
 rightCannon1, rightCannon2, rightCannon3, 
 rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 
-let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage;
+let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage, velImage;
 let closeImage;
 
 let currentScene = 2;
@@ -33,7 +34,7 @@ let currentPopUp = 0;
 
 let playState = true;
 let playBackwards = false;
-let popUpVisible = true;
+let popUpVisible = false;
 
 let buttons = []
 let buttonPositions = []
@@ -305,7 +306,7 @@ const controlMenu = canvas => {
         buttonPositions = getControlButtonPositions()
         let sliderWidth = getSliderWidth()
 
-        let canvasLength = (landscape) ? innerWidth : innerHeight
+        let canvasLength = (landscape) ? innerHeight: innerWidth
         // let sliderOffset = (canvasLength / 2) + 30
         let sliderOffset = 0
 
@@ -313,8 +314,8 @@ const controlMenu = canvas => {
 
         if (landscape)
         {
-            slider1Pos = new p5.Vector((innerWidth / 2) - 40, buttonPositions[3].y + (canvasLength / 2) - 10)
-            slider2Pos = new p5.Vector((innerWidth / 2) - 40, buttonPositions[5].y + (canvasLength / 2) - 10)
+            slider1Pos = new p5.Vector((innerWidth / 2) - 35, buttonPositions[4].y + (canvasLength / 2) - 10)
+            slider2Pos = new p5.Vector((innerWidth / 2) - 35, buttonPositions[6].y + (canvasLength / 2) - 10)
         }
         else
         {

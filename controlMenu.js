@@ -22,20 +22,24 @@ function createMenu(canvas)
             leftScenes.forEach(scene => {
                 scene.shapes.forEach(shape => {
                     shape.trail = []
+                    shape.trail2 = []
                 })
 
                 scene.images.forEach(myImage => {
                     myImage.trail = []
+                    myImage.trail2 = []
                 })
             })
 
             rightScenes.forEach(scene => {
                 scene.shapes.forEach(shape => {
                     shape.trail = []
+                    shape.trail2 = []
                 })
 
                 scene.images.forEach(myImage => {
                     myImage.trail = []
+                    myImage.trail2 = []
                 })
             })
         }
@@ -233,7 +237,7 @@ function getControlButtonPositions()
 function getSliderWidth()
 {
     let numberOfButtons = 13;
-    let screenSize = (landscape)? innerWidth : innerHeight;
+    let screenSize = (landscape) ? innerHeight : innerWidth;
     let intervalSize = screenSize / numberOfButtons;
     intervalSize *= 1.2
 

@@ -400,7 +400,7 @@ function createRightScenes(theCanvas)
                     stroke: "black",
                     pos: initialContitions[2].pos,
                     // offset: new p5.Vector(0, -200, 0),
-                    vel: initialContitions[2].vel,
+                    // vel: initialContitions[2].vel,
                     size: initialContitions[2].ballSize,
                     // omega: new p5.Vector(0, 0, 0.5),
                     showVelVector: true,

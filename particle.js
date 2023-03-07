@@ -86,6 +86,8 @@ class Particle
         this.centForce = new p5.Vector(0, 0, 0);
         this.corForce = new p5.Vector(0, 0, 0);
 
+        this.previousPosition = this.pos.copy()
+
         this.reset()
     }
 
@@ -104,8 +106,8 @@ class Particle
         this.angularAcc = this.startingAngularAcc.copy()
 
         this.bounces = 0;
-        this.trail = []
-        this.trail2 = []
+        this.trail = [this.pos.copy()]
+        this.trail2 = [this.pos.copy()]
 
         this.size.mult(this.scaleFactor)
     }
@@ -128,6 +130,7 @@ class Particle
             this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
         }
 
+        this.previousPosition = this.pos.copy()
         if (!playBackwards) 
         {
             this.vel.add(this.acc).add(this.referenceFrame.acc);
