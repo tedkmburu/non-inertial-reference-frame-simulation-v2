@@ -101,11 +101,33 @@ function createMenu(canvas)
     }))
 
     baseButtons.push(new Button({
-        text: "Help", 
+        text: "Next", 
         image: helpImage,
         pos: new p5.Vector(buttonPositions[7].x, buttonPositions[7].y),
-        size: new p5.Vector(50, 50),
+        size: new p5.Vector(45, 50),
         canvas: canvas,
+        onClick: () => {
+            if (currentScene < 3) currentScene++;
+            else currentScene = 0;
+
+            leftScenes.forEach(scene => {
+                scene.shapes.forEach(shape => {
+                    shape.reset()
+                })
+                scene.images.forEach(image => {
+                    image.reset()
+                })
+            })
+
+            rightScenes.forEach(scene => {
+                scene.shapes.forEach(shape => {
+                    shape.reset()
+                })
+                scene.images.forEach(image => {
+                    image.reset()
+                })
+            })
+        }
     }))
 
     controlMenuButtons.push(baseButtons)

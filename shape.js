@@ -35,6 +35,7 @@ class Shape extends Particle
                         }
                         
                     break;
+                    
                     default:
                         // prepareCanvas(this)
                         

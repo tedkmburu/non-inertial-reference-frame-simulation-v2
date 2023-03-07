@@ -29,10 +29,10 @@ rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage, velImage;
 let closeImage;
 
-let currentScene = 3;
+let currentScene = 2;
 let currentPopUp = 0;
 
-let playState = false;
+let playState = true;
 let playBackwards = false;
 let popUpVisible = false;
 
@@ -283,7 +283,7 @@ const controlMenu = canvas => {
         restartImage = canvas.loadImage("images/restart.png");
         omegaImage = canvas.loadImage("images/rotate.png");
         massImage = canvas.loadImage("images/mass.png");
-        helpImage = canvas.loadImage("images/info.png");
+        helpImage = canvas.loadImage("images/next.svg");
         speedImage = canvas.loadImage("images/speed.png");
         velImage = canvas.loadImage("images/v.png");
         

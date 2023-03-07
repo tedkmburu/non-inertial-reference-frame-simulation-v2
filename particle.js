@@ -1,12 +1,12 @@
 function prepareCanvas(props)
 {
     // console.log(props);
-    props.canvas.translate(props.pos.x, props.pos.y, props.pos.z)
+    props.canvas.translate(props.pos)
     props.canvas.angleMode(props.canvas.DEGREES)
     props.canvas.rotateX(props.angle.x)
     props.canvas.rotateY(props.angle.y)
     props.canvas.rotateZ(props.angle.z)
-    props.canvas.translate(props.offset.x, props.offset.y, props.offset.z)
+    props.canvas.translate(props.offset)
     props.canvas.fill(props.fill)
     props.canvas.stroke(props.stroke)
     props.canvas.rectMode(props.canvas.CENTER)
@@ -109,6 +109,8 @@ class Particle
         this.trail = [this.pos.copy()]
         this.trail2 = [this.pos.copy()]
 
+        this.displacement = 0;
+
         this.size.mult(this.scaleFactor)
     }
 
@@ -162,6 +164,11 @@ class Particle
 
             this.trail2.push(newPosition)
         }
+
+        // if (this.canvas.frameCount % 10 == 0 && this.showTrail) 
+        // {
+        //     this.trail.push(this.pos.copy())
+        // }
 
         this.displacement = this.pos.copy().sub(this.startingPos).mag()
     }
