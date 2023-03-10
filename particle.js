@@ -116,7 +116,7 @@ class Particle
 
     move()
     {
-        if (this.nonInertial && this.canvas.frameCount > 2)
+        if (this.nonInertial && this.canvas.frameCount > 2 && currentScene == 2)
         {
             this.acc = new p5.Vector(0, 0, 0)
             // calculate the Coriolis and centrifugal forces for a particle
@@ -127,6 +127,27 @@ class Particle
             // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
             omega = rightScenes[2].images[0].omega.copy().mult(0.005)
             this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
+            
+            // combine the Coriolis and centrifugal forces and divide by mass to get net force
+            this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
+        }
+        else if (this.nonInertial && this.canvas.frameCount > 2 && currentScene == 3)
+        {
+            this.acc = new p5.Vector(0, 0, 0)
+            // calculate the Coriolis and centrifugal forces for a particle
+            let omega = rightScenes[2].images[0].omega.copy().mult(0.005)
+            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
+            let rho = this.pos.copy();
+            rho.z = 0
+            // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
+            omega = rightScenes[2].images[0].omega.copy().mult(0.005)
+            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
+
+            // this.mass = 2000;
+            let centripitalForceMag = this.mass * p5.Vector.dot(omega, omega) * rho; 
+            let centripitalForce = this.pos.copy().mult(-centripitalForceMag)
+
+            console.log(centripitalForce);
 
             // combine the Coriolis and centrifugal forces and divide by mass to get net force
             this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);

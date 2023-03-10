@@ -161,7 +161,14 @@ function displayMenu(canvas)
 
     if (currentScene == 0) controlMenuButtons[currentScene][3].image = speedImage
     if (currentScene == 1) controlMenuButtons[currentScene][3].image = velImage
-    if (currentScene == 0) controlMenuButtons[currentScene][3].image = speedImage
+    if (currentScene == 2) controlMenuButtons[currentScene][3].image = omegaImage
+    
+
+    if (currentScene == 0 || currentScene == 1) 
+    {
+        controlMenuButtons[currentScene][3].omega.z = 0;
+        controlMenuButtons[currentScene][3].angle.z = 0; 
+    }
 
     checkMenuButtonHover(canvas)
 }

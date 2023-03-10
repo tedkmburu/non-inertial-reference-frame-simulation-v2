@@ -29,7 +29,7 @@ rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage, velImage;
 let closeImage;
 
-let currentScene = 2;
+let currentScene = 3;
 let currentPopUp = 0;
 
 let playState = true;
@@ -52,7 +52,7 @@ const leftCanvasObject = canvas => {
     canvas.preload = function() 
     {
         leftTruckImage = canvas.loadImage('images/truck.png'); 
-        leftBackgroundImage = canvas.loadImage('images/enviroment2.jpg'); 
+        leftBackgroundImage = canvas.loadImage('images/enviroment2.png'); 
         leftCannon1 = canvas.loadImage('images/cannon.png'); 
         leftCannon2 = canvas.loadImage('images/cannon2.png'); 
         leftCannon3 = canvas.loadImage('images/cannon3.png'); 
@@ -131,7 +131,7 @@ const rightCanvasObject = canvas => {
     canvas.preload = function() 
     {
         rightTruckImage = canvas.loadImage('images/truck.png'); 
-        rightBackgroundImage = canvas.loadImage('images/enviroment2.jpg'); 
+        rightBackgroundImage = canvas.loadImage('images/enviroment2.png'); 
         rightCannon1 = canvas.loadImage('images/cannon.png'); 
         rightCannon2 = canvas.loadImage('images/cannon2.png'); 
         rightCannon3 = canvas.loadImage('images/cannon3.png'); 
@@ -431,7 +431,7 @@ function getCanvasSize()
 
     halfCanvas = canvasSize[0].copy().div(2)
     quarterCanvas = canvasSize[0].copy().div(4)
-    backGroundImagePosition = new p5.Vector(quarterCanvas.x, quarterCanvas.y * 1.07, 0)
+    backGroundImagePosition = new p5.Vector(quarterCanvas.x, quarterCanvas.y * 0.9, 0)
 }
 
 

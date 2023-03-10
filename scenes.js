@@ -10,7 +10,7 @@ function createLeftScenes(theCanvas)
                 new MyImage({
                     image: leftBackgroundImage,
                     pos: backGroundImagePosition,
-                    scaleFactor: 1,
+                    scaleFactor: 2,
                     canvas: theCanvas,
                 }),
                 new MyImage({
@@ -63,7 +63,7 @@ function createLeftScenes(theCanvas)
                 new MyImage({
                     image: leftBackgroundImage,
                     pos: backGroundImagePosition,
-                    scaleFactor: 1,
+                    scaleFactor: 2,
                     canvas: theCanvas,
                 }),
                 new MyImage({
@@ -277,7 +277,7 @@ function createRightScenes(theCanvas)
                 new MyImage({
                     image: rightBackgroundImage,
                     pos: backGroundImagePosition,
-                    scaleFactor: 1,
+                    scaleFactor: 2,
                     canvas: theCanvas,
                 }),
                 new MyImage({
@@ -331,7 +331,7 @@ function createRightScenes(theCanvas)
                 new MyImage({
                     image: rightBackgroundImage,
                     pos: backGroundImagePosition,
-                    scaleFactor: 1,
+                    scaleFactor: 2,
                     canvas: theCanvas,
                 }),
                 new MyImage({
@@ -456,6 +456,7 @@ function createRightScenes(theCanvas)
                 size: new p5.Vector(50, 50, 0),
                 omega: new p5.Vector(-1, 1, 0.5),
                 showTrail: true,
+                nonInertial: true,
                 canvas: theCanvas,
             }),
         ], 
