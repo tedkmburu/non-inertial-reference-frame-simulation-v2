@@ -22,29 +22,31 @@ function createArrow(start, end, angle, color, scale, canvas, vectorImage)
     }
     else if (p5.Vector.sub(end, start).mag() > 1)
     {
-        end.sub(start);
+        end.div(2);
+        start.add(new p5.Vector(-end.mag() / 4, 0,0))
         canvas.push();
             canvas.stroke(color);
-            canvas.noFill();
+            canvas.fill(color);
+            
             canvas.translate(start.x, start.y, start.z);
 
-            let angle = end.copy().normalize()
-            canvas.rotateX((angle.x * 360) + 180)
-            canvas.rotateY((angle.y * 360) + 180)
-            canvas.rotateZ((angle.z * 360) + 180)
-            
+            let r = 10
+            let a = canvas.frameCount
+            let x = Math.sin(a) * r;
+
+            canvas.rotateX(90)
+            // canvas.rotateY(45)
+            canvas.rotateZ(90)
+            // canvas.rotateZ(x)
             canvas.cylinder(2 * scale, end.mag() / 2, 24);
 
-            // canvas.translate(end.x, end.y);
-            // canvas.angleMode(canvas.RADIANS);
-            // canvas.rotate(angle);
-            // canvas.fill(color);
-            // canvas.strokeWeight(2 * scale)
+            canvas.translate(0, end.mag() / 4, 0)
+            canvas.stroke("rgba(0, 0, 0, 0.5)")
+            canvas.cone(10 * scale, 40 * scale)
 
-            // canvas.triangle(0, 0, -5 * scale, -2.5 * scale, -5 * scale, 2.5 * scale);
-
-            // canvas.rotate(-angle);
-            // canvas.image(vectorImage, 0, 0, 50, 50)
+            canvas.rotateZ(-90)
+            canvas.rotateX(-90)
+            canvas.image(vectorImage, -200, -100, 200, 200)
         canvas.pop();
     }
 }

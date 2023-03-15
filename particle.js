@@ -83,11 +83,13 @@ class Particle
         this.referenceFrame = new p5.Vector(0, 0, 0);
         
         this.nonInertial = props.nonInertial || false;
-        this.revolve = props.revolve || false;
+        this.revolve = props.revolve || false
+        this.revolveRadius = props.revolveRadius || 100; 
         this.centForce = new p5.Vector(0, 0, 0);
         this.corForce = new p5.Vector(0, 0, 0);
 
         this.previousPosition = this.pos.copy()
+        this.frameCount = 0;
 
         this.reset()
     }
@@ -111,6 +113,7 @@ class Particle
         this.trail2 = [this.pos.copy()]
 
         this.displacement = 0;
+        this.frameCount = 0;
 
         this.size.mult(this.scaleFactor)
     }
@@ -140,19 +143,21 @@ class Particle
             // this.acc = this.pos.copy().mult(-acc / 100)
             // console.log(this.pos);
 
-            let r = 500;
-            let a = this.canvas.frameCount / 60
+            let r = this.revolveRadius;
+            let a = this.frameCount / 60
             let x = Math.cos(a) * r;
-            let y = (Math.sin(a) * r) - r;
+            let y = (Math.sin(a) * r);
 
             // this.vel = new p5.Vector(0, x, y).sub(this.pos)
-            this.vel = new p5.Vector(x, x, y).sub(this.pos)
+            this.vel = new p5.Vector(x, 0, y).sub(this.pos)
 
-            // console.log(this.trail[this.trail.length - 1]);
+            let omega = leftScenes[3].shapes[0].omega.copy().mult(0.005)
+            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
+            let rho = this.pos.copy();
+            rho.z = 0
+            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
 
 
-
-            // this.acc = new p5.Vector()
         }
 
         this.previousPosition = this.pos.copy()
@@ -207,6 +212,7 @@ class Particle
         // }
 
         this.displacement = this.pos.copy().sub(this.startingPos).mag()
+        this.frameCount++;
     }
 
     displayForces(leftOrRight)

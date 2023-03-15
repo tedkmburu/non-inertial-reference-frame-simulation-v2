@@ -47,6 +47,25 @@ let regularFont, boldFont, thinFont;
 
 let initialContitions = [];
 
+function displayGrid(canvas)
+{
+    // console.log("asdf");
+    let radius = 2;
+    let height = 3000;
+    
+    canvas.push()
+    canvas.fill(0)
+    canvas.stroke(0)
+    canvas.cylinder(radius, height, 24)
+    canvas.rotateX(90)
+    canvas.cylinder(radius, height, 24)
+    canvas.rotateZ(90)
+    canvas.cylinder(radius, height, 24)
+
+    canvas.pop()
+
+}
+
 
 const leftCanvasObject = canvas => {
     canvas.preload = function() 
@@ -91,10 +110,16 @@ const leftCanvasObject = canvas => {
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
+        if (currentScene == 3)
+        {
+            canvas.orbitControl();
+            canvas.translate(0, 0, -400)
+            displayGrid(canvas)
+        } 
+        
         canvas.push()
-            // canvas.orbitControl();
             leftScenes[currentScene].display()
-        canvas.pop()    
+        canvas.pop()
     }
   
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
@@ -167,8 +192,14 @@ const rightCanvasObject = canvas => {
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
+        if (currentScene == 3)
+        {
+            canvas.orbitControl();
+            canvas.translate(0, 0, -400)
+            displayGrid(canvas)
+        } 
+
         canvas.push()
-            // canvas.orbitControl();
             rightScenes[currentScene].display()
         canvas.pop()
     }
