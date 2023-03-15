@@ -83,6 +83,7 @@ class Particle
         this.referenceFrame = new p5.Vector(0, 0, 0);
         
         this.nonInertial = props.nonInertial || false;
+        this.revolve = props.revolve || false;
         this.centForce = new p5.Vector(0, 0, 0);
         this.corForce = new p5.Vector(0, 0, 0);
 
@@ -131,26 +132,27 @@ class Particle
             // combine the Coriolis and centrifugal forces and divide by mass to get net force
             this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
         }
-        else if (this.nonInertial && this.canvas.frameCount > 2 && currentScene == 3)
+        else if (this.revolve && this.canvas.frameCount > 2 && currentScene == 3)
         {
-            this.acc = new p5.Vector(0, 0, 0)
-            // calculate the Coriolis and centrifugal forces for a particle
-            let omega = rightScenes[2].images[0].omega.copy().mult(0.005)
-            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
-            let rho = this.pos.copy();
-            rho.z = 0
-            // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
-            omega = rightScenes[2].images[0].omega.copy().mult(0.005)
-            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
+            // let pos = this.pos.copy().sub(this.startingPos)
+            // let omega = leftScenes[3].shapes[0].omega
+            // let acc = p5.Vector.dot(this.vel, this.vel) / pos.mag()
+            // this.acc = this.pos.copy().mult(-acc / 100)
+            // console.log(this.pos);
 
-            // this.mass = 2000;
-            let centripitalForceMag = this.mass * p5.Vector.dot(omega, omega) * rho; 
-            let centripitalForce = this.pos.copy().mult(-centripitalForceMag)
+            let r = 500;
+            let a = this.canvas.frameCount / 60
+            let x = Math.cos(a) * r;
+            let y = (Math.sin(a) * r) - r;
 
-            console.log(centripitalForce);
+            // this.vel = new p5.Vector(0, x, y).sub(this.pos)
+            this.vel = new p5.Vector(x, x, y).sub(this.pos)
 
-            // combine the Coriolis and centrifugal forces and divide by mass to get net force
-            this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
+            // console.log(this.trail[this.trail.length - 1]);
+
+
+
+            // this.acc = new p5.Vector()
         }
 
         this.previousPosition = this.pos.copy()
@@ -172,7 +174,7 @@ class Particle
         }
 
         let trailRate = (currentScene > 2) ? 10 : 5; 
-        if (this.canvas.frameCount % trailRate == 0 && this.showTrail) 
+        if (this.canvas.frameCount % trailRate == 0 && this.showTrail && !this.revolve) 
         {
             this.trail.push(this.pos.copy().add(this.offset))
 
@@ -180,8 +182,21 @@ class Particle
             
             let angleInRadians = this.canvas.radians(leftScenes[2].shapes[0].angle.copy().mult(-1).z)
             let rectPosition = newPosition.rotate(angleInRadians)
-            // console.log(-leftScenes[2].images[0].angle);
-            // this.rectangle.previousPositions.push(rectPosition)
+
+            this.trail2.push(newPosition)
+        } 
+        else if (this.canvas.frameCount % trailRate == 0 && this.showTrail && this.revolve)
+        {
+            this.trail.push(this.pos.copy().add(this.offset))
+
+            let newPosition = this.pos.copy()
+            
+            // let angleInRadians = this.canvas.radians(leftScenes[3].shapes[0].angle.copy().mult(-1).z)
+            
+            // let r = 500;
+            // let a = this.canvas.frameCount / 60
+            // let x = Math.sin(a) * -r;
+            // newPosition.x = x
 
             this.trail2.push(newPosition)
         }
@@ -196,7 +211,6 @@ class Particle
 
     displayForces(leftOrRight)
     {   
-
         let velImage = (leftOrRight == "left") ? leftVelImage : rightVelImage;
         let corImage = (leftOrRight == "left") ? leftCorImage : rightCorImage;
         let centImage = (leftOrRight == "left") ? leftCentImage : rightCentImage;

@@ -35,14 +35,47 @@ class Shape extends Particle
                         }
                         
                     break;
+
+                    case "sphere":
+                        this.trail.forEach(dot => {
+                            this.canvas.push()
+                            this.canvas.translate(dot.x, dot.y, dot.z)
+                            this.canvas.sphere(5)
+                            this.canvas.pop()
+                        }) 
+                        if (!this.nonInertial)
+                        {
+                            // let omega = 1
+                            // let angle = 0
+                            // // console.log(omega);
+                            // let r = 500;
+                            // let a = 0
+                            
+
+                            // this.trail2.forEach(dot => {
+                            //     this.canvas.push()
+                            //     this.canvas.translate(0, 0, -500)
+                            //     this.canvas.rotateY(a * this.pos.display)
+                            //     this.canvas.translate(0, 0, 500)
+                            //     // let x = Math.sin(a) * -r;
+                            //     // dot.x += x
+                            //     this.canvas.translate(dot.x, dot.y, dot.z)
+                            //     this.canvas.fill("red")
+                            //     this.canvas.stroke("red")
+                            //     this.canvas.sphere(5)
+                            //     this.canvas.pop()
+
+                            //     a+=0.05
+                            // }) 
+                        }
+                        
+                    break;
                     
                     default:
+                        console.log("no trail");
                         // prepareCanvas(this)
                         
-                        this.trail.forEach(dot => {
-                            // this.canvas.translate(dot.x, dot.y, dot.z)
-                            this.canvas.sphere(10)
-                        }) 
+                        
                         
                 } 
             }
