@@ -85,6 +85,7 @@ class Particle
         this.nonInertial = props.nonInertial || false;
         this.revolve = props.revolve || false
         this.revolveRadius = props.revolveRadius || 100; 
+        this.revolvePeriod = props.revolvePeriod || 1;
         this.centForce = new p5.Vector(0, 0, 0);
         this.corForce = new p5.Vector(0, 0, 0);
 
@@ -144,9 +145,11 @@ class Particle
             // console.log(this.pos);
 
             let r = this.revolveRadius;
-            let a = this.frameCount / 60
+            let a = this.frameCount / (10 * this.revolvePeriod)
             let x = Math.cos(a) * r;
             let y = (Math.sin(a) * r);
+
+            // period os 6.5027 sec
 
             // this.vel = new p5.Vector(0, x, y).sub(this.pos)
             this.vel = new p5.Vector(x, 0, y).sub(this.pos)

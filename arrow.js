@@ -23,16 +23,29 @@ function createArrow(start, end, angle, color, scale, canvas, vectorImage)
     else if (p5.Vector.sub(end, start).mag() > 1)
     {
         end.div(2);
-        start.add(new p5.Vector(-end.mag() / 4, 0,0))
+        // start.add(new p5.Vector(-end.mag() / 4, 0,0))
         canvas.push();
             canvas.stroke(color);
             canvas.fill(color);
+
+            // let r = 100
+            // let a = canvas.frameCount / 50
+            // let x = Math.sin(a) * r;
             
             canvas.translate(start.x, start.y, start.z);
+            // canvas.rotateY( x )
 
-            let r = 10
-            let a = canvas.frameCount
-            let x = Math.sin(a) * r;
+            let x = canvas.degrees(leftScenes[3].shapes[1].pos.x) / 100
+            console.log(x);
+
+            // let rotationVector = leftScenes[3].shapes[1].pos.copy().mult(-0.005)
+            // rotationVector = leftScenes[3].shapes[1].pos.copy()
+            // canvas.rotateX(canvas.degrees(rotationVector.x))
+            // canvas.rotateY(canvas.degrees(rotationVector.y))
+            // canvas.rotateZ(canvas.degrees(rotationVector.z))
+            // console.log(leftScenes[3].shapes[0].angle);
+
+            
 
             canvas.rotateX(90)
             // canvas.rotateY(45)
@@ -43,6 +56,7 @@ function createArrow(start, end, angle, color, scale, canvas, vectorImage)
             canvas.translate(0, end.mag() / 4, 0)
             canvas.stroke("rgba(0, 0, 0, 0.5)")
             canvas.cone(10 * scale, 40 * scale)
+            
 
             canvas.rotateZ(-90)
             canvas.rotateX(-90)

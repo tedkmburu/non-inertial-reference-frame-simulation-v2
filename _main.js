@@ -32,6 +32,9 @@ let closeImage;
 let currentScene = 3;
 let currentPopUp = 0;
 
+let sceneThreeInitalTrans = new p5.Vector(0, -800, 0)
+let sceneThreeInitalRotate = new p5.Vector(90, 0, 0)
+
 let playState = true;
 let playBackwards = false;
 let popUpVisible = false;
@@ -51,11 +54,11 @@ function displayGrid(canvas)
 {
     // console.log("asdf");
     let radius = 2;
-    let height = 3000;
+    let height = 4800;
     
     canvas.push()
-    canvas.fill(0)
-    canvas.stroke(0)
+    canvas.fill(255/2)
+    canvas.stroke(255/2)
     canvas.cylinder(radius, height, 24)
     canvas.rotateX(90)
     canvas.cylinder(radius, height, 24)
@@ -63,7 +66,6 @@ function displayGrid(canvas)
     canvas.cylinder(radius, height, 24)
 
     canvas.pop()
-
 }
 
 
@@ -113,7 +115,10 @@ const leftCanvasObject = canvas => {
         if (currentScene == 3)
         {
             canvas.orbitControl();
-            canvas.translate(0, 0, -400)
+            canvas.rotateX(sceneThreeInitalRotate.x)
+            canvas.rotateY(sceneThreeInitalRotate.y)
+            canvas.rotateZ(sceneThreeInitalRotate.z)
+            canvas.translate(sceneThreeInitalTrans)
             displayGrid(canvas)
         } 
         
@@ -195,7 +200,11 @@ const rightCanvasObject = canvas => {
         if (currentScene == 3)
         {
             canvas.orbitControl();
-            canvas.translate(0, 0, -400)
+            canvas.rotateX(sceneThreeInitalRotate.x)
+            canvas.rotateY(sceneThreeInitalRotate.y)
+            canvas.rotateZ(sceneThreeInitalRotate.z)
+            canvas.translate(sceneThreeInitalTrans)
+            
             displayGrid(canvas)
         } 
 
