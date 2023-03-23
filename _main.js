@@ -29,7 +29,7 @@ rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage, velImage;
 let closeImage;
 
-let currentScene = 3;
+let currentScene = 2;
 let currentPopUp = 0;
 
 let sceneThreeInitalTrans = new p5.Vector(0, -800, 0)
@@ -359,8 +359,8 @@ const controlMenu = canvas => {
         }
         else
         {
-            slider1Pos = new p5.Vector(buttonPositions[3].x + (canvasLength / 2) + 10, (innerHeight / 2) - 12)
-            slider2Pos = new p5.Vector(buttonPositions[3].x + (canvasLength / 2) + 10, (innerHeight / 2) - 12)
+            slider1Pos = new p5.Vector(buttonPositions[3].x + (canvasLength / 2) + 60, (innerHeight / 2) - 12)
+            slider2Pos = new p5.Vector(buttonPositions[5].x + (canvasLength / 2) + 60, (innerHeight / 2) - 12)
         }
 
         slider1 = canvas.createSlider(-1, 1, 0, 0.05);
