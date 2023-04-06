@@ -3,9 +3,7 @@ function prepareCanvas(props)
     // console.log(props);
     props.canvas.translate(props.pos)
     props.canvas.angleMode(props.canvas.DEGREES)
-    props.canvas.rotateX(props.angle.x)
-    props.canvas.rotateY(props.angle.y)
-    props.canvas.rotateZ(props.angle.z)
+    props.canvas.rotate(props.angle)
     props.canvas.translate(props.offset)
     props.canvas.fill(props.fill)
     props.canvas.stroke(props.stroke)
@@ -32,25 +30,25 @@ class Particle
 
         this.scaleFactor = props.scaleFactor || 1;
 
-        this.pos = props.pos || new p5.Vector(0, 0, 0);
-        this.vel = props.vel || new p5.Vector(0, 0, 0);
-        this.acc = props.acc || new p5.Vector(0, 0, 0);
+        this.pos = props.pos || new p5.Vector(0, 0);
+        this.vel = props.vel || new p5.Vector(0, 0);
+        this.acc = props.acc || new p5.Vector(0, 0);
 
-        this.relPos = new p5.Vector(0, 0, 0);
-        this.relVel = new p5.Vector(0, 0, 0);
-        this.relAcc = new p5.Vector(0, 0, 0);
+        this.relPos = new p5.Vector(0, 0);
+        this.relVel = new p5.Vector(0, 0);
+        this.relAcc = new p5.Vector(0, 0);
 
         this.startingPos = props.pos || this.pos.copy();
         this.startingVel = props.vel || this.vel.copy();
         this.startingAcc = props.acc || this.acc.copy();
 
-        this.angle = props.angle || new p5.Vector(0, 0, 0);
-        this.omega = props.omega || new p5.Vector(0, 0, 0);
-        this.angularAcc = props.angularAcc || new p5.Vector(0, 0, 0);
+        this.angle = props.angle || 0;
+        this.omega = props.omega || 0;
+        this.angularAcc = props.angularAcc || 0;
 
-        this.startingAngle = props.angle || this.angle.copy();
-        this.startingOmega = props.omega || this.omega.copy();
-        this.startingAngularAcc = props.angularAcc || this.angularAcc.copy();
+        this.startingAngle = props.angle || 0;
+        this.startingOmega = props.omega || 0;
+        this.startingAngularAcc = props.angularAcc || 0;
 
         if (this.image != undefined) 
         {
@@ -59,8 +57,8 @@ class Particle
         }
         this.startingSize = props.size || this.size.copy();
 
-        this.offset = props.offset || new p5.Vector(0, 0, 0)
-        this.startingOffset = props.offset || new p5.Vector(0, 0, 0)
+        this.offset = props.offset || new p5.Vector(0, 0)
+        this.startingOffset = props.offset || new p5.Vector(0, 0)
         this.displacement = props.displacement || 0; 
 
         this.bounces = 0;
@@ -80,14 +78,14 @@ class Particle
         this.textAlign = props.textAlign || this.canvas.CENTER;
 
         this.opacity = props.opacity || 1;
-        this.referenceFrame = new p5.Vector(0, 0, 0);
+        this.referenceFrame = new p5.Vector(0, 0);
         
         this.nonInertial = props.nonInertial || false;
         this.revolve = props.revolve || false
         this.revolveRadius = props.revolveRadius || 100; 
         this.revolvePeriod = props.revolvePeriod || 1;
-        this.centForce = new p5.Vector(0, 0, 0);
-        this.corForce = new p5.Vector(0, 0, 0);
+        this.centForce = new p5.Vector(0, 0);
+        this.corForce = new p5.Vector(0, 0);
 
         this.previousPosition = this.pos.copy()
         this.frameCount = 0;
@@ -105,9 +103,9 @@ class Particle
         this.vel = this.startingVel.copy()
         this.acc = this.startingAcc.copy()
 
-        this.angle = this.startingAngle.copy()
-        this.omega = this.startingOmega.copy()
-        this.angularAcc = this.startingAngularAcc.copy()
+        this.angle = this.startingAngle
+        this.omega = this.startingOmega
+        this.angularAcc = this.startingAngularAcc
 
         this.bounces = 0;
         this.trail = [this.pos.copy()]
@@ -123,7 +121,7 @@ class Particle
     {
         if (this.nonInertial && this.canvas.frameCount > 2 && currentScene == 2)
         {
-            this.acc = new p5.Vector(0, 0, 0)
+            this.acc = new p5.Vector(0, 0)
             // calculate the Coriolis and centrifugal forces for a particle
             let omega = rightScenes[2].images[0].omega.copy().mult(0.005)
             this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
@@ -169,16 +167,16 @@ class Particle
             this.vel.add(this.acc).add(this.referenceFrame.acc);
             this.pos.add(this.vel).add(this.referenceFrame.vel);
 
-            this.omega.add(this.angularAcc).add(this.referenceFrame.angularAcc);
-            this.angle.add(this.omega).add(this.referenceFrame.omega);
+            this.omega += (this.angularAcc + this.referenceFrame.angularAcc);
+            this.angle += (this.omega + this.referenceFrame.omega);
         }
         else 
         {
             this.vel.sub(this.acc).sub(this.referenceFrame.acc);
             this.pos.sub(this.vel).sub(this.referenceFrame.vel);
 
-            this.omega.sub(this.angularAcc).sub(this.referenceFrame.angularAcc);
-            this.angle.sub(this.omega).sub(this.referenceFrame.omega);
+            this.omega -= (this.angularAcc + this.referenceFrame.angularAcc);
+            this.angle -= (this.omega + this.referenceFrame.omega);
         }
 
         let trailRate = (currentScene > 2) ? 10 : 5; 
@@ -188,7 +186,7 @@ class Particle
 
             let newPosition = this.pos.copy()
             
-            let angleInRadians = this.canvas.radians(leftScenes[2].shapes[0].angle.copy().mult(-1).z)
+            let angleInRadians = this.canvas.radians(leftScenes[2].shapes[0].angle)
             let rectPosition = newPosition.rotate(angleInRadians)
 
             this.trail2.push(newPosition)
@@ -229,9 +227,9 @@ class Particle
             pos: this.pos.copy().add(this.offset), 
             vel: this.vel.copy().mult(100), 
             angle: this.vel.angle, 
-            fill: "red", 
+            fill: redColor, 
             canvas: this.canvas,
-            scaleFactor: 1.5,
+            scaleFactor: 2.5,
             image: velImage
         })
 
@@ -240,9 +238,9 @@ class Particle
             pos: this.pos.copy().add(this.offset), 
             vel: this.corForce.copy().mult(5000), 
             angle: this.corForce.angle, 
-            fill: "blue", 
+            fill: blueColor, 
             canvas: this.canvas,
-            scaleFactor: 1.5,
+            scaleFactor: 2.5,
             image: corImage
         })
 
@@ -251,9 +249,9 @@ class Particle
             pos: this.pos.copy().add(this.offset), 
             vel: this.centForce.copy().mult(100000), 
             angle: this.centForce.angle, 
-            fill: "green", 
+            fill: greenColor, 
             canvas: this.canvas,
-            scaleFactor: 1.5,
+            scaleFactor: 2.5,
             image: centImage
         })
 

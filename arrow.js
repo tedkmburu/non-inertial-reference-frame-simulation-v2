@@ -17,7 +17,8 @@ function createArrow(start, end, angle, color, scale, canvas, vectorImage)
             canvas.triangle(0, 0, -5 * scale, -2.5 * scale, -5 * scale, 2.5 * scale);
 
             canvas.rotate(-angle);
-            canvas.image(vectorImage, 0, 0, 50, 50)
+            let imageSize = 75;
+            canvas.image(vectorImage, 0, -imageSize / 1.5, imageSize, imageSize)
         canvas.pop();
     }
     else if (p5.Vector.sub(end, start).mag() > 1)

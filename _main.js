@@ -26,14 +26,14 @@ let rightTruckImage, rightBackgroundImage,
 rightCannon1, rightCannon2, rightCannon3, 
 rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 
-let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, speedImage, velImage;
+let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage;
 let closeImage;
 
-let currentScene = 2;
+let currentScene = 1;
 let currentPopUp = 0;
 
-let sceneThreeInitalTrans = new p5.Vector(0, -800, 0)
-let sceneThreeInitalRotate = new p5.Vector(90, 0, 0)
+let sceneThreeInitalTrans = new p5.Vector(0, -800)
+let sceneThreeInitalRotate = new p5.Vector(90, 0)
 
 let playState = true;
 let playBackwards = false;
@@ -49,6 +49,12 @@ let sliderDefaults = []
 let regularFont, boldFont, thinFont;
 
 let initialContitions = [];
+
+let redColor = "red";
+let blueColor = "blue";
+let greenColor = "green";
+let darkBlueColor = "#546E7A";
+let lightBlueColor = "#607D8B"
 
 function displayGrid(canvas)
 {
@@ -91,7 +97,7 @@ const leftCanvasObject = canvas => {
     {        
         resizedWindow()
 
-        leftCanvas = canvas.createCanvas(canvasSize[0].x, canvasSize[0].y, canvas.WEBGL)
+        leftCanvas = canvas.createCanvas(canvasSize[0].x, canvasSize[0].y)
 
         if (landscape) 
         {
@@ -121,6 +127,11 @@ const leftCanvasObject = canvas => {
             canvas.translate(sceneThreeInitalTrans)
             displayGrid(canvas)
         } 
+
+        if (currentScene == 1)
+        {
+            // canvas.line(halfCanvas.y / 2.75)
+        }
         
         canvas.push()
             leftScenes[currentScene].display()
@@ -177,16 +188,10 @@ const rightCanvasObject = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-        rightCanvas = canvas.createCanvas(canvasSize[1].x, canvasSize[1].y, canvas.WEBGL)
+        rightCanvas = canvas.createCanvas(canvasSize[1].x, canvasSize[1].y)
 
-        if (landscape) 
-        {
-            rightCanvas.addClass('right');
-        }
-        else
-        {
-            rightCanvas.addClass('bottom');
-        }
+        if (landscape) rightCanvas.addClass('right');
+        else rightCanvas.addClass('bottom');
 
         createRightScenes(canvas)
         canvasLoaded[1] = true;
@@ -264,7 +269,7 @@ const popUpWindow = canvas => {
 
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-        popUpCanvas = canvas.createCanvas(innerWidth * 0.8, innerHeight * 0.8, canvas.WEBGL)
+        popUpCanvas = canvas.createCanvas(innerWidth * 0.8, innerHeight * 0.8)
         popUpCanvas.addClass('popUp');
 
         createPopUps(canvas)
@@ -323,7 +328,9 @@ const controlMenu = canvas => {
         restartImage = canvas.loadImage("images/restart.png");
         omegaImage = canvas.loadImage("images/rotate.png");
         massImage = canvas.loadImage("images/mass.png");
-        helpImage = canvas.loadImage("images/next.svg");
+        helpImage = canvas.loadImage("images/info.png");
+        nextImage = canvas.loadImage("images/next.svg");
+        backImage = canvas.loadImage("images/back.svg");
         speedImage = canvas.loadImage("images/speed.png");
         velImage = canvas.loadImage("images/v.png");
         
@@ -336,18 +343,21 @@ const controlMenu = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
-        controlsCanvas = canvas.createCanvas(canvasSize[2].x, canvasSize[2].y, canvas.WEBGL)
+        controlsCanvas = canvas.createCanvas(canvasSize[2].x, canvasSize[2].y)
 
         controlsCanvas.addClass('controlMenu');
         controlsCanvas.style("top", canvasPos[2].y + "px")
         controlsCanvas.style("left", canvasPos[2].x + "px")
-        controlsCanvas.style("borderRadius", "50px")
+        // controlsCanvas.style("borderRadius", "50px")
 
         buttonPositions = getControlButtonPositions()
-        let sliderWidth = getSliderWidth()
+        let sliderWidth = 190
 
         let canvasLength = (landscape) ? innerHeight: innerWidth
         // let sliderOffset = (canvasLength / 2) + 30
+
+        let sliderAngle = 90
+
         let sliderOffset = 0
 
         let slider1Pos, slider2Pos;
@@ -359,20 +369,20 @@ const controlMenu = canvas => {
         }
         else
         {
-            slider1Pos = new p5.Vector(buttonPositions[3].x + (canvasLength / 2) + 60, (innerHeight / 2) - 12)
-            slider2Pos = new p5.Vector(buttonPositions[5].x + (canvasLength / 2) + 60, (innerHeight / 2) - 12)
+            slider1Pos = new p5.Vector(innerWidth - 240, buttonPositions[11].y + 75)
+            slider2Pos = new p5.Vector(innerWidth - 240, buttonPositions[14].y + 75)
         }
 
         slider1 = canvas.createSlider(-1, 1, 0, 0.05);
         slider1.position(slider1Pos.x, slider1Pos.y);
-        slider1.style('width', getSliderWidth() + 'px');
+        slider1.style('width', sliderWidth + 'px');
         slider1.style('zIndex', '999');
         slider1.style('transform', 'rotate(' + sliderAngle + 'deg)')
         
 
         slider2 = canvas.createSlider(-1, 1, 0, 0.05);
         slider2.position(slider2Pos.x, slider2Pos.y);
-        slider2.style('width', getSliderWidth() + "px");
+        slider2.style('width', sliderWidth + "px");
         slider2.style('zIndex', '99999');
         slider2.style('transform', 'rotate(' + sliderAngle + 'deg)')
         createMenu(canvas)
@@ -381,7 +391,7 @@ const controlMenu = canvas => {
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
     {  
-        canvas.background(255)
+        canvas.background(darkBlueColor)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
@@ -458,20 +468,20 @@ function getCanvasSize()
     else
     {
         landscape = false;
-        canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
-        canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
-        canvasSize.push(new p5.Vector(innerWidth * 0.9, 100))
+        canvasSize.push(new p5.Vector(innerWidth - 300, innerHeight / 2))
+        canvasSize.push(new p5.Vector(innerWidth - 300, innerHeight / 2))
+        canvasSize.push(new p5.Vector(300, innerHeight))
 
         canvasPos.push(new p5.Vector(0, 0))
         canvasPos.push(new p5.Vector(0, innerHeight / 2))
-        canvasPos.push(new p5.Vector(innerWidth * 0.05, (innerHeight / 2) - 50))
+        canvasPos.push(new p5.Vector(innerWidth - 300, 0))
 
         sliderAngle = 0;
     }
 
     halfCanvas = canvasSize[0].copy().div(2)
     quarterCanvas = canvasSize[0].copy().div(4)
-    backGroundImagePosition = new p5.Vector(quarterCanvas.x, quarterCanvas.y * 0.9, 0)
+    backGroundImagePosition = new p5.Vector(quarterCanvas.x, quarterCanvas.y * 0.9)
 }
 
 
