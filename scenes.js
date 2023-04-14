@@ -28,6 +28,8 @@ function createLeftScenes(theCanvas)
                     omega: initialContitions[0].omega,
                     scaleFactor: 1.9,
                     showVelVector: true,
+                    velVectorScale: 0.25,
+                    showTrail: true,
                     canvas: theCanvas,
                 })
             ], 
@@ -334,6 +336,9 @@ function createRightScenes(theCanvas)
                     pos: new p5.Vector(halfCanvas.x + 300,  halfCanvas.y + 75),
                     size: new p5.Vector(25, 25),
                     omega: initialContitions[0].omega,
+                    showVelVector: true,
+                    velVectorScale: 0.25,
+                    showTrail: true,
                     scaleFactor: 1.9,
                     canvas: theCanvas,
                 })
@@ -376,7 +381,7 @@ function createRightScenes(theCanvas)
                     scaleFactor: 2,
                     canvas: theCanvas,
                 }),
-                // halfCanvas.x,  halfCanvas.y - 125
+                
                 new MyImage({
                     image: rightCannon3,
                     pos: new p5.Vector(halfCanvas.x + 80, halfCanvas.y + 120),
@@ -448,7 +453,7 @@ function createRightScenes(theCanvas)
                     showVelVector: true,
                     showCorVector: true,
                     showCentVector: true,
-                    nonInertial: true,
+                    // nonInertial: true,
                     showTrail: true,
                     canvas: theCanvas,
                 })
@@ -578,9 +583,6 @@ function resetAllScenes()
 
         scene.referenceFrame.reset();
     })
-
-    slider1.value(sliderDefaults[currentScene][0])
-    slider2.value(sliderDefaults[currentScene][1])
 }
 
 class Scene
@@ -601,6 +603,7 @@ class Scene
         this.images.forEach(image => {
             image.referenceFrame = this.referenceFrame;
             if (playState && !popUpVisible) image.move()
+            image.displayForces(this.leftOrRight) 
             image.display()
         });
 

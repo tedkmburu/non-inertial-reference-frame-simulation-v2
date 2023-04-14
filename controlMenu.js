@@ -4,7 +4,21 @@ function createMenu(canvas)
     new p5(rightCanvasObject); 
     new p5(popUpWindow); 
 
-    // scenes[0]
+    createMenuButtons(canvas)
+
+    sliderDefaults[0] = [0, 0]
+    sliderDefaults[1] = [0, 0]
+    sliderDefaults[2] = [0.5, 0]
+    sliderDefaults[3] = [0, 0]
+
+    slider1.value(sliderDefaults[currentScene][0])
+    slider2.value(sliderDefaults[currentScene][1])
+
+    // sliderInput()
+}
+
+function createMenuButtons(canvas)
+{
     buttonPositions = getControlButtonPositions()
 
     let baseButtons = []
@@ -116,6 +130,9 @@ function createMenu(canvas)
             if (currentScene > 0) currentScene--;
             else currentScene = 2;
 
+            theFrameRate = 60;
+            slider1.value(sliderDefaults[currentScene][0])
+            slider2.value(sliderDefaults[currentScene][1])
             resetAllScenes()
         }
     }))
@@ -132,38 +149,54 @@ function createMenu(canvas)
             if (currentScene < 2) currentScene++;
             else currentScene = 0;
 
+            theFrameRate = 60;
+            slider1.value(sliderDefaults[currentScene][0])
+            slider2.value(sliderDefaults[currentScene][1])
             resetAllScenes()
         }
     }))
 
+    baseButtons.push(new Button({
+        showText: false, 
+        image: closeImageMenu,
+        pos: new p5.Vector(buttonPositions[0].x + 65, buttonPositions[0].y - 90),
+        size: new p5.Vector(70, 50),
+        fill: lightBlueColor,
+        canvas: canvas,
+        showBorder: true,
+        onClick: () => {
+           showMenu = !showMenu;
+        }
+    }))
+
+    if (landscape)
+    {
+        baseButtons.forEach(button => {
+            button.size.mult(0.9)
+        })
+
+        baseButtons[3].size.y *= 1.35
+        baseButtons[4].size.y *= 1.35
+    }
+
+    // console.log(baseButtons[3])
+    baseButtons[3].text = "Frame Rate"
+    baseButtons[3].image = speedImage
     controlMenuButtons.push(baseButtons)
+    baseButtons[3].text = "Velocity"
+    baseButtons[3].image = velImage
     controlMenuButtons.push(baseButtons)
-    controlMenuButtons.push(baseButtons)
+    baseButtons[3].text = "Omega"
+    baseButtons[3].image = omegaImage
     controlMenuButtons.push(baseButtons)
 
     
-
-    sliderDefaults[0] = [0, 0]
-    sliderDefaults[1] = [0, 0]
-    sliderDefaults[2] = [0.5, 0]
-    sliderDefaults[3] = [0, 0]
-
-    slider1.value(sliderDefaults[currentScene][0])
-    slider2.value(sliderDefaults[currentScene][1])
-
-    // sliderInput()
+    
+    
 }
 
 function displayMenu(canvas)
 {
-    controlMenuButtons[0][3].text = "Speed"
-    controlMenuButtons[1][3].text = "Velocity"
-    controlMenuButtons[2][3].text = "Omega"
-    
-    controlMenuButtons[0][3].image = speedImage
-    controlMenuButtons[1][3].image = velImage
-    controlMenuButtons[2][3].image = omegaImage
-
     controlMenuButtons[currentScene].forEach(button => {
         if (button.visible) button.display()
         if (playState && !popUpVisible) button.move()
@@ -195,10 +228,10 @@ function checkButtonClick(canvas)
 
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
-        if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
-            mousePosition.x < button.pos.x + (button.size.x / 2) &&
-            mousePosition.y > button.pos.y - (button.size.y / 2) &&
-            mousePosition.y < button.pos.y + (button.size.y / 2) && 
+        if (mousePosition.copy().x + 30 > button.pos.copy().x - (button.size.copy().x / 2) &&
+            mousePosition.copy().x + 30 < button.pos.copy().x + (button.size.copy().x / 2) &&
+            mousePosition.copy().y > button.pos.copy().y - (button.size.copy().y / 2) &&
+            mousePosition.copy().y < button.pos.copy().y + (button.size.copy().y / 2) && 
             !popUpVisible)
             {
                 button.clicked()
@@ -208,10 +241,10 @@ function checkButtonClick(canvas)
     })
 
     popUps[currentPopUp].buttons.forEach(button => {
-        if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
-            mousePosition.x < button.pos.x + (button.size.x / 2) &&
-            mousePosition.y > button.pos.y - (button.size.y / 2) &&
-            mousePosition.y < button.pos.y + (button.size.y / 2) && 
+        if (mousePosition.x > button.pos.copy().x - (button.size.copy().x / 2) &&
+            mousePosition.x < button.pos.copy().x + (button.size.copy().x / 2) &&
+            mousePosition.y > button.pos.copy().y - (button.size.copy().y / 2) &&
+            mousePosition.y < button.pos.copy().y + (button.size.copy().y / 2) && 
             popUpVisible)
             {
                 button.clicked()
@@ -221,8 +254,8 @@ function checkButtonClick(canvas)
 
 function checkMenuButtonHover(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY);
-    // canvas.rect(mousePosition.x, mousePosition.y, 10, 10)
+    let mousePosition = new p5.Vector(canvas.mouseX + 30, canvas.mouseY);
+    canvas.rect(mousePosition.x, mousePosition.y, 10, 10)
 
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
@@ -244,21 +277,41 @@ function getControlButtonPositions()
 {
     let numberOfButtons = 15;
     let buttonPositions = [];
-    let screenSize = (landscape)? innerHeight : innerWidth;
-    let intervalSize = 100;
-
-    for (let i = 0; i < numberOfButtons; i++) 
+    
+    if (landscape)
     {
-        let pos = (i * intervalSize) + 35 + 50
-        if (landscape)
+        let intervalSize = 190;
+        for (let i = 0; i < numberOfButtons; i++) 
         {
-            buttonPositions.push(new p5.Vector(0, pos))
+            let pos = (i * intervalSize) + 80
+            
+            buttonPositions.push(new p5.Vector(pos, 60))
         }
-        else
+
+        buttonPositions[3].y += 18
+        buttonPositions[4].y -= 20
+
+        buttonPositions[5].x -= 950
+        buttonPositions[5].y -= 5
+
+        buttonPositions[6].x -= 950
+        buttonPositions[6].y -= 5
+
+        buttonPositions[7].x -= 950
+        buttonPositions[7].y -= 5
+    }
+    else
+    {
+        let intervalSize = 100;
+
+        for (let i = 0; i < numberOfButtons; i++) 
         {
+            let pos = (i * intervalSize) + 150
+            
             buttonPositions.push(new p5.Vector(125, pos))
         }
     }
+    
 
     return buttonPositions;
 }
@@ -285,13 +338,18 @@ function sliderInput()
         leftScenes[2].shapes[0].omega = -slider1Value
         rightScenes[2].images[0].omega = -slider1Value
 
-        leftScenes[0].images[2].mass = slider2Value;
+        if (currentScene == 0) theFrameRate = (slider1Value + 3) * 15;
+
+        leftScenes[0].images[2].mass = slider2Value / 2;
         leftScenes[1].shapes[0].mass = slider2Value;
         leftScenes[2].shapes[2].mass = slider2Value;
 
-        rightScenes[0].images[2].mass = slider2Value;
+        rightScenes[0].images[2].mass = slider2Value / 2;
         rightScenes[1].shapes[0].mass = slider2Value;
         rightScenes[2].shapes[2].mass = slider2Value;
+
+        // vel: new p5.Vector(10, -5),
+        // console.log(leftScenes[1].images[2].angle)
 
         // controlMenuButtons[2][3].omega.z = slider1Value;
     }

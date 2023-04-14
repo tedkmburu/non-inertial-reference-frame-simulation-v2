@@ -6,9 +6,10 @@ function sceneControls()
             let ball = leftScenes[0].images[2]
             let ball2 = rightScenes[0].images[2]
 
-            const groundPosition = 510
+            const groundPosition = halfCanvas.copy().y + 150
+            const truckLength = leftScenes[0].images[1].size.x
 
-            if (ball2.pos.x < 500) 
+            if (ball2.pos.x < (ball2.startingPos.copy().x - (truckLength / 2))) 
             {
                 ball.acc.y = 0.5
                 ball2.acc.y = 0.5
@@ -25,8 +26,8 @@ function sceneControls()
                 ball.omega *= (0.6)
             }
 
-            if (ball2.bounces > 3) playState = false;
-            if (ball2.pos.x > 920) playState = false;
+            if (ball2.bounces > 5) playState = false;
+            if (ball2.pos.x > ball2.startingPos.x) playState = false;
 
             if (ball.pos.y > groundPosition) ball.pos.y = groundPosition;
             if (ball2.pos.y > groundPosition) ball2.pos.y = groundPosition;
@@ -36,7 +37,7 @@ function sceneControls()
         case 1:
             let cannonBall = leftScenes[1].shapes[0]
             let cannonBall2 = rightScenes[1].shapes[0]
-            const groundPosition2 = 510;
+            const groundPosition2 = halfCanvas.copy().y + 150
             let newYVel = -10
 
 

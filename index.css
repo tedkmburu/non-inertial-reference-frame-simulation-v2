@@ -1,39 +1,12 @@
-canvas.left
+/* canvas.left, canvas.right, canvas.top, canvas.bottom
 {
   top: 0;
-  left: 0;
-  width: 50%;
   border-right: 1px solid black;
-}
-canvas.right
-{
-  top: 0;
-  right: 0;
-  width: 50%;
-  border-left: 1px solid black;
-}
-canvas.top
-{
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  border-bottom: 1px solid black;
-}
-canvas.bottom
-{
-    
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 50%;
-}
+} */
 canvas.controlMenu
 {
-  /* border: 1px solid black; */
   z-index: 999;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-  
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 canvas.popUp

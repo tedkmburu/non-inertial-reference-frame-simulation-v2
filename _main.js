@@ -1,6 +1,6 @@
 'use strict';
 
-const theFrameRate = 60; 
+let theFrameRate = 60; 
 
 let landscape,
 canvasSize, 
@@ -26,7 +26,7 @@ let rightTruckImage, rightBackgroundImage,
 rightCannon1, rightCannon2, rightCannon3, 
 rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 
-let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage;
+let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage, closeImageMenu, burgerImage;
 let closeImage;
 
 let currentScene = 0;
@@ -42,6 +42,7 @@ let popUpVisible = false;
 let buttons = []
 let buttonPositions = []
 let controlMenuButtons = []
+let showMenu;
 let slider1, slider2;
 // let sliderAngle = 0;
 let sliderDefaults = []
@@ -98,15 +99,8 @@ const leftCanvasObject = canvas => {
         resizedWindow()
 
         leftCanvas = canvas.createCanvas(canvasSize[0].x, canvasSize[0].y)
-
-        if (landscape) 
-        {
-            leftCanvas.addClass('left');
-        }
-        else
-        {
-            leftCanvas.addClass('top');
-        }
+        leftCanvas.style("top", canvasPos[0].y + "px")
+        leftCanvas.style("left", canvasPos[0].x + "px")
 
         createLeftScenes(canvas)
 
@@ -179,6 +173,8 @@ const rightCanvasObject = canvas => {
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
         rightCanvas = canvas.createCanvas(canvasSize[1].x, canvasSize[1].y)
+        rightCanvas.style("top", canvasPos[1].y + "px")
+        rightCanvas.style("left", canvasPos[1].x + "px")
 
         if (landscape) rightCanvas.addClass('right');
         else rightCanvas.addClass('bottom');
@@ -319,6 +315,8 @@ const controlMenu = canvas => {
         nextImage = canvas.loadImage("images/next.svg");
         backImage = canvas.loadImage("images/back.svg");
         speedImage = canvas.loadImage("images/speed.png");
+        burgerImage = canvas.loadImage("images/burger.png");
+        closeImageMenu = canvas.loadImage("images/close.png");
         velImage = canvas.loadImage("images/v.png");
         
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
@@ -330,15 +328,15 @@ const controlMenu = canvas => {
     }
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {
-        controlsCanvas = canvas.createCanvas(canvasSize[2].x, canvasSize[2].y)
-
+        controlsCanvas = canvas.createCanvas(canvasSize[2].copy().x, canvasSize[2].copy().y)
+        controlsCanvas.style("top", canvasPos[2].copy().y + "px")
+        controlsCanvas.style("left", canvasPos[2].copy().x + "px")
         controlsCanvas.addClass('controlMenu');
-        controlsCanvas.style("top", canvasPos[2].y + "px")
-        controlsCanvas.style("left", canvasPos[2].x + "px")
-        // controlsCanvas.style("borderRadius", "50px")
 
         buttonPositions = getControlButtonPositions()
         let sliderWidth = 180
+
+        if (landscape) sliderWidth *= 0.8
 
         let canvasLength = (landscape) ? innerHeight: innerWidth
 
@@ -346,13 +344,16 @@ const controlMenu = canvas => {
 
         if (landscape)
         {
-            slider1Pos = new p5.Vector((innerWidth / 2) - 25, buttonPositions[5].y - 10)
-            slider2Pos = new p5.Vector((innerWidth / 2) - 25, buttonPositions[8].y - 10)
+            slider1Pos = new p5.Vector(buttonPositions[5].copy().x + 530, buttonPositions[5].copy().y + (innerHeight * 0.9) - 30)
+            slider2Pos = new p5.Vector(buttonPositions[6].copy().x + 530, buttonPositions[6].copy().y + (innerHeight * 0.9) - 30)
         }
         else
         {
-            slider1Pos = new p5.Vector(innerWidth - 230, buttonPositions[3].y + 40)
-            slider2Pos = new p5.Vector(innerWidth - 230, buttonPositions[4].y + 75)
+            // slider1Pos = new p5.Vector(buttonPositions[5].copy().x + 410, buttonPositions[3].copy().y + 40)
+            // slider2Pos = new p5.Vector(buttonPositions[5].copy().x + 410, buttonPositions[4].copy().y + 75)
+
+            slider1Pos = new p5.Vector(buttonPositions[5].copy().x + 650, buttonPositions[3].copy().y + 40)
+            slider2Pos = new p5.Vector(buttonPositions[5].copy().x + 650, buttonPositions[4].copy().y + 75)
         }
 
         slider1 = canvas.createSlider(-1, 1, 0, 0.05);
@@ -369,17 +370,24 @@ const controlMenu = canvas => {
         // slider2.style('transform', 'rotate(' + sliderAngle + 'deg)')
         createMenu(canvas)
         canvasLoaded[3] = true;
+        showMenu = true;
     }
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
     {  
-        canvas.background(darkBlueColor)
+        
+        if (showMenu) canvas.background(darkBlueColor)
+        else canvas.clear(); // clears the canvas so that it's transparent
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
             if (canvasLoaded.every(canvasLoad => canvasLoad)) 
             {
                 sceneControls()
+
+                controlMenuButtons[currentScene].forEach((button, i) => {
+                    if (i != 8) button.visible = showMenu;
+                })
             }
             // console.log("asdf");
             displayMenu(canvas)
@@ -443,21 +451,21 @@ function getCanvasSize()
     if (innerWidth >= innerHeight)
     {
         landscape = true;
-        canvasSize.push(new p5.Vector(innerWidth / 2, innerHeight))
-        canvasSize.push(new p5.Vector(innerWidth / 2, innerHeight))
-        canvasSize.push(new p5.Vector(100, innerHeight * 0.9))
+        canvasSize.push(new p5.Vector(innerWidth, (innerHeight / 2) - 75))
+        canvasSize.push(new p5.Vector(innerWidth, (innerHeight / 2) - 75))
+        canvasSize.push(new p5.Vector(innerWidth, 300))
 
         canvasPos.push(new p5.Vector(0, 0))
-        canvasPos.push(new p5.Vector(innerWidth / 2, 0))
-        canvasPos.push(new p5.Vector((innerWidth / 2)  - 50, innerHeight * 0.05))
+        canvasPos.push(new p5.Vector(0, (innerHeight / 2) - 75))
+        canvasPos.push(new p5.Vector(0, innerHeight - 200))
 
         // sliderAngle = -90;
     }
     else
     {
         landscape = false;
-        canvasSize.push(new p5.Vector(innerWidth - 300, innerHeight / 2))
-        canvasSize.push(new p5.Vector(innerWidth - 300, innerHeight / 2))
+        canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
+        canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
         canvasSize.push(new p5.Vector(300, innerHeight))
 
         canvasPos.push(new p5.Vector(0, 0))

@@ -46,18 +46,10 @@ class Shape extends Particle
                     this.canvas.rect(this.offset.x, this.offset.y, this.size.x, this.size.y)
                 break;
                 default:
-                   
                     this.canvas.rect(
                         this.offset.x, this.offset.y,
                         this.size.x, this.size.y)
             }
-            // let start = this.pos.copy();
-            // let end = this.pos.copy().add(this.corForce);
-            // let angle = this.vel.heading();
-            // let color = "red";
-            // let scale = 1;
-            // // createArrow(this.pos, this.pos.copy().add(this.corForce))
-            // createArrow(start, end, angle, color, scale, this.canvas)
         this.canvas.pop()
     }
 }

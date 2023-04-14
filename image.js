@@ -10,7 +10,7 @@ class MyImage extends Particle
     {
         this.canvas.push()
             prepareCanvas(this)
-            this.canvas.image(this.image, 0, 0, this.size.x, this.size.y);
+            this.canvas.image(this.image, 0, 0, this.size.x * (this.mass), this.size.y * (this.mass));
         this.canvas.pop()
     }
 }

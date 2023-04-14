@@ -65,12 +65,17 @@ class Particle
         this.showTrail = props.showTrail || false;
         this.showBorder = props.showBorder || false;
         this.visible = props.visible || true;
+
         this.trail = []
         this.trail2 = []
 
         this.showVelVector = props.showVelVector || false;
         this.showCentVector = props.showCentVector || false;
         this.showCorVector = props.showCorVector || false;
+
+        this.velVectorScale = props.velVectorScale || 1;
+        this.centVectorScale = props.centVectorScale || 1;
+        this.corVectorScale = props.corVectorScale || 1;
 
         this.text = props.text || "no text";
         this.font = props.font || regularFont;
@@ -81,14 +86,16 @@ class Particle
         this.referenceFrame = new p5.Vector(0, 0);
         
         this.nonInertial = props.nonInertial || false;
-        this.revolve = props.revolve || false
-        this.revolveRadius = props.revolveRadius || 100; 
-        this.revolvePeriod = props.revolvePeriod || 1;
+
         this.centForce = new p5.Vector(0, 0);
         this.corForce = new p5.Vector(0, 0);
 
         this.previousPosition = this.pos.copy()
         this.frameCount = 0;
+
+        this.hovering = false;
+        this.hoverText = props.hoverText;
+        this.showText = props.showText || true;  
 
         this.reset()
     }
@@ -206,7 +213,7 @@ class Particle
         // vel
         let velVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
-            vel: this.vel.copy().mult(100), 
+            vel: this.vel.copy().mult(100 * this.velVectorScale), 
             angle: this.vel.angle, 
             fill: redColor, 
             canvas: this.canvas,
@@ -217,7 +224,7 @@ class Particle
         // cor
         let corVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
-            vel: this.corForce.copy().mult(5000), 
+            vel: this.corForce.copy().mult(5000 * this.corVectorScale), 
             angle: this.corForce.angle, 
             fill: blueColor, 
             canvas: this.canvas,
@@ -228,7 +235,7 @@ class Particle
         // cent
         let centVector = new Arrow({
             pos: this.pos.copy().add(this.offset), 
-            vel: this.centForce.copy().mult(100000), 
+            vel: this.centForce.copy().mult(100000 * this.centVectorScale), 
             angle: this.centForce.angle, 
             fill: greenColor, 
             canvas: this.canvas,
