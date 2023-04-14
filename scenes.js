@@ -15,14 +15,15 @@ function createLeftScenes(theCanvas)
                 }),
                 new MyImage({
                     image: leftTruckImage,
-                    pos: new p5.Vector(0, 70),
-                    vel: initialContitions[0].vel,
+                    pos: new p5.Vector(halfCanvas.x, halfCanvas.y + 87),
+                    acc: initialContitions[0].acc.copy(),
+                    // vel: new p5.Vector(0, 0),
                     scaleFactor: 0.1,
                     canvas: theCanvas,
                 }),
                 new MyImage({
                     image: leftBallImage,
-                    pos: new p5.Vector(0, 55),
+                    pos: new p5.Vector(halfCanvas.x,  halfCanvas.y + 75),
                     size: new p5.Vector(25, 25),
                     omega: initialContitions[0].omega,
                     scaleFactor: 1.9,
@@ -52,14 +53,15 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: "rgb(25, 25, 25)",
                     stroke: "gray",
-                    pos: new p5.Vector(-140, -60),
+                    pos: new p5.Vector(240,  halfCanvas.y - 20),
                     size: new p5.Vector(25, 25),
-                    vel: initialContitions[1].vel,
-                    acc: initialContitions[1].acc,
+                    vel: initialContitions[1].vel.copy(),
+                    acc: initialContitions[1].acc.copy(),
                     showTrail: true,
                     canvas: theCanvas,
                 })
-            ], 
+            ],
+
             images: [
                 new MyImage({
                     image: leftBackgroundImage,
@@ -69,20 +71,20 @@ function createLeftScenes(theCanvas)
                 }),
                 new MyImage({
                     image: leftCannon3,
-                    pos: new p5.Vector(-270, 105),
+                    pos: new p5.Vector(100, halfCanvas.y + 120),
                     scaleFactor: 0.15,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: leftCannon1,
-                    pos: new p5.Vector(-240, 20),
+                    pos: new p5.Vector(130, halfCanvas.y + 45),
                     scaleFactor: 0.15,
-                    angle: new p5.Vector(0, 0),
+                    angle: -30,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: leftCannon2,
-                    pos: new p5.Vector(-300, 105),
+                    pos: new p5.Vector(70, halfCanvas.y + 120),
                     scaleFactor: 0.15,
                     canvas: theCanvas,
                 })
@@ -108,11 +110,11 @@ function createLeftScenes(theCanvas)
             }),
             shapes: [
                 new Shape({
-                    shape: "box",
+                    shape: "rect",
                     fill: "#FAF9F6",
                     stroke: "black",
                     pos: new p5.Vector(0, 0),
-                    size: initialContitions[2].tableSize,
+                    size: initialContitions[2].tableSize.copy(),
                     omega: initialContitions[2].omega,
                     canvas: theCanvas,
                 }),
@@ -128,9 +130,9 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: redColor,
                     stroke: "black",
-                    pos: initialContitions[2].pos,
-                    vel: initialContitions[2].vel,
-                    size: initialContitions[2].ballSize,
+                    pos: initialContitions[2].pos.copy(),
+                    vel: initialContitions[2].vel.copy(),
+                    size: initialContitions[2].ballSize.copy(),
                     showTrail: true,
                     showVelVector: true,
                     canvas: theCanvas,
@@ -304,14 +306,12 @@ function createLeftScenes(theCanvas)
 
 
 
-
-
 function createRightScenes(theCanvas)
 {
     // scene 1
     rightScenes.push(new Scene({
             referenceFrame: new ReferenceFrame({
-                vel: initialContitions[0].vel.copy().mult(-1),
+                acc: initialContitions[0].acc.copy().mult(-1),
                 canvas: theCanvas,
             }),
             shapes: [], 
@@ -324,14 +324,14 @@ function createRightScenes(theCanvas)
                 }),
                 new MyImage({
                     image: rightTruckImage,
-                    pos: new p5.Vector(300, 70),
-                    vel: initialContitions[0].vel,
+                    pos: new p5.Vector(halfCanvas.x + 300, halfCanvas.y + 87),
+                    // acc: initialContitions[0].acc.copy().mult(1),
                     scaleFactor: 0.1,
                     canvas: theCanvas,
                 }),
                 new MyImage({
                     image: rightBallImage,
-                    pos: new p5.Vector(300, 55),
+                    pos: new p5.Vector(halfCanvas.x + 300,  halfCanvas.y + 75),
                     size: new p5.Vector(25, 25),
                     omega: initialContitions[0].omega,
                     scaleFactor: 1.9,
@@ -361,10 +361,10 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: "rgb(25, 25, 25)",
                     stroke: "gray",
-                    pos: new p5.Vector(160, -60),
+                    pos: new p5.Vector(halfCanvas.x + 220,  halfCanvas.y - 20),
                     size: new p5.Vector(25, 25),
-                    vel: initialContitions[1].vel,
-                    acc: initialContitions[1].acc,
+                    vel: initialContitions[1].vel.copy(),
+                    acc: initialContitions[1].acc.copy(),
                     showTrail: true,
                     canvas: theCanvas,
                 })
@@ -376,22 +376,23 @@ function createRightScenes(theCanvas)
                     scaleFactor: 2,
                     canvas: theCanvas,
                 }),
+                // halfCanvas.x,  halfCanvas.y - 125
                 new MyImage({
                     image: rightCannon3,
-                    pos: new p5.Vector(30, 105),
+                    pos: new p5.Vector(halfCanvas.x + 80, halfCanvas.y + 120),
                     scaleFactor: 0.15,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: rightCannon1,
-                    pos: new p5.Vector(60, 20),
+                    pos: new p5.Vector(halfCanvas.x + 110, halfCanvas.y + 45),
                     scaleFactor: 0.15,
-                    angle: new p5.Vector(0, 0),
+                    angle: -30,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
                     image: rightCannon2,
-                    pos: new p5.Vector(0, 105),
+                    pos: new p5.Vector(halfCanvas.x + 50, halfCanvas.y + 120),
                     scaleFactor: 0.15,
                     canvas: theCanvas,
                 })
@@ -415,15 +416,16 @@ function createRightScenes(theCanvas)
             referenceFrame: new ReferenceFrame({
                 // vel: new p5.Vector(-20, 0, 0)
                 // omega: new p5.Vector(0, 0, -0.5)
+                canvas: theCanvas,
                 omega: new p5.Vector(0, 0)
             }),
             shapes: [
                 new Shape({
-                    shape: "box",
+                    shape: "rect",
                     fill: "#FAF9F6",
                     stroke: "black",
                     pos: new p5.Vector(0, 0),
-                    size: initialContitions[2].tableSize,
+                    size: initialContitions[2].tableSize.copy(),
                     // omega: new p5.Vector(0, 0, 0.5),
                     omega: new p5.Vector(0, 0),
                     canvas: theCanvas,
@@ -440,8 +442,9 @@ function createRightScenes(theCanvas)
                     shape: "ellipse",
                     fill: redColor,
                     stroke: "black",
-                    pos: initialContitions[2].pos,
-                    size: initialContitions[2].ballSize,
+                    pos: initialContitions[2].pos.copy(),
+                    vel: initialContitions[2].vel.copy(),
+                    size: initialContitions[2].ballSize.copy(),
                     showVelVector: true,
                     showCorVector: true,
                     showCentVector: true,
@@ -455,15 +458,12 @@ function createRightScenes(theCanvas)
                 new MyImage({
                     image: rightGrid,
                     scaleFactor: 0.5,
-                    omega: initialContitions[2].omega.copy().mult(-1),
+                    omega: initialContitions[2].omega * -1,
                     pos: new p5.Vector(0, 0),
                     canvas: theCanvas,
                 }),
             ]
         }))
-
-
-
 
 
 
@@ -552,6 +552,35 @@ function createRightScenes(theCanvas)
     rightScenes.forEach(scene => {
         scene.leftOrRight = "right"
     })
+}
+
+
+function resetAllScenes()
+{
+    leftScenes.forEach(scene => {
+        scene.shapes.forEach(shape => {
+            shape.reset()
+        })
+        scene.images.forEach(image => {
+            image.reset()
+        })
+
+        scene.referenceFrame.reset();
+    })
+
+    rightScenes.forEach(scene => {
+        scene.shapes.forEach(shape => {
+            shape.reset()
+        })
+        scene.images.forEach(image => {
+            image.reset()
+        })
+
+        scene.referenceFrame.reset();
+    })
+
+    slider1.value(sliderDefaults[currentScene][0])
+    slider2.value(sliderDefaults[currentScene][1])
 }
 
 class Scene

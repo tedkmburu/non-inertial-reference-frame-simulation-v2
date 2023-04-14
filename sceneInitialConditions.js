@@ -1,12 +1,12 @@
 function createInitialConditions()
 {
     initialContitions[0] = {
-        vel: new p5.Vector(5, 0),
+        acc: new p5.Vector(0.1, 0),
         omega: -2
     }
 
     initialContitions[1] = {
-        vel: new p5.Vector(15, -10),
+        vel: new p5.Vector(10, -5),
         acc: new p5.Vector(0, 0.5),
     }
 
@@ -15,7 +15,7 @@ function createInitialConditions()
 
     initialContitions[2] = {
         vel: new p5.Vector(0.5, 1),
-        omega: new p5.Vector(0, 0),
+        omega: 0.5,
         ballSize: new p5.Vector(25, 25),
         tableSize: tableSize,
         pos: new p5.Vector(0, -150),

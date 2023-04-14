@@ -29,7 +29,7 @@ rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 let rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage;
 let closeImage;
 
-let currentScene = 1;
+let currentScene = 0;
 let currentPopUp = 0;
 
 let sceneThreeInitalTrans = new p5.Vector(0, -800)
@@ -43,7 +43,7 @@ let buttons = []
 let buttonPositions = []
 let controlMenuButtons = []
 let slider1, slider2;
-let sliderAngle = 0;
+// let sliderAngle = 0;
 let sliderDefaults = []
 
 let regularFont, boldFont, thinFont;
@@ -117,21 +117,11 @@ const leftCanvasObject = canvas => {
     {  
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
-        
-        if (currentScene == 3)
-        {
-            canvas.orbitControl();
-            canvas.rotateX(sceneThreeInitalRotate.x)
-            canvas.rotateY(sceneThreeInitalRotate.y)
-            canvas.rotateZ(sceneThreeInitalRotate.z)
-            canvas.translate(sceneThreeInitalTrans)
-            displayGrid(canvas)
-        } 
 
-        if (currentScene == 1)
+        if (currentScene == 2)
         {
-            // canvas.line(halfCanvas.y / 2.75)
-        }
+            canvas.translate((innerWidth / 2) - 150, innerHeight / 4)
+        } 
         
         canvas.push()
             leftScenes[currentScene].display()
@@ -194,6 +184,9 @@ const rightCanvasObject = canvas => {
         else rightCanvas.addClass('bottom');
 
         createRightScenes(canvas)
+        
+        // rightScenes[2].shapes[2].vel = leftScenes[2].shapes[2].pos.copy().add(leftScenes[2].shapes[2].vel)
+
         canvasLoaded[1] = true;
     }
   
@@ -202,15 +195,9 @@ const rightCanvasObject = canvas => {
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
-        if (currentScene == 3)
+        if (currentScene == 2)
         {
-            canvas.orbitControl();
-            canvas.rotateX(sceneThreeInitalRotate.x)
-            canvas.rotateY(sceneThreeInitalRotate.y)
-            canvas.rotateZ(sceneThreeInitalRotate.z)
-            canvas.translate(sceneThreeInitalTrans)
-            
-            displayGrid(canvas)
+            canvas.translate((innerWidth / 2) - 150, innerHeight / 4)
         } 
 
         canvas.push()
@@ -351,40 +338,35 @@ const controlMenu = canvas => {
         // controlsCanvas.style("borderRadius", "50px")
 
         buttonPositions = getControlButtonPositions()
-        let sliderWidth = 190
+        let sliderWidth = 180
 
         let canvasLength = (landscape) ? innerHeight: innerWidth
-        // let sliderOffset = (canvasLength / 2) + 30
-
-        let sliderAngle = 90
-
-        let sliderOffset = 0
 
         let slider1Pos, slider2Pos;
 
         if (landscape)
         {
-            slider1Pos = new p5.Vector((innerWidth / 2) - 35, buttonPositions[4].y + (canvasLength / 2) - 10)
-            slider2Pos = new p5.Vector((innerWidth / 2) - 35, buttonPositions[6].y + (canvasLength / 2) - 10)
+            slider1Pos = new p5.Vector((innerWidth / 2) - 25, buttonPositions[5].y - 10)
+            slider2Pos = new p5.Vector((innerWidth / 2) - 25, buttonPositions[8].y - 10)
         }
         else
         {
-            slider1Pos = new p5.Vector(innerWidth - 240, buttonPositions[11].y + 75)
-            slider2Pos = new p5.Vector(innerWidth - 240, buttonPositions[14].y + 75)
+            slider1Pos = new p5.Vector(innerWidth - 230, buttonPositions[3].y + 40)
+            slider2Pos = new p5.Vector(innerWidth - 230, buttonPositions[4].y + 75)
         }
 
         slider1 = canvas.createSlider(-1, 1, 0, 0.05);
         slider1.position(slider1Pos.x, slider1Pos.y);
         slider1.style('width', sliderWidth + 'px');
         slider1.style('zIndex', '999');
-        slider1.style('transform', 'rotate(' + sliderAngle + 'deg)')
+        // slider1.style('transform', 'rotate(' + sliderAngle + 'deg)')
         
 
         slider2 = canvas.createSlider(-1, 1, 0, 0.05);
         slider2.position(slider2Pos.x, slider2Pos.y);
         slider2.style('width', sliderWidth + "px");
         slider2.style('zIndex', '99999');
-        slider2.style('transform', 'rotate(' + sliderAngle + 'deg)')
+        // slider2.style('transform', 'rotate(' + sliderAngle + 'deg)')
         createMenu(canvas)
         canvasLoaded[3] = true;
     }
@@ -395,10 +377,16 @@ const controlMenu = canvas => {
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
-            if (canvasLoaded.every(canvasLoad => canvasLoad)) sceneControls()
+            if (canvasLoaded.every(canvasLoad => canvasLoad)) 
+            {
+                sceneControls()
+            }
+            // console.log("asdf");
             displayMenu(canvas)
             sliderInput()
         canvas.pop()
+
+
     }
   
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
@@ -463,7 +451,7 @@ function getCanvasSize()
         canvasPos.push(new p5.Vector(innerWidth / 2, 0))
         canvasPos.push(new p5.Vector((innerWidth / 2)  - 50, innerHeight * 0.05))
 
-        sliderAngle = -90;
+        // sliderAngle = -90;
     }
     else
     {
@@ -476,12 +464,12 @@ function getCanvasSize()
         canvasPos.push(new p5.Vector(0, innerHeight / 2))
         canvasPos.push(new p5.Vector(innerWidth - 300, 0))
 
-        sliderAngle = 0;
+        // sliderAngle = 0;
     }
 
     halfCanvas = canvasSize[0].copy().div(2)
     quarterCanvas = canvasSize[0].copy().div(4)
-    backGroundImagePosition = new p5.Vector(quarterCanvas.x, quarterCanvas.y * 0.9)
+    backGroundImagePosition = new p5.Vector(halfCanvas.x, halfCanvas.y + 200)
 }
 
 

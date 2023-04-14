@@ -47,11 +47,14 @@ class Button extends Particle
                 this.canvas.fill(darkBlueColor)
                 this.canvas.stroke(this.stroke)
 
-                let imageOffset = new p5.Vector(210, 65)
-                this.canvas.image(this.image, -30, 0, this.size.y, this.size.y)
-                this.canvas.textSize(24)
+                let imageOffset = new p5.Vector(220, 30)
+                if (this.text != "Omega" && this.text != "Mass") this.canvas.image(this.image, -20, 0, 40, 40)
+                else this.canvas.image(this.image, -25, -20, 40, 40)
+                
                 this.canvas.textAlign(this.canvas.LEFT)
                 this.canvas.fill(0)
+                this.canvas.noStroke()
+                this.canvas.textSize(24)
                 this.canvas.text(this.text, imageOffset.x, imageOffset.y, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
             }
 

@@ -4,8 +4,6 @@ function createMenu(canvas)
     new p5(rightCanvasObject); 
     new p5(popUpWindow); 
 
-    
-    
     // scenes[0]
     buttonPositions = getControlButtonPositions()
 
@@ -48,7 +46,7 @@ function createMenu(canvas)
     }))
 
     baseButtons.push(new Button({
-        text: "Play/Pause", 
+        text: "Pause", 
         image: pauseImage,
         pos: new p5.Vector(buttonPositions[1].x, buttonPositions[1].y),
         size: new p5.Vector(200, 50),
@@ -69,42 +67,25 @@ function createMenu(canvas)
         canvas: canvas,
         showBorder: true,
         onClick: () => {
-            leftScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
-
-            rightScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
+            resetAllScenes();
         }
     }))
 
     baseButtons.push(new Button({
         text: "Omega", 
         image: omegaImage,
-        pos: new p5.Vector(buttonPositions[3].x, buttonPositions[3].y),
-        size: new p5.Vector(200, 50),
+        pos: new p5.Vector(buttonPositions[3].x, buttonPositions[3].y + 20),
+        size: new p5.Vector(200, 100),
         fill: lightBlueColor,
         showBorder: true,
-        // omega: new p5.Vector(0, 0, 0.5),
         canvas: canvas,
     }))
 
     baseButtons.push(new Button({
         text: "Mass", 
         image: massImage,
-        pos: new p5.Vector(buttonPositions[6].x, buttonPositions[6].y),
-        size: new p5.Vector(200, 50),
+        pos: new p5.Vector(buttonPositions[4].x, buttonPositions[4].y + 60),
+        size: new p5.Vector(200, 100),
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -113,39 +94,20 @@ function createMenu(canvas)
     baseButtons.push(new Button({
         text: "Help", 
         image: helpImage,
-        pos: new p5.Vector(buttonPositions[9].x, buttonPositions[9].y),
+        pos: new p5.Vector(buttonPositions[5].x, buttonPositions[5].y + 80),
         size: new p5.Vector(200, 50),
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
         onClick: () => {
-            if (currentScene > 0) currentScene--;
-            else currentScene = 3;
-
-            leftScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
-
-            rightScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
+            console.log("help");
         }
     }))
 
     baseButtons.push(new Button({
         text: "Back", 
         image: backImage,
-        pos: new p5.Vector(buttonPositions[10].x, buttonPositions[10].y),
+        pos: new p5.Vector(buttonPositions[6].x, buttonPositions[6].y + 80),
         size: new p5.Vector(200, 50),
         fill: lightBlueColor,
         canvas: canvas,
@@ -154,30 +116,14 @@ function createMenu(canvas)
             if (currentScene > 0) currentScene--;
             else currentScene = 2;
 
-            leftScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
-
-            rightScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
+            resetAllScenes()
         }
     }))
 
     baseButtons.push(new Button({
         text: "Next", 
         image: nextImage,
-        pos: new p5.Vector(buttonPositions[11].x, buttonPositions[11].y),
+        pos: new p5.Vector(buttonPositions[7].x, buttonPositions[7].y + 80),
         size: new p5.Vector(200, 50),
         fill: lightBlueColor,
         canvas: canvas,
@@ -186,23 +132,7 @@ function createMenu(canvas)
             if (currentScene < 2) currentScene++;
             else currentScene = 0;
 
-            leftScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
-
-            rightScenes.forEach(scene => {
-                scene.shapes.forEach(shape => {
-                    shape.reset()
-                })
-                scene.images.forEach(image => {
-                    image.reset()
-                })
-            })
+            resetAllScenes()
         }
     }))
 
@@ -211,13 +141,7 @@ function createMenu(canvas)
     controlMenuButtons.push(baseButtons)
     controlMenuButtons.push(baseButtons)
 
-    controlMenuButtons[0][3].text = "Speed"
-    controlMenuButtons[1][3].text = "Velocity"
-    controlMenuButtons[2][3].text = "Omega"
     
-    controlMenuButtons[0][3].image = speedImage
-    controlMenuButtons[1][3].image = velImage
-    controlMenuButtons[2][3].image = omegaImage
 
     sliderDefaults[0] = [0, 0]
     sliderDefaults[1] = [0, 0]
@@ -232,31 +156,39 @@ function createMenu(canvas)
 
 function displayMenu(canvas)
 {
+    controlMenuButtons[0][3].text = "Speed"
+    controlMenuButtons[1][3].text = "Velocity"
+    controlMenuButtons[2][3].text = "Omega"
+    
+    controlMenuButtons[0][3].image = speedImage
+    controlMenuButtons[1][3].image = velImage
+    controlMenuButtons[2][3].image = omegaImage
+
     controlMenuButtons[currentScene].forEach(button => {
-        button.display()
+        if (button.visible) button.display()
         if (playState && !popUpVisible) button.move()
     })
 
-    if (playState) controlMenuButtons[currentScene][1].image = pauseImage
-    else controlMenuButtons[currentScene][1].image = playImage
+    if (playState) 
+    {
+        controlMenuButtons[currentScene][1].image = pauseImage
+        controlMenuButtons[currentScene][1].text = "Pause"
+    }
+    else
+    {
+        controlMenuButtons[currentScene][1].image = playImage
+        controlMenuButtons[currentScene][1].text = "Play"
+    }
 
     if (playBackwards) controlMenuButtons[currentScene][0].image = forwindImage
     else controlMenuButtons[currentScene][0].image = rewindImage
-
-    
-
-    if (currentScene == 0 || currentScene == 1) 
-    {
-        // controlMenuButtons[currentScene][3].omega.z = 0;
-        // controlMenuButtons[currentScene][3].angle.z = 0; 
-    }
 
     checkMenuButtonHover(canvas)
 }
 
 function checkButtonClick(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY).sub(new p5.Vector(150, innerHeight / 2));
+    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY);
 
     // console.log("pos", mousePosition);
     // console.log(controlMenuButtons[currentScene][0].pos);
@@ -289,7 +221,7 @@ function checkButtonClick(canvas)
 
 function checkMenuButtonHover(canvas)
 {
-    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY).sub(new p5.Vector(150, innerHeight / 2));
+    let mousePosition = new p5.Vector(canvas.mouseX, canvas.mouseY);
     // canvas.rect(mousePosition.x, mousePosition.y, 10, 10)
 
     controlMenuButtons[currentScene].forEach(button => {
@@ -317,15 +249,14 @@ function getControlButtonPositions()
 
     for (let i = 0; i < numberOfButtons; i++) 
     {
-
-        let pos = (i * intervalSize) - (screenSize / 2) + 100
+        let pos = (i * intervalSize) + 35 + 50
         if (landscape)
         {
             buttonPositions.push(new p5.Vector(0, pos))
         }
         else
         {
-            buttonPositions.push(new p5.Vector(-30, pos))
+            buttonPositions.push(new p5.Vector(125, pos))
         }
     }
 
@@ -339,19 +270,19 @@ function sliderInput()
 
     if (canvasLoaded.every(canvasLoad => canvasLoad))
     {
-        leftScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
-        rightScenes[0].referenceFrame.vel.x = (slider1Value + 1) * -2;
-        rightScenes[0].images[1].vel.x = (slider1Value + 1) * 2;
+        leftScenes[0].images[1].acc.x = (slider1Value + 1) * 0.1;
+        rightScenes[0].referenceFrame.acc.x = (slider1Value + 1) * -0.1;
+        rightScenes[0].images[1].acc.x = (slider1Value + 1) * 0.1;
 
         
         if (leftScenes[0].images[2].bounces < 1)
         {
             let ballOmega = (slider1Value + 1) * -1.75;
-            leftScenes[0].images[2].omega.z = ballOmega;
-            rightScenes[0].images[2].omega.z = ballOmega;
+            leftScenes[0].images[2].omega = ballOmega;
+            rightScenes[0].images[2].omega = ballOmega;
         }
 
-        leftScenes[2].shapes[0].omega = slider1Value
+        leftScenes[2].shapes[0].omega = -slider1Value
         rightScenes[2].images[0].omega = -slider1Value
 
         leftScenes[0].images[2].mass = slider2Value;
@@ -371,11 +302,3 @@ function sliderInput()
     // console.log("asdf");
     // console.log(leftScenes[0].images[1].vel);
 }
-
-
-// rewind = canvas.loadImage("images/forward-solid.svg");
-//         playPause = canvas.loadImage("images/pause-solid.svg");
-//         restart = canvas.loadImage("images/arrow-rotate-right-solid.svg");
-//         omega = canvas.loadImage("images/omega.png");
-//         mass = canvas.loadImage("images/mass.png");
-//         help = canvas.loadImage("images/circle-info-solid.svg");

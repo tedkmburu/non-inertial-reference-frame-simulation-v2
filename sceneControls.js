@@ -6,9 +6,9 @@ function sceneControls()
             let ball = leftScenes[0].images[2]
             let ball2 = rightScenes[0].images[2]
 
-            let groundPosition = halfCanvas.y / 2.75
+            const groundPosition = 510
 
-            if (ball2.pos.x < -50) 
+            if (ball2.pos.x < 500) 
             {
                 ball.acc.y = 0.5
                 ball2.acc.y = 0.5
@@ -18,14 +18,15 @@ function sceneControls()
             {
                 ball2.bounces++;
                 ball2.vel.y = (-4 / (ball2.bounces / 2))  
-                ball2.omega.mult(0.6)
+                ball2.omega *= (0.6)
 
                 ball.bounces++;
                 ball.vel.y = (-4 / (ball.bounces / 2))  
-                ball.omega.mult(0.6)
+                ball.omega *= (0.6)
             }
 
             if (ball2.bounces > 3) playState = false;
+            if (ball2.pos.x > 920) playState = false;
 
             if (ball.pos.y > groundPosition) ball.pos.y = groundPosition;
             if (ball2.pos.y > groundPosition) ball2.pos.y = groundPosition;
@@ -35,37 +36,39 @@ function sceneControls()
         case 1:
             let cannonBall = leftScenes[1].shapes[0]
             let cannonBall2 = rightScenes[1].shapes[0]
+            const groundPosition2 = 510;
+            let newYVel = -10
 
-            let groundPosition2 = halfCanvas.y;
 
-            // console.log(groundPosition2, (leftScenes[1].images[1].pos.y / 2) + (leftScenes[1].images[1].size.y / 2));
-
-            let newYVel = (-10 / (cannonBall.bounces / 2))  
-            // console.log(cannonBall.bounces);
-            console.log(cannonBall.pos.y, groundPosition2);
-            if (cannonBall.pos.y > groundPosition2 && cannonBall.bounces > 3) 
+            rightScenes[1].shapes[0].referenceFrame.acc = cannonBall2.acc.copy().mult(-1)
+            if (cannonBall.pos.y > groundPosition2) 
             {
                 cannonBall.bounces++;
                 cannonBall.vel.y = newYVel
                 
 
                 cannonBall2.bounces++;
-                cannonBall2.vel.y = newYVel  
-            }
+                cannonBall2.vel.y = cannonBall.vel.copy().y * 2.88
 
-            if (cannonBall.pos.y > groundPosition2) cannonBall.pos.y = groundPosition2;
-            if (cannonBall2.pos.y > groundPosition2) cannonBall2.pos.y = groundPosition2;
+                rightScenes[1].shapes[0].referenceFrame.vel = cannonBall2.vel.copy().mult(-1)
+            }
             
-            // if (rightScenes[1].images[0].displacement > canvasSize[0].x)
-            // { 
-            //     playState = false;
-            // }
-            // console.log(rightScenes[1].images[0].pos );
+            if (cannonBall.pos.y > groundPosition2) 
+            {
+                cannonBall.pos.y = groundPosition2; 
+            }
+           
+            if (cannonBall.bounces > 1 || cannonBall.pos.x < cannonBall.startingPos.x)
+            { 
+                playState = false;
+            }
 
         break;
         case 2:
             let newPosition = leftScenes[2].shapes[2].pos.copy()
-            let angleInRadians = (leftScenes[2].shapes[0].angle.copy().mult(-1).z) / (180 / Math.PI)
+            let angleInRadians = (leftScenes[2].shapes[0].angle * -1) / (180 / Math.PI)
+            // console.log(angleInRadians);
+            
             let rectPosition = newPosition.rotate(angleInRadians)
 
             let rightBall = rightScenes[2].shapes[2]

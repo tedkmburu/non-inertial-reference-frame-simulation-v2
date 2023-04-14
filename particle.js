@@ -12,7 +12,7 @@ function prepareCanvas(props)
     props.canvas.imageMode(props.canvas.CENTER)
     props.canvas.textAlign(props.textAlign);
     props.canvas.textSize(props.textSize);
-    props.canvas.textFont(props.font);
+    // props.canvas.textFont(props.font);
 }
 
 class Particle
@@ -52,8 +52,8 @@ class Particle
 
         if (this.image != undefined) 
         {
-            this.size = new p5.Vector(props.image.width, props.image.height, 0)
-            this.pos = new p5.Vector(props.image.width / 2, props.image.height / 2, 0)
+            this.size = new p5.Vector(props.image.width, props.image.height)
+            this.pos = new p5.Vector(props.image.width / 2, props.image.height / 2)
         }
         this.startingSize = props.size || this.size.copy();
 
@@ -119,47 +119,7 @@ class Particle
 
     move()
     {
-        if (this.nonInertial && this.canvas.frameCount > 2 && currentScene == 2)
-        {
-            this.acc = new p5.Vector(0, 0)
-            // calculate the Coriolis and centrifugal forces for a particle
-            let omega = rightScenes[2].images[0].omega.copy().mult(0.005)
-            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
-            let rho = this.pos.copy();
-            rho.z = 0
-            // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
-            omega = rightScenes[2].images[0].omega.copy().mult(0.005)
-            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
-            
-            // combine the Coriolis and centrifugal forces and divide by mass to get net force
-            this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
-        }
-        else if (this.revolve && this.canvas.frameCount > 2 && currentScene == 3)
-        {
-            // let pos = this.pos.copy().sub(this.startingPos)
-            // let omega = leftScenes[3].shapes[0].omega
-            // let acc = p5.Vector.dot(this.vel, this.vel) / pos.mag()
-            // this.acc = this.pos.copy().mult(-acc / 100)
-            // console.log(this.pos);
-
-            let r = this.revolveRadius;
-            let a = this.frameCount / (10 * this.revolvePeriod)
-            let x = Math.cos(a) * r;
-            let y = (Math.sin(a) * r);
-
-            // period os 6.5027 sec
-
-            // this.vel = new p5.Vector(0, x, y).sub(this.pos)
-            this.vel = new p5.Vector(x, 0, y).sub(this.pos)
-
-            let omega = leftScenes[3].shapes[0].omega.copy().mult(0.005)
-            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
-            let rho = this.pos.copy();
-            rho.z = 0
-            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
-
-
-        }
+        
 
         this.previousPosition = this.pos.copy()
         if (!playBackwards) 
@@ -167,17 +127,38 @@ class Particle
             this.vel.add(this.acc).add(this.referenceFrame.acc);
             this.pos.add(this.vel).add(this.referenceFrame.vel);
 
-            this.omega += (this.angularAcc + this.referenceFrame.angularAcc);
-            this.angle += (this.omega + this.referenceFrame.omega);
+            this.omega = (this.omega + this.angularAcc + this.referenceFrame.angularAcc);
+            this.angle = (this.angle + this.omega + this.referenceFrame.omega);
+            
+            // console.log(this.angle);
         }
         else 
         {
             this.vel.sub(this.acc).sub(this.referenceFrame.acc);
             this.pos.sub(this.vel).sub(this.referenceFrame.vel);
 
-            this.omega -= (this.angularAcc + this.referenceFrame.angularAcc);
-            this.angle -= (this.omega + this.referenceFrame.omega);
+            this.omega = this.omega - (this.angularAcc + this.referenceFrame.angularAcc);
+            this.angle = this.angle - (this.omega + this.referenceFrame.omega);
         }
+
+        if (this.nonInertial && this.canvas.frameCount > 2 && currentScene == 2)
+        {
+            this.acc = new p5.Vector(0, 0)
+            let omegaScale = 0.005
+            // calculate the Coriolis and centrifugal forces for a particle
+            let omega = new p5.Vector(0, 0, rightScenes[2].images[0].omega * omegaScale)
+            this.corForce = p5.Vector.mult(p5.Vector.cross(this.vel, omega), (-2 * this.mass));
+            let rho = this.pos.copy();
+            // rho.z = 0
+            // let rho = p5.Vector.sub(this.pos, rectangles[0].pos);
+            omega = new p5.Vector(0, 0, rightScenes[2].images[0].omega * omegaScale)
+            this.centForce = p5.Vector.mult(rho, p5.Vector.dot(omega, omega) * this.mass);
+            
+            // combine the Coriolis and centrifugal forces and divide by mass to get net force
+            // this.acc = p5.Vector.add(this.corForce, this.centForce).div(this.mass);
+        }
+
+
 
         let trailRate = (currentScene > 2) ? 10 : 5; 
         if (this.canvas.frameCount % trailRate == 0 && this.showTrail && !this.revolve) 
@@ -186,7 +167,7 @@ class Particle
 
             let newPosition = this.pos.copy()
             
-            let angleInRadians = this.canvas.radians(leftScenes[2].shapes[0].angle)
+            let angleInRadians = this.canvas.radians(-leftScenes[2].shapes[0].angle)
             let rectPosition = newPosition.rotate(angleInRadians)
 
             this.trail2.push(newPosition)
