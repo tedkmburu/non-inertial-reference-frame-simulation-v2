@@ -6,8 +6,8 @@ function createMenu(canvas)
 
     createMenuButtons(canvas)
 
-    sliderDefaults[0] = [0, 0]
-    sliderDefaults[1] = [0, 0]
+    sliderDefaults[0] = [1, 0]
+    sliderDefaults[1] = [-0.25, 0]
     sliderDefaults[2] = [0.5, 0]
     sliderDefaults[3] = [0, 0]
 
@@ -179,7 +179,7 @@ function createMenuButtons(canvas)
         baseButtons[4].size.y *= 1.35
     }
 
-    // console.log(baseButtons[3])
+
     baseButtons[3].text = "Frame Rate"
     baseButtons[3].image = speedImage
     controlMenuButtons.push(baseButtons)
@@ -189,14 +189,36 @@ function createMenuButtons(canvas)
     baseButtons[3].text = "Omega"
     baseButtons[3].image = omegaImage
     controlMenuButtons.push(baseButtons)
-
-    
     
     
 }
 
 function displayMenu(canvas)
 {
+    controlMenuButtons[currentScene][8].visible = (!showMenu || !landscape) 
+
+    if (currentScene == 0)
+    {
+        controlMenuButtons[currentScene][3].text = "FPS"
+        controlMenuButtons[currentScene][3].image = frameRateImage
+    }
+    else if (currentScene == 1)
+    {
+        controlMenuButtons[currentScene][3].text = "Angle"
+        controlMenuButtons[currentScene][3].image = angleImage
+    }
+    else if (currentScene == 2)
+    {
+        controlMenuButtons[currentScene][3].text = "Omega"
+        controlMenuButtons[currentScene][3].image = omegaImage
+    }
+
+    controlMenuButtons[currentScene][6].visible = (currentScene != 0)
+    controlMenuButtons[currentScene][7].visible = (currentScene != 2)
+
+    
+
+
     controlMenuButtons[currentScene].forEach(button => {
         if (button.visible) button.display()
         if (playState && !popUpVisible) button.move()
@@ -228,8 +250,8 @@ function checkButtonClick(canvas)
 
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
-        if (mousePosition.copy().x + 30 > button.pos.copy().x - (button.size.copy().x / 2) &&
-            mousePosition.copy().x + 30 < button.pos.copy().x + (button.size.copy().x / 2) &&
+        if (mousePosition.copy().x - 30 > button.pos.copy().x - (button.size.copy().x / 2) &&
+            mousePosition.copy().x - 30 < button.pos.copy().x + (button.size.copy().x / 2) &&
             mousePosition.copy().y > button.pos.copy().y - (button.size.copy().y / 2) &&
             mousePosition.copy().y < button.pos.copy().y + (button.size.copy().y / 2) && 
             !popUpVisible)
@@ -255,7 +277,7 @@ function checkButtonClick(canvas)
 function checkMenuButtonHover(canvas)
 {
     let mousePosition = new p5.Vector(canvas.mouseX + 30, canvas.mouseY);
-    canvas.rect(mousePosition.x, mousePosition.y, 10, 10)
+    // canvas.rect(mousePosition.x, mousePosition.y, 10, 10)
 
     controlMenuButtons[currentScene].forEach(button => {
         // console.log(mousePosition, button.pos);
@@ -338,7 +360,20 @@ function sliderInput()
         leftScenes[2].shapes[0].omega = -slider1Value
         rightScenes[2].images[0].omega = -slider1Value
 
+        // let newPos = new p5.Vector()
+        // newPos.x = leftScenes[1].images[2].startingPos.copy().x + (slider1Value * 2)
+        // newPos.y = leftScenes[1].images[2].startingPos.copy().y + (slider1Value * 2)
+        
+        // leftScenes[1].images[2].pos = newPos.copy()
+        // rightScenes[1].images[2].pos = newPos.copy()
+
         if (currentScene == 0) theFrameRate = (slider1Value + 3) * 15;
+
+        if (currentScene == 1) 
+        {
+            leftScenes[1].images[2].angle = (slider1Value + 1) * -40
+            rightScenes[1].images[2].angle = (slider1Value + 1) * -40
+        }
 
         leftScenes[0].images[2].mass = slider2Value / 2;
         leftScenes[1].shapes[0].mass = slider2Value;

@@ -60,6 +60,8 @@ function createLeftScenes(theCanvas)
                     vel: initialContitions[1].vel.copy(),
                     acc: initialContitions[1].acc.copy(),
                     showTrail: true,
+                    showVelVector: true,
+                    velVectorScale: 0.08,
                     canvas: theCanvas,
                 })
             ],
@@ -422,7 +424,7 @@ function createRightScenes(theCanvas)
                 // vel: new p5.Vector(-20, 0, 0)
                 // omega: new p5.Vector(0, 0, -0.5)
                 canvas: theCanvas,
-                omega: new p5.Vector(0, 0)
+                omega: 0
             }),
             shapes: [
                 new Shape({
@@ -453,7 +455,7 @@ function createRightScenes(theCanvas)
                     showVelVector: true,
                     showCorVector: true,
                     showCentVector: true,
-                    // nonInertial: true,
+                    nonInertial: true,
                     showTrail: true,
                     canvas: theCanvas,
                 })
@@ -617,5 +619,18 @@ class Scene
         this.buttons.forEach(button => {
             if (button.visible) button.display()
         })    
+
+        // vel
+        // let velVector = new Arrow({
+        //     pos: rightScenes[1].images[1].pos.copy(), 
+        //     vel: rightScenes[1].referenceFrame.vel.copy(), 
+        //     angle: rightScenes[1].referenceFrame.vel.copy().angle, 
+        //     fill: redColor, 
+        //     canvas: this.canvas,
+        //     scaleFactor: 2.5,
+        //     image: rightVelImage
+        // })
+        
+        // velVector.display()
     }
 }

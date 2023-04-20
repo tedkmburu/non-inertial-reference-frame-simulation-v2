@@ -46,21 +46,21 @@ class Button extends Particle
             } 
             else if (this.text != undefined && this.showText && this.visible && this.showBorder)
             {
-                this.canvas.rect(35, 0, this.size.x, this.size.y + 20)
+                this.canvas.rect(35, 0 + buttonsDisplacement, this.size.x, this.size.y + 20)
                 this.canvas.fill(darkBlueColor)
                 this.canvas.stroke(this.stroke)
 
-                let buttonGroup1 = (this.text != "Omega" && this.text != "Mass")
+                let buttonGroup1 = (this.text != "Omega" && this.text != "Mass" && this.text != "FPS" && this.text != "Angle")
                 let imageOffset = new p5.Vector(220, 30)
-                if (buttonGroup1) this.canvas.image(this.image, -20, 0, 40, 40)
-                else this.canvas.image(this.image, -15, -20, 40, 40)
+                if (buttonGroup1) this.canvas.image(this.image, -20, 0 + buttonsDisplacement, 40, 40)
+                else this.canvas.image(this.image, -15, -20 + buttonsDisplacement, 40, 40)
                 
                 this.canvas.textAlign(this.canvas.LEFT)
                 this.canvas.fill(0)
                 this.canvas.noStroke()
                 this.canvas.textSize(24)
-                if (buttonGroup1) this.canvas.text(this.text, imageOffset.x, imageOffset.y, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
-                else this.canvas.text(this.text, imageOffset.x, imageOffset.y + 15, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+                if (buttonGroup1) this.canvas.text(this.text, imageOffset.x, imageOffset.y + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+                else this.canvas.text(this.text, imageOffset.x, imageOffset.y + 15 + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
                 
             }
 

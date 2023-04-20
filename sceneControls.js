@@ -1,4 +1,4 @@
-function sceneControls() 
+function sceneControls(canvas) 
 {
     switch(currentScene)
     {
