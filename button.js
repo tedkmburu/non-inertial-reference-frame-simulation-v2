@@ -46,22 +46,25 @@ class Button extends Particle
             } 
             else if (this.text != undefined && this.showText && this.visible && this.showBorder)
             {
-                this.canvas.rect(35, 0 + buttonsDisplacement, this.size.x, this.size.y + 20)
+                this.canvas.rect(0, 0 + buttonsDisplacement, this.size.x, this.size.y)
                 this.canvas.fill(darkBlueColor)
                 this.canvas.stroke(this.stroke)
 
                 let buttonGroup1 = (this.text != "Omega" && this.text != "Mass" && this.text != "FPS" && this.text != "Angle")
                 let imageOffset = new p5.Vector(220, 30)
-                if (buttonGroup1) this.canvas.image(this.image, -20, 0 + buttonsDisplacement, 40, 40)
-                else this.canvas.image(this.image, -15, -20 + buttonsDisplacement, 40, 40)
+                if (buttonGroup1 && !popUpVisible) this.canvas.image(this.image, -60, 0 + buttonsDisplacement, 40, 40)
+                else if (!popUpVisible) this.canvas.image(this.image, -60, -20 + buttonsDisplacement, 40, 40)
+                // else  this.canvas.image(this.image, -15, -20 + buttonsDisplacement, 20, 20)
                 
                 this.canvas.textAlign(this.canvas.LEFT)
                 this.canvas.fill(0)
                 this.canvas.noStroke()
                 this.canvas.textSize(24)
-                if (buttonGroup1) this.canvas.text(this.text, imageOffset.x, imageOffset.y + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
-                else this.canvas.text(this.text, imageOffset.x, imageOffset.y + 15 + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
-                
+                if (buttonGroup1 && !popUpVisible) this.canvas.text(this.text, imageOffset.x - 25, imageOffset.y - 0 + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+                else if (!popUpVisible) this.canvas.text(this.text, imageOffset.x - 35, imageOffset.y + 15 + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+                else this.canvas.text(this.text, 135, imageOffset.y + buttonsDisplacement, this.size.x + imageOffset.x, this.size.y + imageOffset.y)
+                // this.canvas.fill("rgba(0,0,0,0.5)")
+                // this.canvas.rect(0, 0 + buttonsDisplacement, this.size.x, this.size.y)
             }
 
         this.canvas.pop()  

@@ -575,10 +575,6 @@ function resetAllScenes()
             image.reset()
         })
 
-        scene.images.forEach(image => {
-            image.reset()
-        })
-
         scene.referenceFrame.reset();
         
     })

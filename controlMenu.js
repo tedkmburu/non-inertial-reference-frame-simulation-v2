@@ -21,13 +21,16 @@ function createMenuButtons(canvas)
 {
     buttonPositions = getControlButtonPositions()
 
+    let menuButtonSize =  new p5.Vector(200, 60)
+    let menuBigButtonSize = new p5.Vector(200, 100)
+
     let baseButtons = []
 
     baseButtons.push(new Button({
         text: "Rewind", 
         image: rewindImage,
         pos: new p5.Vector(buttonPositions[0].x, buttonPositions[0].y),
-        size: new p5.Vector(200, 50),
+        size: menuButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -63,7 +66,7 @@ function createMenuButtons(canvas)
         text: "Pause", 
         image: pauseImage,
         pos: new p5.Vector(buttonPositions[1].x, buttonPositions[1].y),
-        size: new p5.Vector(200, 50),
+        size: menuButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -76,7 +79,7 @@ function createMenuButtons(canvas)
         text: "Restart", 
         image: restartImage,
         pos: new p5.Vector(buttonPositions[2].x, buttonPositions[2].y),
-        size: new p5.Vector(200, 50),
+        size: menuButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -89,7 +92,7 @@ function createMenuButtons(canvas)
         text: "Omega", 
         image: omegaImage,
         pos: new p5.Vector(buttonPositions[3].x, buttonPositions[3].y + 20),
-        size: new p5.Vector(200, 100),
+        size: menuBigButtonSize,
         fill: lightBlueColor,
         showBorder: true,
         canvas: canvas,
@@ -99,7 +102,7 @@ function createMenuButtons(canvas)
         text: "Mass", 
         image: massImage,
         pos: new p5.Vector(buttonPositions[4].x, buttonPositions[4].y + 60),
-        size: new p5.Vector(200, 100),
+        size: menuBigButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -109,7 +112,7 @@ function createMenuButtons(canvas)
         text: "Help", 
         image: helpImage,
         pos: new p5.Vector(buttonPositions[5].x, buttonPositions[5].y + 80),
-        size: new p5.Vector(200, 50),
+        size: menuButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -122,7 +125,7 @@ function createMenuButtons(canvas)
         text: "Back", 
         image: backImage,
         pos: new p5.Vector(buttonPositions[6].x, buttonPositions[6].y + 80),
-        size: new p5.Vector(200, 50),
+        size: menuButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -141,7 +144,7 @@ function createMenuButtons(canvas)
         text: "Next", 
         image: nextImage,
         pos: new p5.Vector(buttonPositions[7].x, buttonPositions[7].y + 80),
-        size: new p5.Vector(200, 50),
+        size: menuButtonSize,
         fill: lightBlueColor,
         canvas: canvas,
         showBorder: true,
@@ -237,6 +240,9 @@ function displayMenu(canvas)
 
     if (playBackwards) controlMenuButtons[currentScene][0].image = forwindImage
     else controlMenuButtons[currentScene][0].image = rewindImage
+
+    if (showMenu) controlMenuButtons[currentScene][8].image = closeImageMenu;
+    else controlMenuButtons[currentScene][8].image = burgerImage;
 
     if (everyCanvasLoaded) checkMenuButtonHover(canvas)
 }
@@ -339,13 +345,13 @@ function getControlButtonPositions()
     }
     else
     {
-        let intervalSize = 100;
+        let intervalSize = 80;
 
         for (let i = 0; i < numberOfButtons; i++) 
         {
             let pos = (i * intervalSize) + 150
             
-            buttonPositions.push(new p5.Vector(125, pos))
+            buttonPositions.push(new p5.Vector(160, pos))
         }
     }
     

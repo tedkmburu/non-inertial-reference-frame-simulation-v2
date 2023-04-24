@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 let theFrameRate = 60; 
 
@@ -26,7 +26,7 @@ let rightTruckImage, rightBackgroundImage,
 rightCannon1, rightCannon2, rightCannon3, 
 rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 
-let popUp1Image, popUp2Image, popUp3Image, popUpBackImage, popUpNextImage;
+let popUp1Image, popUp2Image, popUp3Image, popUp4Image, popUp5Image, popUp6Image, popUp7Image, popUpBackImage, popUpNextImage;
 
 let frameRateImage, angleImage, rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage, closeImageMenu, burgerImage;
 let closeImage;
@@ -294,6 +294,10 @@ const popUpWindow = canvas => {
         popUp1Image = canvas.loadImage("/popups/1.png");
         popUp2Image = canvas.loadImage("/popups/2.png");
         popUp3Image = canvas.loadImage("/popups/3.png");
+        popUp4Image = canvas.loadImage("/popups/4.png");
+        popUp5Image = canvas.loadImage("/popups/5.png");
+        popUp6Image = canvas.loadImage("/popups/6.png");
+        popUp7Image = canvas.loadImage("/popups/7.png");
 
         
 
@@ -301,7 +305,7 @@ const popUpWindow = canvas => {
 
     canvas.setup = function()  // This function only runs once when the page first loads. 
     {        
-        popUpCanvas = canvas.createCanvas(innerWidth * 0.8, innerHeight * 0.8)
+        popUpCanvas = canvas.createCanvas(canvasSize[3].copy().x, canvasSize[3].copy().y)
         popUpCanvas.addClass('popUp');
 
         createPopUps(canvas)
@@ -310,7 +314,7 @@ const popUpWindow = canvas => {
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
     {  
-        canvas.background("red")
+        canvas.background(255)
         // #607D8B
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
@@ -323,8 +327,10 @@ const popUpWindow = canvas => {
   
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
-        canvas.resizeCanvas(canvasSize[2].x, canvasSize[2].y)
+        
         resizedWindow();
+        canvas.resizeCanvas(canvasSize[2].x, canvasSize[2].y)
+        createPopUps(canvas)
         // canvas.setup()
     }
 
@@ -431,8 +437,8 @@ const controlMenu = canvas => {
             // slider2Pos = new p5.Vector(buttonPositions[5].copy().x + 410, buttonPositions[4].copy().y + 75)
 
             
-            slider1Pos = new p5.Vector(50, 485)
-            slider2Pos = new p5.Vector(50, 625)
+            slider1Pos = new p5.Vector(50, 425)
+            slider2Pos = new p5.Vector(50, 545)
 
             slider1.style('top', slider1Pos.y + 'px');
             slider1.style('right', slider1Pos.x + 'px');
@@ -472,13 +478,20 @@ const controlMenu = canvas => {
                 controlMenuButtons[currentScene].forEach((button, i) => {
                     if (i != 8) button.visible = showMenu;
                 })
+
+                
             }
             // console.log("asdf");
             displayMenu(canvas)
             sliderInput()
+
+            if (canvasLoaded.every( canvasLoad => canvasLoad) && buttonsDisplacement == 0 && showMenu)
+            {
+                canvas.text("Scroll for more...", 125, innerHeight - 5)
+            }
         canvas.pop()
 
-
+        if (popUpVisible) buttonsDisplacement = 0;
     }
   
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
@@ -502,13 +515,24 @@ const controlMenu = canvas => {
         if (event.delta > 0) buttonsDisplacement-=8
         else buttonsDisplacement+=8
 
+        let maxButtonDisplacement = -canvasSize[3].y + 500
+
         if (buttonsDisplacement > 0) buttonsDisplacement = 0
+        if (buttonsDisplacement <= maxButtonDisplacement) buttonsDisplacement = maxButtonDisplacement
+
+        if (popUpVisible) buttonsDisplacement = 0;
 
         let slider1Pos, slider2Pos;
         if (!popUpVisible)
         {
-            slider1Pos = new p5.Vector(50, 485 + buttonsDisplacement)
-            slider2Pos = new p5.Vector(50, 625 + buttonsDisplacement)
+            // slider1Pos = new p5.Vector(50, 485 + buttonsDisplacement)
+            // slider2Pos = new p5.Vector(50, 625 + buttonsDisplacement)
+
+            slider1Pos = new p5.Vector(50, 420 + buttonsDisplacement)
+            slider2Pos = new p5.Vector(50, 545 + buttonsDisplacement)
+
+
+            console.log(slider1Pos.y);
 
             slider1.style('top', slider1Pos.y + 'px');
             slider1.style('right', slider1Pos.x + 'px');
@@ -553,8 +577,8 @@ function displayCameraLines(canvas)
         canvas.rect(18, 18, innerWidth * cameraLineScale, cameraLineThickness)
         canvas.rect(18, 18, cameraLineThickness, innerHeight * cameraLineScale)
 
-        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness, canvasSize[0].y - 18 - cameraLineThickness, -innerWidth * cameraLineScale, cameraLineThickness)
-        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness - 5, canvasSize[0].y - 18 - cameraLineThickness, cameraLineThickness, -innerHeight * cameraLineScale)
+        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness, canvasSize[0].y - 18, -innerWidth * cameraLineScale, cameraLineThickness)
+        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness - 5, canvasSize[0].y - 18, cameraLineThickness, -innerHeight * cameraLineScale)
         
         canvas.rect(18, canvasSize[0].y - 18, innerWidth * cameraLineScale, cameraLineThickness)
         canvas.rect(18, canvasSize[0].y - 18, cameraLineThickness, -innerHeight * cameraLineScale)
@@ -596,7 +620,7 @@ function getCanvasSize()
         canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
         canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
         canvasSize.push(new p5.Vector(300, innerHeight))
-        canvasSize.push(new p5.Vector(innerWidth * 0.8, innerHeight * 0.8))
+        canvasSize.push(new p5.Vector(innerWidth * 0.9, innerHeight * 0.9))
 
         canvasPos.push(new p5.Vector(0, 0))
         canvasPos.push(new p5.Vector(0, innerHeight / 2))
