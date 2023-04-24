@@ -1,46 +1,95 @@
 function createPopUps(canvas)
 {
+    // 2693 × 2265
+    //  current: 1024
+    let popUpImageSize = canvasSize[3].copy()
+    let popUpImagePos = new p5.Vector((innerWidth / 2) - 100, (innerHeight / 3))
+    if (innerWidth >= innerHeight) 
+    {
+        // landscape
+        
+        popUpImageSize.y = canvasSize[3].y * 0.9
+        popUpImageSize.x = ((2693/2265) * popUpImageSize.y)
+    }
+    else 
+    {
+        popUpImageSize.x = canvasSize[3].x * 0.9
+        popUpImageSize.y = ((2265/2693) * popUpImageSize.x)
+    }
+
+    // console.log(popUpImageSize);
+
     popUps.push(new PopUp({
         canvas: canvas,
-        textBoxes: [
-            new TextBox({
-                text: "The same physical situation can look different depending on the reference frame it is viewed from",
-                fill: "black",
-                size: new p5.Vector(innerWidth * 0.5, innerHeight * 0.5, 0),
-                textSize: 30,
+        images: [
+            new MyImage({
+                image: popUp1Image,
+                pos: popUpImagePos,
+                size: popUpImageSize,
+                scaleFactor: 1,
                 canvas: canvas,
-            })
+            }),
+            new MyImage({
+                image: popUp2Image,
+                pos: popUpImagePos,
+                size: popUpImageSize,
+                scaleFactor: 1,
+                canvas: canvas,
+            }),
+            new MyImage({
+                image: popUp3Image,
+                pos: popUpImagePos,
+                size: popUpImageSize,
+                scaleFactor: 1,
+                canvas: canvas,
+            }),
         ],
         buttons: [
             new Button({
-                text: "Close", 
+                text: "Back", 
                 image: closeImage,
-                pos: new p5.Vector(250, -250),
-                size: new p5.Vector(125, 25),
-                fill: "rgba(255, 0, 0, 1)",
+                pos: new p5.Vector((canvasSize[3].x / 2) - 100, innerHeight * 0.7),
+                size: new p5.Vector(200, 50),
+                fill: darkBlueColor,
                 showBorder: true,
                 showText: true,
                 textSize: 24,
                 canvas: canvas,
                 onClick: () => {
-                    popUpVisible = false;
+                    if (currentPopUp > 0) currentPopUp--;
+                    else currentPopUp = 0;
                 }
-            }), 
+            }),
             new Button({
                 text: "Next", 
                 image: closeImage,
-                pos: new p5.Vector(0, 0),
-                size: new p5.Vector(125, 25),
-                fill: "#5BBCC0",
+                pos: new p5.Vector((canvasSize[3].x / 2) + 100, innerHeight * 0.7),
+                size: new p5.Vector(200, 50),
+                fill: darkBlueColor,
                 showBorder: true,
                 showText: true,
                 textSize: 24,
                 canvas: canvas,
                 onClick: () => {
-                    currentScene++;
-                    popUpVisible = false;
+                    if (currentPopUp < 2) currentPopUp++;
+                    else currentPopUp = 0;
                 }
-            }), 
+            }),
+            new Button({
+                text: "Close", 
+                image: closeImage,
+                pos: new p5.Vector((canvasSize[3].x - 160), 60),
+                size: new p5.Vector(200, 50),
+                fill: "rgb(200, 0, 0)",
+                showBorder: true,
+                showText: true,
+                textSize: 24,
+                canvas: canvas,
+                onClick: () => {
+                    popUpVisible = false; 
+                }
+            })
+            
             // new Button({
             //     text: "Next", 
             //     pos: new p5.Vector(-400, 0),
@@ -59,7 +108,7 @@ class PopUp
         this.images = props.images || []
         this.shapes = props.shapes || []
         
-        this.fill = props.fill || "rgba(255, 255, 255, 0.97)";
+        this.fill = props.fill || lightBlueColor;
         this.stroke = props.stroke || "black";
         this.canvas = props.canvas;
     }
@@ -72,20 +121,19 @@ class PopUp
 
         this.canvas.background(this.fill)
 
-        this.images.forEach(image => {
-            image.display()
-        });
+        this.images[currentPopUp].display();
 
         this.shapes.forEach(shape => {
             shape.display()
         });
 
-        this.textBoxes.forEach(textBox => {
-            textBox.display()
-        }) 
         
         this.buttons.forEach(button => {
             if (button.visible) button.display()
+        }) 
+
+        this.textBoxes.forEach(textBox => {
+            textBox.display()
         }) 
 
         this.canvas.pop()

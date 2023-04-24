@@ -167,7 +167,7 @@ class Particle
 
 
 
-        let trailRate = (currentScene > 2) ? 10 : 5; 
+        let trailRate = (currentScene == 1) ? 2 : 5; 
         if (this.canvas.frameCount % trailRate == 0 && this.showTrail && !this.revolve) 
         {
             this.trail.push(this.pos.copy().add(this.offset))

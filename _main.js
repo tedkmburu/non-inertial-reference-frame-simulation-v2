@@ -26,10 +26,12 @@ let rightTruckImage, rightBackgroundImage,
 rightCannon1, rightCannon2, rightCannon3, 
 rightGrid, rightVelImage, rightCorImage, rightCentImage, rightBallImage;
 
+let popUp1Image, popUp2Image, popUp3Image, popUpBackImage, popUpNextImage;
+
 let frameRateImage, angleImage, rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage, closeImageMenu, burgerImage;
 let closeImage;
 
-let currentScene = 2;
+let currentScene = 0;
 let currentPopUp = 0;
 
 let sceneThreeInitalTrans = new p5.Vector(0, -800)
@@ -37,7 +39,7 @@ let sceneThreeInitalRotate = new p5.Vector(90, 0)
 
 let playState = true;
 let playBackwards = false;
-let popUpVisible = false;
+let popUpVisible = true;
 
 let buttons = []
 let buttonPositions = []
@@ -58,6 +60,9 @@ let darkBlueColor = "#546E7A";
 let lightBlueColor = "#607D8B"
 
 let buttonsDisplacement = 0
+
+const cameraLineThickness = 5;
+const cameraLineScale = 0.125;
 
 function displayGrid(canvas)
 {
@@ -113,14 +118,24 @@ const leftCanvasObject = canvas => {
     {  
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
-
-        if (currentScene == 2)
-        {
-            canvas.translate((innerWidth / 2) - 150, innerHeight / 4)
-        } 
         
+        if (currentScene == 2) canvas.translate((innerWidth / 2) - 150, innerHeight / 4)
+
         canvas.push()
             leftScenes[currentScene].display()
+        canvas.pop()
+
+        canvas.push()
+            let menuOffset = (showMenu) ? (-canvasSize[2].x / 2) : 0;
+            canvas.textSize(24)
+            canvas.textAlign(canvas.CENTER)
+            canvas.text("stationary frame", menuOffset, -(canvasSize[0].y / 2) + 30)
+        canvas.pop()
+
+        if (currentScene == 2) canvas.translate(-(innerWidth / 2) + 150, -(innerHeight / 4))
+
+        canvas.push()
+            displayCameraLines(canvas)
         canvas.pop()
     }
   
@@ -200,28 +215,33 @@ const rightCanvasObject = canvas => {
         canvas.background(0)
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
-        if (currentScene == 2)
-        {
-            canvas.translate((innerWidth / 2) - 150, innerHeight / 4)
-        } 
+        if (currentScene == 2) canvas.translate((innerWidth / 2) - 150, innerHeight / 4)
 
         canvas.push()
             rightScenes[currentScene].display()
+        canvas.pop()
+
+        canvas.push()
+            let menuOffset = (showMenu) ? (-canvasSize[2].x / 2) : 0;
+            canvas.textSize(24)
+            canvas.textAlign(canvas.CENTER)
+            canvas.text("non-inertial frame", menuOffset, -(canvasSize[0].y / 2) + 30)
+        canvas.pop()
+
+        if (currentScene == 2) canvas.translate(-(innerWidth / 2) + 150, -(innerHeight / 4))
+
+        canvas.push()
+            displayCameraLines(canvas)
         canvas.pop()
     }
   
     canvas.windowResized = function() // inbuilt p5 function. runs everytime the window is resized
     {
-        
-
-        
         createRightScenes(canvas)
         resizedWindow();
-        leftCanvas.style("top", canvasPos[1].y + "px")
-        leftCanvas.style("left", canvasPos[1].x + "px")
+        rightCanvas.style("top", canvasPos[1].y + "px")
+        rightCanvas.style("left", canvasPos[1].x + "px")
         canvas.resizeCanvas(canvasSize[1].x, canvasSize[1].y)
-        
-        // canvas.setup()
     }
 
     canvas.mouseClicked = function() {
@@ -265,6 +285,18 @@ const popUpWindow = canvas => {
         regularFont = canvas.loadFont("fonts/Roboto-Regular.ttf")
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
         thinFont = canvas.loadFont("fonts/Roboto-Light.ttf")
+
+        // popUpRefFrameImage = canvas.loadImage("/popups/refFrame.png");
+        // refFrameAddVelImage = canvas.loadImage("/popups/addVel.png");
+        // cameraImage = canvas.loadImage("/popups/camera.png");
+        // rotatePopupImage = canvas.loadImage("/popups/rotate.png");
+
+        popUp1Image = canvas.loadImage("/popups/1.png");
+        popUp2Image = canvas.loadImage("/popups/2.png");
+        popUp3Image = canvas.loadImage("/popups/3.png");
+
+        
+
     }
 
     canvas.setup = function()  // This function only runs once when the page first loads. 
@@ -278,12 +310,13 @@ const popUpWindow = canvas => {
   
     canvas.draw = function() // this function runs every frame. Everything on the left canvas starts here.
     {  
-        canvas.background(0)
+        canvas.background("red")
+        // #607D8B
         canvas.frameRate(theFrameRate);  // the simulation will try limit itself to 60 frames per second. If a device can't maintain 60 fps, it will run at whatever it can
         
         canvas.push()
             popUpCanvas.style("visibility", (popUpVisible) ? "visible" : "hidden")
-            popUps[currentPopUp].display()
+            popUps[currentScene].display()
             // popUps[currentPopUp].display()
         canvas.pop()
     }
@@ -295,8 +328,9 @@ const popUpWindow = canvas => {
         // canvas.setup()
     }
 
-    canvas.mouseClicked = function() {
-
+    canvas.mouseClicked = function() 
+    {
+        checkButtonClick(canvas)
     }
 }
 
@@ -372,6 +406,14 @@ const controlMenu = canvas => {
         slider1.style('position', 'fixed');
         slider2.style('position', 'fixed');
 
+        slider1.input(() => {
+            if (currentScene == 1 && !playState)
+            {
+                leftScenes[currentScene].reset()
+                rightScenes[currentScene].reset()
+            }
+        })
+
         if (landscape)
         {
             slider1Pos = new p5.Vector(610, 60)
@@ -392,8 +434,6 @@ const controlMenu = canvas => {
             slider1Pos = new p5.Vector(50, 485)
             slider2Pos = new p5.Vector(50, 625)
 
-            console.log(slider2Pos);
-
             slider1.style('top', slider1Pos.y + 'px');
             slider1.style('right', slider1Pos.x + 'px');
 
@@ -401,8 +441,6 @@ const controlMenu = canvas => {
             slider2.style('right', slider2Pos.x + 'px');
         }
 
-        
-        
         createMenu(canvas)
         canvasLoaded[3] = true;
         showMenu = true;
@@ -461,19 +499,25 @@ const controlMenu = canvas => {
     }
 
     canvas.mouseWheel = (event) => {
-        if (event.delta > 0) buttonsDisplacement+=6
-        else buttonsDisplacement-=6
+        if (event.delta > 0) buttonsDisplacement-=8
+        else buttonsDisplacement+=8
 
         if (buttonsDisplacement > 0) buttonsDisplacement = 0
 
-        let slider1Pos = new p5.Vector(50, 485 + buttonsDisplacement)
-        let slider2Pos = new p5.Vector(50, 625 + buttonsDisplacement)
+        let slider1Pos, slider2Pos;
+        if (!popUpVisible)
+        {
+            slider1Pos = new p5.Vector(50, 485 + buttonsDisplacement)
+            slider2Pos = new p5.Vector(50, 625 + buttonsDisplacement)
 
-        slider1.style('top', slider1Pos.y + 'px');
-        slider1.style('right', slider1Pos.x + 'px');
+            slider1.style('top', slider1Pos.y + 'px');
+            slider1.style('right', slider1Pos.x + 'px');
 
-        slider2.style('top', slider2Pos.y + 'px');
-        slider2.style('right', slider2Pos.x + 'px');
+            slider2.style('top', slider2Pos.y + 'px');
+            slider2.style('right', slider2Pos.x + 'px');
+        }
+
+        
 
         
     }
@@ -499,21 +543,30 @@ new p5(controlMenu);
 
 
 
+function displayCameraLines(canvas)
+{
+    let menuOffset = (showMenu) ? -300 : 0;
+    canvas.push()
+        canvas.stroke(255)
+        canvas.strokeWeight(4)
 
+        canvas.rect(18, 18, innerWidth * cameraLineScale, cameraLineThickness)
+        canvas.rect(18, 18, cameraLineThickness, innerHeight * cameraLineScale)
+
+        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness, canvasSize[0].y - 18 - cameraLineThickness, -innerWidth * cameraLineScale, cameraLineThickness)
+        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness - 5, canvasSize[0].y - 18 - cameraLineThickness, cameraLineThickness, -innerHeight * cameraLineScale)
+        
+        canvas.rect(18, canvasSize[0].y - 18, innerWidth * cameraLineScale, cameraLineThickness)
+        canvas.rect(18, canvasSize[0].y - 18, cameraLineThickness, -innerHeight * cameraLineScale)
+
+        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness, 18, -innerWidth * cameraLineScale, cameraLineThickness)
+        canvas.rect(canvasSize[0].x + menuOffset - 18 - cameraLineThickness, 18, cameraLineThickness, innerHeight * cameraLineScale)
+    canvas.pop()
+}
 
 function resizedWindow()
 {
     getCanvasSize()
-
-    
-
-    // rightCanvas.style("top", canvasPos[1].y + "px")
-    // rightCanvas.style("left", canvasPos[1].x + "px")
-
-    // resetAllScenes();
-    console.log("resize");
-
-
 }
 
 function getCanvasSize()
@@ -524,32 +577,33 @@ function getCanvasSize()
     landscape = false;
 
     // if (innerWidth >= innerHeight)
-    if (false)
-    {
-        landscape = true;
-        canvasSize.push(new p5.Vector(innerWidth, (innerHeight / 2) - 100))
-        canvasSize.push(new p5.Vector(innerWidth, (innerHeight / 2) - 100))
-        canvasSize.push(new p5.Vector(innerWidth, 200))
+    // if (false)
+    // {
+    //     landscape = true;
+    //     canvasSize.push(new p5.Vector(innerWidth, (innerHeight / 2) - 100))
+    //     canvasSize.push(new p5.Vector(innerWidth, (innerHeight / 2) - 100))
+    //     canvasSize.push(new p5.Vector(innerWidth, 200))
 
-        canvasPos.push(new p5.Vector(0, 0))
-        canvasPos.push(new p5.Vector(0, (innerHeight / 2) - 100))
-        canvasPos.push(new p5.Vector(0, innerHeight - 200))
+    //     canvasPos.push(new p5.Vector(0, 0))
+    //     canvasPos.push(new p5.Vector(0, (innerHeight / 2) - 100))
+    //     canvasPos.push(new p5.Vector(0, innerHeight - 200))
 
-        // sliderAngle = -90;
-    }
-    else
-    {
+    //     // sliderAngle = -90;
+    // }
+    // else
+    // {
         landscape = false;
         canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
         canvasSize.push(new p5.Vector(innerWidth, innerHeight / 2))
         canvasSize.push(new p5.Vector(300, innerHeight))
+        canvasSize.push(new p5.Vector(innerWidth * 0.8, innerHeight * 0.8))
 
         canvasPos.push(new p5.Vector(0, 0))
         canvasPos.push(new p5.Vector(0, innerHeight / 2))
         canvasPos.push(new p5.Vector(innerWidth - 300, 0))
 
         // sliderAngle = 0;
-    }
+    // }
 
     halfCanvas = canvasSize[0].copy().div(2)
     quarterCanvas = canvasSize[0].copy().div(4)

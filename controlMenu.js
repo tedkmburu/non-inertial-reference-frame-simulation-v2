@@ -114,7 +114,7 @@ function createMenuButtons(canvas)
         canvas: canvas,
         showBorder: true,
         onClick: () => {
-            console.log("help");
+            popUpVisible = !popUpVisible;
         }
     }))
 
@@ -238,7 +238,7 @@ function displayMenu(canvas)
     if (playBackwards) controlMenuButtons[currentScene][0].image = forwindImage
     else controlMenuButtons[currentScene][0].image = rewindImage
 
-    checkMenuButtonHover(canvas)
+    if (everyCanvasLoaded) checkMenuButtonHover(canvas)
 }
 
 function checkButtonClick(canvas)
@@ -252,8 +252,8 @@ function checkButtonClick(canvas)
         // console.log(mousePosition, button.pos);
         if (mousePosition.copy().x - 30 > button.pos.copy().x - (button.size.copy().x / 2) &&
             mousePosition.copy().x - 30 < button.pos.copy().x + (button.size.copy().x / 2) &&
-            mousePosition.copy().y > button.pos.copy().y - (button.size.copy().y / 2) &&
-            mousePosition.copy().y < button.pos.copy().y + (button.size.copy().y / 2) && 
+            mousePosition.copy().y > button.pos.copy().y - (button.size.copy().y / 2) + buttonsDisplacement&&
+            mousePosition.copy().y < button.pos.copy().y + (button.size.copy().y / 2) + buttonsDisplacement && 
             !popUpVisible)
             {
                 button.clicked()
@@ -262,7 +262,7 @@ function checkButtonClick(canvas)
             
     })
 
-    popUps[currentPopUp].buttons.forEach(button => {
+    popUps[currentScene].buttons.forEach(button => {
         if (mousePosition.x > button.pos.copy().x - (button.size.copy().x / 2) &&
             mousePosition.x < button.pos.copy().x + (button.size.copy().x / 2) &&
             mousePosition.y > button.pos.copy().y - (button.size.copy().y / 2) &&
@@ -280,6 +280,21 @@ function checkMenuButtonHover(canvas)
     // canvas.rect(mousePosition.x, mousePosition.y, 10, 10)
 
     controlMenuButtons[currentScene].forEach(button => {
+        // console.log(mousePosition, button.pos);
+        if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
+            mousePosition.x < button.pos.x + (button.size.x / 2) &&
+            mousePosition.y > button.pos.y - (button.size.y / 2) &&
+            mousePosition.y < button.pos.y + (button.size.y / 2) &&
+            !popUpVisible)
+            {
+                button.hover()
+                // this.canvas.cursor("pointer")
+
+                
+            }
+    })
+
+    popUps[currentPopUp].buttons.forEach(button => {
         // console.log(mousePosition, button.pos);
         if (mousePosition.x > button.pos.x - (button.size.x / 2) &&
             mousePosition.x < button.pos.x + (button.size.x / 2) &&
@@ -349,7 +364,6 @@ function sliderInput()
         rightScenes[0].referenceFrame.acc.x = (slider1Value + 1) * -0.1;
         rightScenes[0].images[1].acc.x = (slider1Value + 1) * 0.1;
 
-        
         if (leftScenes[0].images[2].bounces < 1)
         {
             let ballOmega = (slider1Value + 1) * -1.75;
@@ -373,6 +387,8 @@ function sliderInput()
         {
             leftScenes[1].images[2].angle = (slider1Value + 1) * -40
             rightScenes[1].images[2].angle = (slider1Value + 1) * -40
+
+            // rightScenes[1].images[2].pos.y = (slider1Value + 1) * -10
         }
 
         leftScenes[0].images[2].mass = slider2Value / 2;

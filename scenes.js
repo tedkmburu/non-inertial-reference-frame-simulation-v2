@@ -17,7 +17,7 @@ function createLeftScenes(theCanvas)
                     image: leftTruckImage,
                     pos: new p5.Vector(halfCanvas.x, halfCanvas.y + 87),
                     acc: initialContitions[0].acc.copy(),
-                    // vel: new p5.Vector(0, 0),
+                    // cannon: new p5.Vector(0, 0),
                     scaleFactor: 0.1,
                     canvas: theCanvas,
                 }),
@@ -55,7 +55,7 @@ function createLeftScenes(theCanvas)
                     shape: "ellipse",
                     fill: "rgb(25, 25, 25)",
                     stroke: "gray",
-                    pos: new p5.Vector(240,  halfCanvas.y - 20),
+                    pos: new p5.Vector(240, halfCanvas.y - 20),
                     size: new p5.Vector(25, 25),
                     vel: initialContitions[1].vel.copy(),
                     acc: initialContitions[1].acc.copy(),
@@ -84,6 +84,7 @@ function createLeftScenes(theCanvas)
                     pos: new p5.Vector(130, halfCanvas.y + 45),
                     scaleFactor: 0.15,
                     angle: -30,
+                    cannon: true,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
@@ -394,7 +395,9 @@ function createRightScenes(theCanvas)
                     image: rightCannon1,
                     pos: new p5.Vector(halfCanvas.x + 110, halfCanvas.y + 45),
                     scaleFactor: 0.15,
+                    showTrail: true,
                     angle: -30,
+                    cannon: true,
                     canvas: theCanvas,
                 }), 
                 new MyImage({
@@ -572,7 +575,12 @@ function resetAllScenes()
             image.reset()
         })
 
+        scene.images.forEach(image => {
+            image.reset()
+        })
+
         scene.referenceFrame.reset();
+        
     })
 
     rightScenes.forEach(scene => {
@@ -632,5 +640,22 @@ class Scene
         // })
         
         // velVector.display()
+    }
+
+    reset()
+    {
+        this.images.forEach(image => {
+            image.reset()
+        });
+
+        this.shapes.forEach(shape => {
+            shape.reset()
+        });
+
+        this.buttons.forEach(button => {
+            button.reset()
+        })   
+
+        this.referenceFrame.reset()
     }
 }
