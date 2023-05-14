@@ -31,7 +31,7 @@ let popUp1Image, popUp2Image, popUp3Image, popUp4Image, popUp5Image, popUp6Image
 let frameRateImage, angleImage, rewindImage, forwindImage, playImage, pauseImage, restartImage, omegaImage, massImage, helpImage, backImage, nextImage, speedImage, velImage, closeImageMenu, burgerImage;
 let closeImage;
 
-let currentScene = 0;
+let currentScene = 1;
 let currentPopUp = 0;
 
 let sceneThreeInitalTrans = new p5.Vector(0, -800)
@@ -39,7 +39,7 @@ let sceneThreeInitalRotate = new p5.Vector(90, 0)
 
 let playState = true;
 let playBackwards = false;
-let popUpVisible = true;
+let popUpVisible = false;
 
 let buttons = []
 let buttonPositions = []
@@ -286,18 +286,18 @@ const popUpWindow = canvas => {
         boldFont = canvas.loadFont("fonts/Roboto-Bold.ttf")
         thinFont = canvas.loadFont("fonts/Roboto-Light.ttf")
 
-        // popUpRefFrameImage = canvas.loadImage("/popups/refFrame.png");
-        // refFrameAddVelImage = canvas.loadImage("/popups/addVel.png");
-        // cameraImage = canvas.loadImage("/popups/camera.png");
-        // rotatePopupImage = canvas.loadImage("/popups/rotate.png");
+        // popUpRefFrameImage = canvas.loadImage("popups/refFrame.png");
+        // refFrameAddVelImage = canvas.loadImage("popups/addVel.png");
+        // cameraImage = canvas.loadImage("popups/camera.png");
+        // rotatePopupImage = canvas.loadImage("popups/rotate.png");
 
-        popUp1Image = canvas.loadImage("/popups/1.png");
-        popUp2Image = canvas.loadImage("/popups/2.png");
-        popUp3Image = canvas.loadImage("/popups/3.png");
-        popUp4Image = canvas.loadImage("/popups/4.png");
-        popUp5Image = canvas.loadImage("/popups/5.png");
-        popUp6Image = canvas.loadImage("/popups/6.png");
-        popUp7Image = canvas.loadImage("/popups/7.png");
+        popUp1Image = canvas.loadImage("popups/1.png");
+        popUp2Image = canvas.loadImage("popups/2.png");
+        popUp3Image = canvas.loadImage("popups/3.png");
+        popUp4Image = canvas.loadImage("popups/4.png");
+        popUp5Image = canvas.loadImage("popups/5.png");
+        popUp6Image = canvas.loadImage("popups/6.png");
+        popUp7Image = canvas.loadImage("popups/7.png");
 
         
 
@@ -485,10 +485,10 @@ const controlMenu = canvas => {
             displayMenu(canvas)
             sliderInput()
 
-            if (canvasLoaded.every( canvasLoad => canvasLoad) && buttonsDisplacement == 0 && showMenu)
-            {
-                canvas.text("Scroll for more...", 125, innerHeight - 5)
-            }
+            // if (canvasLoaded.every( canvasLoad => canvasLoad) && buttonsDisplacement == 0 && showMenu)
+            // {
+            //     canvas.text("Scroll for more...", 125, innerHeight - 5)
+            // }
         canvas.pop()
 
         if (popUpVisible) buttonsDisplacement = 0;

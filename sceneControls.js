@@ -40,8 +40,11 @@ function sceneControls(canvas)
             const groundPosition2 = halfCanvas.copy().y + 170 - ((leftScenes[1].images[2].mass * leftScenes[0].images[2].size.y) / 2)
             let newYVel = -10
 
+            rightScenes[1].shapes[0].vel = rightScenes[1].shapes[0].vel.copy()
 
-            rightScenes[1].shapes[0].referenceFrame.acc = cannonBall2.acc.copy().mult(-1)
+            // rightScenes[1].referenceFrame.vel = cannonBall.vel.copy()
+            // rightScenes[1].referenceFrame.vel.x *= (-1)
+            
             if (cannonBall.pos.y > groundPosition2) 
             {
                 cannonBall.bounces++;
@@ -51,7 +54,7 @@ function sceneControls(canvas)
                 cannonBall2.bounces++;
                 cannonBall2.vel.y = cannonBall.vel.copy().y * 2.88
 
-                rightScenes[1].shapes[0].referenceFrame.vel = cannonBall2.vel.copy().mult(-1)
+                rightScenes[1].referenceFrame.vel = cannonBall.vel.copy()
             }
             
             if (cannonBall.pos.y > groundPosition2) 
